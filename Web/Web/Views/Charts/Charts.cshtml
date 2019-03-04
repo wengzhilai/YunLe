@@ -1,0 +1,94 @@
+﻿@model ProInterface.Models.TQuery
+@{
+    ViewBag.Title = "Query";
+    IList<SelectListItem> alltype = ViewData["AllType"] as IList<SelectListItem>;
+}
+
+<link href="~/Scripts/bootstrap/css/bootstrap.css" rel="stylesheet" />
+<link rel="stylesheet" type="text/css" href="~/Scripts/easyui/themes/default/easyui.css">
+<script src="~/Scripts/bootstrap/js/bootstrap.js"></script>
+<script type="text/javascript" src="~/Scripts_Page/FunBase.js"></script>
+
+<script src="~/FusionChart/FusionCharts.js"></script>
+<script type="text/javascript" src="~/Scripts_Page/Charts.js"></script>
+
+@Html.HiddenFor(m => m.CHARTS_CFG)
+@Html.Hidden("showType", @Request["type"])
+
+<input id="AllPara" type="hidden" name="AllPara" value="@ViewBag.AllPara" />
+@using (Html.BeginForm())
+{
+    @Html.HiddenFor(x => x.ROWS_BTN);
+    @Html.HiddenFor(x => x.CHARTS_TYPE);
+    @Html.HiddenFor(x => x.CODE);
+    <div id="toolbar">
+        @Html.DropDownList("allType", alltype, new { onChange = "changeType()" })
+        @if (this.Model.QueryCfg != null && this.Model.QueryCfg.Where(x => x.CanSearch).Count() > 0)
+        {
+@*<a class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-i-open'" onclick="$('#SearchTable').toggle();">搜索</a>*@
+            <a class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-i-open'" onclick="IsOpen(this)">搜索</a>
+        }
+        @Html.HiddenFor(m => m.HEARD_BTN)
+
+        @if (this.Model != null && this.Model.IS_DEBUG == 1)
+        {
+            <a class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-sum'" onclick="ShowDebug()">调试</a>
+        }
+        <a class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-i-report'" onclick="doDown()">导出</a>
+
+        @if (this.Model.QueryCfg != null && this.Model.QueryCfg.Where(x => x.CanSearch).Count() > 0)
+        {
+            var allCanSearch = this.Model.QueryCfg.Where(x => x.CanSearch).ToList();
+            var rows = allCanSearch.Count / 4;
+            if (allCanSearch.Count % 4 != 0)
+            {
+                rows = rows + 1;
+            }
+
+            <input id="searchField" type="hidden" value="@(ProInterface.JSON.DecodeToStr(allCanSearch))" />
+            <input id="GetWhereStr" type="hidden" value="" />
+            <table border="0" style="display: none; background-color: #fff; width: 100%" id="SearchTable">
+                <tr>
+                    <td rowspan="@rows" style="width:70px"><a href="#" id="search" style="width: 55px;" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-i-search'" onclick="doSearch()">查询</a></td>
+                    @for (int i = 0; i < allCanSearch.Count(); i++)
+                    {
+                        var para = allCanSearch[i];
+                        <td>
+                            <table>
+                                <tr>
+                                    <td>
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-addon" data-size="5">
+                                                @para.Alias :
+                                                <span id="span_@(para.FieldName)_type"></span>
+                                            </span>
+                                            <div class="form-control">
+                                                <input type="hidden" id="s_@(para.FieldName)_type"  />
+                                                <input id="s_@(para.FieldName)_value"  />
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                        if ((i + 1) % 4 == 0)
+                        {
+                        @MvcHtmlString.Create("</tr><tr>");
+                        }
+                    }
+                </tr>
+            </table>
+        }
+    </div> 
+    <div id="column2D44" style="margin: 5px;"></div>
+
+    <script>
+        $(function () {
+        @if (Request["simple"] == "1")
+        {
+            <text>$("#toolbar").hide()</text>
+        }
+    });
+    </script>
+}
+

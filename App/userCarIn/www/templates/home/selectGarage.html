@@ -1,0 +1,14 @@
+<ion-view view-title="免费救援" hide-back-button="true" ng-init="help.reLoad()">
+    <ion-nav-buttons side="left">
+        <button class="button button-icon icon ion-ios-arrow-back light" on-tap="help.goToHome()"></button>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+        <button class="button button-icon icon ion-navicon light" on-tap="help.goTohelpOrderList()"></button>
+    </ion-nav-buttons>
+    <ion-content class="has-header">
+        <div id="allmap" style="width:100%;height:100%"></div>
+        <div style="position: absolute; right: 2px; top: 2px; background-color: white">
+                <button type="button" class="button button-icon icon ion-loop " on-tap="help.getNewMark()">刷新</button>
+        </div>
+    </ion-content>
+</ion-view>

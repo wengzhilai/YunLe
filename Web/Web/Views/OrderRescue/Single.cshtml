@@ -1,0 +1,264 @@
+﻿
+@model ProInterface.Models.YlOrderRescue
+@{
+    ViewBag.Title = "编辑救援和保养";
+}
+
+<style>
+    .col-md-6, .col-md-12 {
+        padding: 1px;
+        float: left;
+    }
+
+    .form-control[readonly] {
+        cursor: not-allowed;
+        background-color: #fff;
+    }
+</style>
+<link href="~/Scripts/datetimepicker/jquery.datetimepicker.css" rel="stylesheet" />
+<script type="text/javascript" src="~/Scripts/datetimepicker/jquery.datetimepicker.js"></script>
+<script type="text/javascript" src="~/Scripts/ajaxfileupload.js"></script>
+
+<div id="myPnl" style="display:none"></div>
+@using (Ajax.BeginForm(new AjaxOptions
+{
+    UpdateTargetId = "myPnl",
+    Confirm = "确定要提交吗",
+    OnBegin = "OnBegin",
+    OnSuccess = "OnSuccess",
+    OnFailure = "OnFailure",
+    OnComplete = "OnComplete"
+}))
+{
+    @Html.HiddenFor(m => m.ID)
+    <table style="table-layout:fixed;width:100%">
+        <tr>
+            <td>
+                <fieldset>
+                    <legend>基本信息</legend>
+                    <div class="col-md-6">
+                        <div class="input-group" style="width: 100%;">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.ClientName)</span>
+                            <div class="form-control">
+                                @Html.DisplayFor(m => m.ClientName)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group" style="width: 100%;">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.ClientPhone)</span>
+                            <div class="form-control">
+                                @Html.DisplayFor(m => m.ClientPhone)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group" style="width: 100%;">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.ORDER_NO)</span>
+                            <div class="form-control">
+                                @Html.DisplayFor(m => m.ORDER_NO)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group" style="width: 100%;">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.PAY_STATUS)</span>
+                            <div class="form-control">
+                                @Html.DisplayFor(m => m.PAY_STATUS)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group" style="width: 100%;">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.APPRAISE_SCORE)</span>
+                            <div class="form-control">
+                                @Html.DisplayFor(m => m.APPRAISE_SCORE)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group" style="width: 100%;">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.APPRAISE_CONTENT)</span>
+                            <div class="form-control">
+                                @Html.DisplayFor(m => m.APPRAISE_CONTENT)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group" style="width: 100%;">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.COST)</span>
+                            <div class="form-control">
+                                @Html.DisplayFor(m => m.COST)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group" style="width: 100%;">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.GarageName)</span>
+                            <div class="form-control">
+                                @Html.DisplayFor(m => m.GarageName)
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="input-group" style="width: 100%;">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.GARAGE_TYPE)</span>
+                            <div class="form-control">
+                                @Html.DisplayFor(m => m.GARAGE_TYPE)
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div class="input-group" style="width: 100%;">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.REACH_TYPE)</span>
+                            <div class="form-control">
+                                @Html.DisplayFor(m => m.REACH_TYPE)
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="input-group" style="width: 100%;">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.REACH_TIME)</span>
+                            <div class="form-control">
+                                @Html.DisplayFor(m => m.REACH_TIME)
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="input-group" style="width: 100%;">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.CLIENT_NAME)</span>
+                            <div class="form-control">
+                                @Html.DisplayFor(m => m.CLIENT_NAME)
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div class="input-group" style="width: 100%;">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.CLIENT_PHONE)</span>
+                            <div class="form-control">
+                                @Html.DisplayFor(m => m.CLIENT_PHONE)
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div class="input-group" style="width: 100%;">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.PLATE_NUMBER)</span>
+                            <div class="form-control">
+                                @Html.DisplayFor(m => m.PLATE_NUMBER)
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div class="input-group" style="width: 100%;">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.CAR_TYPE)</span>
+                            <div class="form-control">
+                                @Html.DisplayFor(m => m.CAR_TYPE)
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div class="input-group" style="width: 100%;">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.BRAND)</span>
+                            <div class="form-control">
+                                @Html.DisplayFor(m => m.BRAND)
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div class="input-group" style="width: 100%;">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.MODEL)</span>
+                            <div class="form-control">
+                                @Html.DisplayFor(m => m.MODEL)
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div class="input-group" style="width: 100%;">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.STATUS)</span>
+                            <div class="form-control">
+                                @Html.DisplayFor(m => m.STATUS)
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="input-group" style="width: 100%;">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.STATUS_TIME)</span>
+                            <div class="form-control">
+                                @Html.DisplayFor(m => m.STATUS_TIME)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group" style="width: 100%;">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.HITCH_TYPE)</span>
+                            <div class="form-control">
+                                @Html.DisplayFor(m => m.HITCH_TYPE)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group" style="width: 100%;">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.PICK_TIME)</span>
+                            <div class="form-control">
+                                @Html.DisplayFor(m => m.PICK_TIME)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group" style="width: 100%;">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.ADDRESS)</span>
+                            <div class="form-control">
+                                @Html.DisplayFor(m => m.ADDRESS)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group" style="width: 100%;">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.OTHER_PHONE)</span>
+                            <div class="form-control">
+                                @Html.DisplayFor(m => m.OTHER_PHONE)
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="input-group" style="width: 100%;">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.REMARK)</span>
+                            <div class="form-control">
+                                @Html.DisplayFor(m => m.REMARK)
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+
+            </td>
+        </tr>
+    </table>
+    
+}
+<script type="text/javascript" src="~/Scripts_Page/FunBase.js"></script>

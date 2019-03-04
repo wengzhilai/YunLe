@@ -1,0 +1,25 @@
+﻿@model ProInterface.Models.TBulletin
+@{
+    Layout = "~/Views/Shared/_LayoutPhone.cshtml";
+    ViewBag.Title = Model.TITLE;
+}
+
+<div style="text-align: center; font-size: 18px; color: #000; height: 40px; line-height: 40px;">@Html.SpanFor(m => m.TITLE)</div>
+<div style="text-align: center; font-size: 14px; color: #6f6f6f; height: 30px; line-height: 30px;"><span>发布时间：</span>@Html.SpanFor(m => m.ISSUE_DATE)<span style="margin-left: 20px">发布者：</span>@Html.SpanFor(m => m.PUBLISHER)</div>
+<div style="font-size: 14px; color: #3e3e3e; margin: 10px; text-indent: 2em;">@Html.SpanFor(m => m.CONTENT)</div>
+@if (Model.AllFiles.Count > 0)
+{
+    <div style="margin: 10px; color: #656464;border:1px solid #d5d5d5;">
+
+        <span style="cursor:default;font-size:16px;color:#f00">附件下载</span>
+        <ul>
+            @foreach (var t in Model.AllFiles)
+            {
+   
+                <li><a href="@Url.Content(@t.URL)" style="font-size:14px; color:#3690E8;" title="点击下载">@t.NAME</a></li>
+    
+            }
+
+        </ul>
+
+    </div>  }

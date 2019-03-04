@@ -1,0 +1,209 @@
+@model ProInterface.Models.FaScript
+@{
+    ViewBag.Title = "任务管理";
+}
+
+<div id="myPnl" style="display: none"></div>
+@using (Ajax.BeginForm(new AjaxOptions
+{
+    UpdateTargetId = "myPnl",
+    Confirm = "确定要提交吗",
+    OnBegin = "OnBegin",
+    OnSuccess = "OnSuccess",
+    OnFailure = "OnFailure",
+    OnComplete = "OnComplete"
+}))
+{
+    <link href="~/Scripts/dist/css/bootstrap.css" rel="stylesheet" />
+    <script src="~/Scripts/dist/js/bootstrap.js"></script>
+    <script src="~/Scripts_Page/SetTitleWidth.js"></script>
+    @Html.HiddenFor(m => m.ID)
+    <div class="boot-panel boot-panel-default  boot-panel-success">
+        <div class="boot-panel-heading">任务编辑</div>
+        <div class="boot-panel-body">
+            <div class="input-group input-group-sm" style="padding-top: 10px;">
+                <span class="input-group-addon" data-size="5">@Html.LabelFor(m => m.NAME)</span>
+                @Html.TextBoxFor(m => m.NAME, new { @class = "form-control", @placeholder = "名称" })
+                @Html.ValidationMessageFor(m => m.NAME)
+            </div>
+
+            <div class="input-group input-group-sm" style="padding-top: 10px;">
+                <span class="input-group-addon" data-size="5">@Html.LabelFor(m => m.CODE)</span>
+                @Html.TextBoxFor(m => m.CODE, new { @class = "form-control", @placeholder = "代码是唯一标识，不能重复" })
+                @Html.ValidationMessageFor(m => m.CODE)
+            </div>
+
+            <div class="input-group input-group-sm" style="padding-top: 10px;">
+                <span class="input-group-addon" data-size="5">@Html.LabelFor(m => m.BODY_TEXT)</span>
+
+                @Html.TextAreaFor(m => m.BODY_TEXT, new { @placeholder = "任务脚本",@class="form-control", @style = "height:300px;" })
+                @Html.ValidationMessageFor(m => m.BODY_TEXT)
+            </div>
+
+            <div class="input-group input-group-sm" style="padding-top: 10px;">
+                <span class="input-group-addon" data-size="5">@Html.LabelFor(m => m.DSL_TYPE)</span>
+                @Html.DropDownListFor(m => m.DSL_TYPE, new List<SelectListItem>{
+           new SelectListItem{  Text="一般口径脚本",Value="0"},
+           new SelectListItem{ Text="上传下载脚本",Value="1"},
+     
+           }, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.DSL_TYPE)
+            </div>
+
+
+            <div class="input-group input-group-sm" style="padding-top: 10px;">
+                <span class="input-group-addon" data-size="5">@Html.LabelFor(m => m.SERVICE_FLAG)</span>
+                @Html.DropDownListFor(m => m.SERVICE_FLAG, new List<SelectListItem>(){
+    new SelectListItem{ Value="MONTHLY07", Text="MONTHLY07(川北月结)" },
+    new SelectListItem{ Value="MONTHLY06", Text="MONTHLY06(川南月结)" },
+    new SelectListItem{ Value="REALTIME07", Text="REALTIME07(川北实时)" },
+    new SelectListItem{ Value="REALTIME06", Text="REALTIME06(川南实时)" },
+    new SelectListItem{ Value="RCREALTIME07", Text="RCREALTIME07(川北实时重采)" },
+    new SelectListItem{ Value="RCREALTIME06", Text="RCREALTIME06(川南实时重采)" }
+   }, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.SERVICE_FLAG)
+            </div>
+
+            <div class="input-group input-group-sm" style="padding-top: 10px;">
+                <span class="input-group-addon" data-size="5">选择任务组</span>
+                <div class="form-control">
+                    @Html.CheckBoxListFor(m => m.SetScriptGropu, Model.GetScriptGroup)
+                </div>
+            </div>
+            <div class="input-group input-group-sm" style="padding-top: 10px;">
+                <span class="input-group-addon" data-size="5">@Html.LabelFor(m => m.RUN_WHEN)</span>
+                <div class="form-control">
+                    <div class="form-inline" role="form">
+                        <div class="form-group">
+                            <label class="sr-only"></label>
+                            <select onchange="GetRunWhenChange(this)" class="form-control">
+                                <option value="" selected="selected">常用执行时间表达式</option>
+                                <option value="0 0 15 * * ?">每天下午三点执行</option>
+                                <option value="0 0 15 ? * MON">每周一下午三点执行</option>
+                                <option value="0 0 15 30,31 1-12 ?">每月30号31号下午3点执行一次</option>
+                                <option value="0/15 0/30 * * * ?">在半点每15秒执行一次</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only"></label>
+                            @Html.TextBoxFor(m => m.RUN_WHEN, new { @class = "form-control", @placeholder = "时间可在空，单格式错误时任务不能执行" })
+                            @Html.ValidationMessageFor(m => m.RUN_WHEN)
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-group input-group-sm" style="padding-top: 10px;">
+                <span class="input-group-addon" data-size="5">@Html.LabelFor(m => m.RUN_ARGS)</span>
+                @Html.TextBoxFor(m => m.RUN_ARGS, new { @class = "form-control", @placeholder = "格式： 参数名1=参数值1,参数名2=参数值2" })
+                @Html.ValidationMessageFor(m => m.RUN_ARGS)
+            </div>
+            <div class="input-group input-group-sm" style="padding-top: 10px;">
+                <span class="input-group-addon" data-size="5">@Html.LabelFor(m => m.LOG_TYPE)</span>
+                @Html.DropDownListFor(m => m.LOG_TYPE, new List<SelectListItem>{
+           new SelectListItem{ Text="Debug",Value="0"},
+           new SelectListItem{ Text="Information",Value="1"},
+           new SelectListItem{ Text="Warning",Value="2"},
+           new SelectListItem{ Text="Error",Value="3"},
+           }, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.LOG_TYPE)
+            </div>
+        </div>
+        <div style="text-align: center; padding: 10px;">
+            <button onclick="onSubmit()" style="width: 180px;" type="button" class="btn btn-success btn-sm">
+                <span class="glyphicon glyphicon-floppy-disk"></span>&nbsp;&nbsp;保&nbsp;&nbsp;&nbsp;&nbsp;存
+            </button>
+            <button onclick="parent.CloseWin();" style="width: 180px;" type="button" class="btn btn-success btn-sm">
+                <span class="glyphicon glyphicon-floppy-disk"></span>&nbsp;&nbsp;取&nbsp;&nbsp;&nbsp;&nbsp;消
+            </button>
+            <input style="width: 60px; display: none; margin-right: 20px;" type="submit" value="保存" />
+        </div>
+    </div>
+ 
+}
+<script type="text/javascript" src="~/Scripts_Page/FunBase.js"></script>
+<script type="text/javascript">
+
+    function onSubmit() {
+        var name = $("#NAME").val();
+        var code = $("#CODE").val();
+        var txtbody = $("#BODY_TEXT").val();
+        if (name.length <= 0) {
+            alert("名称不能为空");
+            return;
+        }
+        else if (code.length <= 0) {
+            alert("代码不能为空");
+            return;
+        }
+        else if (txtbody.length <= 0) {
+            alert("脚本不能为空");
+            return;
+        }
+        else {
+
+
+            var com = $(".combo-text")
+            if (com.attr('name') == null) {
+                com.attr('name', 'combo_text')
+            }
+
+            var obj = $('input[type="submit"]');
+            obj[0].click();
+        }
+    }
+    $(function () {
+        var ssg = $("#SetScriptGropu").val();
+        var att = ssg.split(',');
+        $("input[name=SetScriptGropu_JSITEM]").each(function (index, item) {
+            $(att).each(function (k, obj) {
+                if ($(item).val() == obj) {
+                    $(item).attr("checked", "checked");
+                }
+            });
+        });
+
+    });
+
+    function GetRunWhenChange(obj) {
+        var val = $(obj).val();
+        $("#RUN_WHEN").val(val);
+    }
+
+    function OnSuccess(data) {
+        if ($("#ID").val() == "" || $("#ID").val() == "0") {
+            if (data.IsError != null) {
+                if (data.IsError) {
+                    divalert("失败", data.Message);
+                    return;
+                }
+                else {
+                    alert(data.Message);
+                }
+            }
+            try {
+                var p = parent.window.opener;
+                if (p != null) {
+                    parent.window.opener.location.reload();
+                    parent.window.opener = null;
+                    parent.window.close();
+                }
+                else {
+
+                    parent.CloseWin();
+                }
+
+                //  parent.CloseWin();
+            }
+            catch (e) { }
+        }
+        else {
+            window.location.href = "@Url.Content("~/Script/ShowScriptDetails?id=" + Model.ID)";
+        }
+    }
+</script>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+}

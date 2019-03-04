@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-toolbar color="car">
+    <!--<ion-buttons left>-->
+      <!--<button ion-button icon-only (click)="GoBack()">-->
+        <!--<ion-icon name="arrow-back"></ion-icon>-->
+      <!--</button>-->
+    <!--</ion-buttons>-->
+    <ion-title>消息列表</ion-title>
+    <!--<ion-buttons right style="width: 30px">-->
+
+    <!--</ion-buttons>-->
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content
+      pullingIcon="arrow-dropdown"
+      pullingText="下拉刷新"
+      refreshingSpinner="circles"
+      refreshingText="刷新中...">
+    </ion-refresher-content>
+  </ion-refresher>
+
+  <ion-list *ngFor="let o of lists" (click)="GoInfo(o)">
+    <ion-item class="title" *ngIf="o.CONTENT!=null">
+      {{o.CONTENT}}
+    </ion-item>
+    <ion-item >
+      <p item-left>{{o.CREATE_USERNAME}}</p>
+      <p item-right>{{o.CREATE_TIME|DateToString:"yyyy-MM-dd hh:mm"}}</p>
+    </ion-item>
+  </ion-list>
+  <ion-infinite-scroll (ionInfinite)="$event.waitFor(doInfinite($event))">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>

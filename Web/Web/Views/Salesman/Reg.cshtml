@@ -1,0 +1,138 @@
+﻿@{
+    ViewBag.Title = "Reg";
+    Layout = "~/Views/Shared/_Layout_ionic.cshtml";
+}
+@section HeadScripts {
+<script type="text/javascript">
+    //?#/foo?code=bunny&type=0
+    //http://localhost/YL/Salesman/Matrix?pollCode=aaaa&type=1&w=300
+    var app = angular.module('ionicApp', ['ionic']);
+    constant={
+        pageSize: 10,
+        api: 'http://139.129.194.140/YL/WebApi/',
+        imgUrl: 'http://139.129.194.140/YL',
+        version: '1.0.0',
+        CLogin: 'ClientLogin',
+        SendCode: 'SendCode',
+        LoginReg: 'LoginReg',
+        GetAllDistrict: 'GetAllDistrict',
+        CarList: 'CarList',
+        CarSave: 'CarSave',
+        FileUp: 'FileUp',
+        CarDelete: 'CarDelete',
+        CarSetDefault: 'CarSetDefault',
+        HelpList: 'RescueQuery',
+        toHelpUrl: 'RescueSave',
+        orderSave: 'OrderSave',
+        OrderList: 'OrderList'
+    };
+    app.controller('myCtrl', function ($scope, $location) {
+        $scope.register = {
+            bean: {
+                pollCode: $location.search().code,
+                type: $location.search().type,
+            }
+        };
+        if($scope.register.bean.type=="0")
+        {
+            $(".title").html("云乐享车-用户注册");
+        }else if($scope.register.bean.type=="1")
+        {
+            $(".title").html("云乐享车-业务员注册");
+        }
+
+        $scope.SendCode = function () {
+            if ($scope.register.bean.loginName == null || $scope.register.bean.loginName == '' || $scope.register.bean.loginName.length != 11)
+            {
+                alert('电话号码有误，请确认后再试');
+                return;
+            }
+
+            var scUrl = constant.api + constant.SendCode;
+            var msg = {};
+            var obj = { V: $scope.register.bean.loginName }
+            $.post(scUrl, obj,
+                    //回调函数
+                    function (response) {
+                        msg = response;
+                        alert(msg.Message)
+                    },
+                    //返回类型
+                    "json").error(function (err) {
+                        msg = { IsError: true, Message: '网络忙，请重试' };
+                        alert(msg.Message)
+                    });
+        };
+
+        $scope.onSubmit = function () {
+            var scUrl = constant.api + constant.LoginReg;
+            var msg = {};
+            var obj = $scope.register.bean
+            if(obj.password!=obj.password1)
+            {
+                alert('两次密码不一样');
+            }
+            $.post(scUrl, obj,
+                    //回调函数
+                    function (response) {
+                        msg = response;
+                        if (msg.IsError)
+                        {
+                            alert(msg.Message)
+                        }
+                        else
+                        {
+                            alert('注册成功，请下载APP，或关注公众号')
+                        }
+                    },
+                    //返回类型
+                    "json").error(function (err) {
+                        msg = { IsError: true, Message: '网络忙，请重试' };
+                        alert(msg.Message)
+                    });
+        };
+    });
+    
+</script>
+
+
+}
+<ion-header-bar class="bar-positive">
+    <h1 class="title">云乐享车-用户注册</h1>
+</ion-header-bar>
+
+<ion-view view-title="注册" hide-back-button="true">
+    <ion-content class="has-header login">
+        <div class="list" style="margin-top: 30px">
+            <div class="item item-icon-left" style="padding-left: 65px;">
+                <i class="icon iconfont">&#xe65e;</i>
+                <input type="text" ng-model="register.bean.loginName" placeholder="请输入手机号码">
+            </div>
+            <div class="item item-icon-left" style="padding-left: 65px;">
+                <i class="icon iconfont">&#xe617;</i>
+                <input type="text" ng-model="register.bean.code" placeholder="请输入验证码">
+                <i class="badge assertive-bg light button" id="sendCode" style="float: right;" ng-click="SendCode()"> 获取验证码</i>
+            </div>
+            <div class="item item-icon-left" style="padding-left: 65px;">
+                <i class="icon iconfont">&#xe647;</i>
+                <input type="text" ng-model="register.bean.pollCode" placeholder="推荐码">
+                <input type="hidden" ng-model="register.bean.type">
+            </div>
+            <div class="item item-icon-left" style="padding-left: 65px;">
+                <i class="icon iconfont">&#xe645;</i>
+                <input type="password" ng-model="register.bean.password" placeholder="密码由6-20位数字字母构成">
+            </div>
+            <div class="item item-icon-left" style="padding-left: 65px;">
+                <i class="icon iconfont">&#xe65a;</i>
+                <input type="password" ng-model="register.bean.password1" placeholder="确认密码">
+            </div>
+            <div class="log-button-div">
+                <button class="button button-energized button-block" on-tap="onSubmit()">
+                    注册
+                </button>
+            </div>
+        </div>
+
+    </ion-content>
+</ion-view>
+

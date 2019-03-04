@@ -1,0 +1,149 @@
+<ion-view view-title="客户信息" hide-back-button="true">
+  <ion-nav-buttons side="left">
+    <button class="button button-icon icon ion-ios-arrow-back light"
+            UI-SREF="customerList({reload: true})"></button>
+  </ion-nav-buttons>
+
+  <ion-content class="has-header" style="margin-bottom: 44px">
+    <div class="list">
+      <div class="item item-divider editcust" style="font-size: 14px;margin-top: 0px">
+        个人信息
+      </div>
+      <a class="item item-thumbnail-right" style="padding-left: 20px;">
+        <img name="iconURL" src="{{customer.bean.iconURL|imgUrl}}" height="70px"
+             width="70px" alt="头像照片" style="margin: 10px" on-tap="customer.showBigImage($event)"
+             data-id="{{customer.bean.ICON_FILES_ID}}"/>
+        <h2 style="line-height: 30px"><span style="font-weight:bold">客户编号：</span>{{customer.bean.ID}}</h2>
+        <h2 style="line-height: 30px"><span style="font-weight:bold">客户姓名：</span>{{customer.bean.NAME}}</h2>
+        <h2 style="line-height: 30px"><span style="font-weight:bold">性别：</span>{{customer.bean.SEX}}</h2>
+      </a>
+      <label class="item item-input" style="padding-left: 20px;" ng-click="callPhone(customer.bean.phone)">
+        <span class="input-label" style="width:20%;font-weight:bold">联系电话</span>
+        <a class="custInfo" href="tel:{{customer.bean.phone}}">{{customer.bean.phone}}</a>
+      </label>
+      <label class="item item-input" style="padding-left: 20px">
+        <span class="input-label" style="width:20%;font-weight:bold">客户状态</span>
+        <span class="custInfo">{{customer.bean.STATUS}}</span>
+      </label>
+      <label class="item item-input" style="padding-left: 20px;line-height: 1">
+        <span class="input-label" style="width:20%;font-weight:bold">客户地址</span>
+        <span class="custInfo">{{customer.bean.ADDRESS}}</span>
+      </label>
+      <label class="item item-input" style="padding-left: 20px;line-height: 1">
+        <span class="input-label" style="width:20%;font-weight:bold">客户备注</span>
+        <span class="custInfo">{{customer.bean.REMARK}}</span>
+      </label>
+      <div class="item item-divider editcust" style="font-size: 14px;margin-top: 0px">
+        客户身份证
+      </div>
+      <label class="item item-input" style="padding-left: 20px;line-height: 1">
+        <img name="iconURL" src="{{customer.bean.idNoUrl|imgUrl}}" height="70px"
+             width="70px" alt="头像照片" style="margin: 10px" on-tap="customer.showBigImage($event)"
+             data-id="{{customer.bean.ID_NO_PIC_ID}}"/>
+        <img name="idNoUrl1" src="{{customer.bean.idNoUrl1|imgUrl}}" height="70px"
+             width="70px" alt="头像照片" style="margin: 10px" on-tap="customer.showBigImage($event)"
+             data-id="{{customer.bean.ID_NO_PIC_ID1}}"/>
+      </label>
+      <div class="item item-divider editcust" style="font-size: 14px;margin-top: 0px">
+        客户驾驶证
+      </div>
+      <label class="item item-input" style="padding-left: 20px;line-height: 1">
+        <img name="driverPicUrl" src="{{customer.bean.driverPicUrl|imgUrl}}" height="70px"
+             width="70px" alt="头像照片" style="margin: 10px" on-tap="customer.showBigImage($event)"
+             data-id="{{customer.bean.DRIVER_PIC_ID}}"/>
+        <img name="driverPicUrl1" src="{{customer.bean.driverPicUrl1|imgUrl}}" height="70px"
+             width="70px" alt="头像照片" style="margin: 10px" on-tap="customer.showBigImage($event)"
+             data-id="{{customer.bean.DRIVER_PIC_ID1}}"/>
+      </label>
+      <div ng-repeat="car in customer.bean.AllCar">
+        <div class="item item-divider editcust" style="font-size: 14px;margin-top: 0px">
+          {{car.PLATE_NUMBER}} 车辆信息
+        </div>
+        <label class="item item-input" style="padding-left: 20px;line-height: 1">
+          <span class="input-label" style="width:20%;font-weight:bold">车牌号</span>
+          <span class="custInfo">{{car.PLATE_NUMBER}}</span>
+        </label>
+        <label class="item item-input" style="padding-left: 20px;line-height: 1">
+          <span class="input-label" style="width:20%;font-weight:bold">车型</span>
+          <span class="custInfo">{{car.MODEL}}</span>
+        </label>
+        <label class="item item-input" style="padding-left: 20px;line-height: 1">
+          <span class="input-label" style="width:20%;font-weight:bold">价格</span>
+          <span class="custInfo">{{car.PRICE}}</span>
+
+        </label>
+        <label class="item item-input" style="padding-left: 20px;line-height: 1">
+          <span class="input-label" style="width:20%;font-weight:bold">品牌型号</span>
+          <span class="custInfo">{{car.BRAND}}</span>
+
+        </label>
+        <label class="item item-input" style="padding-left: 20px;line-height: 1">
+          <span class="input-label" style="width:20%;font-weight:bold">车架型号</span>
+          <span class="custInfo">{{car.FRAME_NUMBER}}</span>
+
+        </label>
+        <label class="item item-input" style="padding-left: 20px;line-height: 1">
+          <span class="input-label" style="width:20%;font-weight:bold">发动机号</span>
+          <span class="custInfo">{{car.ENGINE_NUMBER}}</span>
+        </label>
+      </div>
+      <div class="item item-divider editcust" style="font-size: 14px;margin-top: 0px">
+        车辆行驶证
+      </div>
+      <label class="item item-input" style="padding-left: 20px;line-height: 1">
+        <img name="carDrivingPicUrl" src="{{customer.bean.NowCar.DrivingPicUrl|imgUrl}}" height="70px"
+             width="70px" alt="车辆行驶证正面" style="margin: 10px" on-tap="customer.showBigImage($event)"
+             data-id="{{customer.bean.NowCar.DRIVING_PIC_ID}}"/>
+        <img name="carDrivingPicUrl1" src="{{customer.bean.NowCar.DrivingPicUrl1|imgUrl}}" height="70px"
+             width="70px" alt="车辆行驶证背面" style="margin: 10px" on-tap="customer.showBigImage($event)"
+             data-id="{{customer.bean.NowCar.DRIVING_PIC_ID1}}"/>
+      </label>
+      <div class="item item-divider editcust" style="font-size: 14px;margin-top: 0px">
+        车主身份证
+      </div>
+      <label class="item item-input" style="padding-left: 20px;line-height: 1">
+        <img name="carIconURL" src="{{customer.bean.NowCar.idNoUrl|imgUrl}}" height="70px"
+             width="70px" alt="车主身份证正面" style="margin: 10px" on-tap="customer.showBigImage($event)"
+             data-id="{{customer.bean.NowCar.ID_NO_PIC_ID}}"/>
+        <img name="carIconURL1" src="{{customer.bean.NowCar.idNoUrl1|imgUrl}}" height="70px"
+             width="70px" alt="车主身份证背面" style="margin: 10px" on-tap="customer.showBigImage($event)"
+             data-id="{{customer.bean.NowCar.ID_NO_PIC_ID1}}"/>
+      </label>
+    </div>
+  </ion-content>
+  <div class="tabs-background-dark tabs-color-light">
+    <div class="tabs tabs-icon-top">
+      <a class="tab-item" ng-click="customer.editCustomer()">
+        <i class="icon">
+          <img src="img/update.png" width="25px" height="25px"/>
+        </i>
+        修改资料
+      </a>
+      <a class="tab-item" ng-click="customer.resetUserPas()">
+        <i class="icon">
+          <img src="img/rePwd.png" width="25px" height="25px"/>
+        </i>
+        重置密码
+      </a>
+      <a class="tab-item"
+         ui-sref="orderList({clientId:customer.bean.ID,orderType:'救援',title:customer.bean.NAME,reload: true})">
+        <i class="icon">
+          <span class="ion-stats-bars" style="font-size: 30px;color: white; width: 25px;height: 25px"></span>
+        </i>
+        订单
+      </a>
+      <a class="tab-item" ng-click="customer.editInsureFast()">
+        <i class="icon">
+          <img src="img/toInsure.png" width="25px" height="25px"/>
+        </i>
+        投保
+      </a>
+      <a class="tab-item" ui-sref="editHelpOrder({user: customer.bean})">
+        <i class="icon">
+          <img src="img/toHelp.png" width="25px" height="25px"/>
+        </i>
+        发起救援
+      </a>
+    </div>
+  </div>
+</ion-view>

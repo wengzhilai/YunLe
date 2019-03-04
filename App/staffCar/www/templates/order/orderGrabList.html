@@ -1,0 +1,33 @@
+<ion-view hide-back-button="true"  ng-init="orderList.loadMore()">
+    <ion-nav-title>等抢订单</ion-nav-title>
+    <ion-nav-buttons side="left">
+        <button class="button button-icon icon ion-ios-arrow-back light" ui-sref="home"></button>
+    </ion-nav-buttons>
+
+
+    <ion-content class="has-header " style="background-color: #f0f0f0">
+        <ion-refresher pulling-text="下拉刷新" on-refresh="orderList.doRefresh()"></ion-refresher>
+
+        <div class="list" style="margin-top: 10px;" collection-repeat="o in orderList.lists.data" >
+            <div ui-sref="followHelpOrder({id:o.ID})">
+                <div class="item light-bg" >
+                    <div class="assertive h4" style="padding-left: 10px;margin: auto;">
+                        {{o.AddressStr}}
+                    </div>
+                </div>
+                <div class="item" data-id="{{o.ID}}" data-type="{{o.ORDER_TYPE}}" ng-click="orderList.toFollowOrder(o.ID,o.ORDER_TYPE)">
+                    <p style="font-size: 13px;padding-left: 10px">订单号： {{o.ORDER_NO}}</p>
+                    <p style="font-size: 13px;padding-left: 10px">客户姓名： {{o.ClientName}}</p>
+                    <p style="font-size: 13px;padding-left: 10px"> 订单类型： {{o.ORDER_TYPE}}</p>
+                </div>
+                <div style="background-color: #f0f0f0;height:10px"></div>
+            </div>
+        </div>
+
+        <ion-infinite-scroll ng-if="orderList.hasNextPage()"
+                             on-infinite="orderList.loadMore()"
+                             distance="1%">
+        </ion-infinite-scroll>
+
+    </ion-content>
+</ion-view>

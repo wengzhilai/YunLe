@@ -1,0 +1,118 @@
+<ion-header>
+  <ion-toolbar color="car">
+    <ion-row>
+      <ion-col class="title-col left" (click)="goMenu()">
+        <img src="{{user.iconURL|ImgUrl}}" align="absmiddle" class="userIco" />
+        <span class="title">你好，{{user.NAME}}</span>
+      </ion-col>
+      <ion-col class="title-col right">
+        <ion-icon name="share" (click)="toShare()"></ion-icon>
+        <ion-icon name="megaphone" (click)="GoMessageListPage()"></ion-icon>
+      </ion-col>  
+    </ion-row>  
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content class="grid-basic-page">
+  <div>
+    <ion-slides>
+      <ion-slide>
+        <img src="img/s-1.png"/>
+      </ion-slide>
+      <ion-slide>
+        <img src="img/s-2.jpg"/>
+      </ion-slide>
+      <ion-slide>
+        <img src="img/s-3.jpg"/>
+      </ion-slide>
+    </ion-slides>
+  </div>
+
+  <div>
+    <ion-row class="appIco">
+      <ion-col (click)="GoCustomerList()">
+        <div>
+          <ion-icon name="contacts" style="color:#cc0000;"></ion-icon>
+          <p class="button-clear">
+            客户管理
+          </p>
+        </div>
+      </ion-col>
+      <ion-col (click)="GoOrderListPage()">
+        <div>
+          <ion-badge *ngIf="user.orderNum>0">{{user.orderNum}}</ion-badge>
+          <ion-icon name="list-box" style="color:#cc0000;"></ion-icon>
+          <p>
+            客户订单
+          </p>
+        </div>
+      </ion-col>
+      <ion-col (click)="GoRunlistListPage()">
+        <div class="light-bg">
+          <ion-badge *ngIf="(user.orderNum-user.orderNumSucc)>0">{{user.orderNum-user.orderNumSucc}}</ion-badge>
+          <ion-icon name="podium" style="color:#cc0000;"></ion-icon>
+          <p class="button-clear user_button">
+            待处理订单
+          </p>
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col (click)="GoInsureList()">
+        <div>
+          <ion-icon class="ion-ios-bookmarks"></ion-icon>
+          <p class="button-clear">
+            投保定单
+          </p>
+        </div>
+      </ion-col>
+
+      <ion-col (click)="GoInsureExpirePage()">
+        <div class="light-bg">
+          <ion-badge *ngIf="user.expireInsureNum>0"
+                     style="position: absolute;margin-left: 40px;min-width: 10px; font-size: 8px;padding: 2px 5px;">
+            {{user.expireInsureNum}}
+          </ion-badge>
+          <ion-icon name="alarm" style="color:#cc0000;"></ion-icon>
+          <p class="button-clear user_button">
+            到期保单
+          </p>
+        </div>
+      </ion-col>
+      <ion-col *ngIf="user.RoleAllID.split(',').indexOf('4')>-1" (click)="GoTeam()">
+        <div>
+          <ion-icon name="contacts"></ion-icon>
+          <p class="button-clear">
+            我的团队
+          </p>
+        </div>
+      </ion-col>
+
+    </ion-row>
+    <ion-row *ngIf="user.garage!=null" >
+      <ion-col (click)="GoListGrabPage()">
+        <div>
+          <ion-icon name="clock"></ion-icon>
+          <p class="button-clear">
+            接单
+          </p>
+        </div>
+      </ion-col>
+      <ion-col (click)="alert('开发中...')">
+        <div>
+          <ion-icon class="ion-ios-cart" style="color:blue"></ion-icon>
+          <p class="button-clear">
+            专属商城
+          </p>
+        </div>
+      </ion-col>
+    </ion-row>
+  </div>
+  <div style="position: fixed;bottom: 0;width: 100%;">
+    <span style="cursor:pointer;" (click)="goMenu()">
+            <img src="img/a5.png" width="100%" style="left:33%;position: fixed;width:33%;bottom: 0;"/>
+    </span>
+  </div>
+
+</ion-content>

@@ -1,0 +1,131 @@
+
+@model ProInterface.Models.YlSalesman
+@{
+    ViewBag.Title = "编辑业务员";
+    var tl = ViewData["TeamList"] as List<SelectListItem>;
+
+}
+<script type="text/javascript" src="~/Scripts/ajaxfileupload.js"></script>
+<style>
+    .col-md-6, .col-md-12 {
+        padding: 1px;
+        float: left;
+    }
+    .form-control[readonly] {
+        cursor: not-allowed;
+        background-color: #fff;
+    }
+</style>
+<link href="~/Scripts/datetimepicker/jquery.datetimepicker.css" rel="stylesheet" />
+<script type="text/javascript" src="~/Scripts/datetimepicker/jquery.datetimepicker.js"></script>
+
+<div id="myPnl" style="display:none"></div>
+@using (Ajax.BeginForm(new AjaxOptions
+{
+    UpdateTargetId = "myPnl",
+    Confirm = "确定要提交吗",
+    OnBegin = "OnBegin",
+    OnSuccess = "OnSuccess",
+    OnFailure = "OnFailure",
+    OnComplete = "OnComplete"
+}))
+{
+    @Html.HiddenFor(m=>m.ID)
+        <table style="table-layout:fixed;width:100%">
+            <tr>
+                <td>
+                    <div class="col-md-6">
+                        <div class="input-group" style="width: 100%;">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.NAME)</span>
+                            @Html.TextBoxFor(m => m.NAME, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.NAME)
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group" style="width: 100%;">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.LOGIN_NAME)</span>
+                            @Html.TextBoxFor(m => m.LOGIN_NAME, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.LOGIN_NAME)
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group" style="width: 100%;">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.DISTRICT_ID)</span>
+                            <div class="form-control">
+                                @Html.TextBoxFor(m => m.DISTRICT_ID, new
+                           {
+                               @class = "easyui-combotree",
+                               @style = "width:400px",
+                               @data_options = @"
+                            url:'../District/GetAll?levelId=4',
+                            loadFilter: function (rows) {
+                                return convert(rows);
+                            },
+                            editable:false"
+                           })
+                                @Html.ValidationMessageFor(m => m.DISTRICT_ID)
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group" style="width: 100%;">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.SEX)</span>
+                            @Html.MyDropDownListFor(m => m.SEX, new[] { new SelectListItem { Value = "男", Text = "男" }, new SelectListItem { Value = "女", Text = "女" } }, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.SEX)
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group" style="width: 100%;">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.STATUS)</span>
+                            @Html.DropDownListFor(m => m.STATUS, new[] { new SelectListItem { Value = "注册", Text = "注册" }, new SelectListItem { Value = "认证", Text = "认证" } }, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.STATUS)
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div class="input-group" style="width: 100%;">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.ID_NO)</span>
+                            @Html.TextBoxFor(m => m.ID_NO, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.ID_NO)
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="input-group" style="width: 100%;">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.ID_NO_PIC)</span>
+                            <div class="form-control">
+                                <button type="button" class="btn btn-default btn-xs" id="image2" onmousemove="MoveFilePic(this,event,'_FilePic')"><span class="glyphicon glyphicon-upload"></span>上传</button>
+                                <button type="button" class="btn btn-default btn-xs" id="down_Excel" onclick="WindowOpen($('#idNoUrl').val())"><span class="glyphicon glyphicon-download-alt"></span>下载</button>
+                                <input id="_FilePic" name="_FilePic" type="file" onchange="ChangePic('idNoUrl', 'ID_NO_PIC', '_FilePic')" style="display: none">
+                                @Html.TextBoxFor(m => m.idNoUrl, new { @style = "width:50%" })
+                                @Html.HiddenFor(m => m.ID_NO_PIC)
+                            </div>
+                        </div>
+                    </div>
+
+                </td>
+            </tr>
+        </table>
+        <div style="text-align:center;padding:10px;display:none;">
+            <a class="easyui-linkbutton" data-options="iconCls:'icon-save'" onclick="onSubmit()">保存</a>              
+            <a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" onclick="parent.CloseWin();">取消</a>              
+            <input style="width: 60px; display:none; margin-right: 20px;" type="submit" value="保存" />
+        </div> 
+}
+<script type="text/javascript" src="~/Scripts_Page/FunBase.js"></script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $(function () {
+            $('.form_datetime').datetimepicker({
+                timepicker: false,
+                step: 5,
+                format: 'Y/m/d'
+            });
+        })
+    </script>
+}

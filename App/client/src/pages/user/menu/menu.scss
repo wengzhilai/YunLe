@@ -1,0 +1,64 @@
+user-meuu {
+    .user-head {
+    min-height: 160px;
+    min-width: 100%;
+    background-image: url(../assets/img/userbg.png);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    text-align: center;
+  };
+  .userIco{
+    margin-top: 15px;
+    width: 70px;
+    height: 70px;
+    border-radius:35px
+  }
+  .itemSplit{
+    margin-top:10px;
+  }
+  .onleIco{
+    line-height: 35px;
+    border-radius: 6px;
+    background-color: #74DD43;
+    color: white;
+    font-size: 24px;
+  }
+    .settingIco{
+    font-size: 25px;
+    color: white;
+    position:  fixed;
+    top: 60px;
+    right: 10px;
+  }
+  .label{
+    margin:  0px;
+  }
+  .button{
+    margin:  0px;
+  }
+  ion-list {
+    ion-icon {
+      width: 35px;
+      height: 35px;
+      margin-right: 5px;
+      text-align: center;
+      vertical-align: middle;
+    }
+  }
+.titleNav{
+    margin-bottom: 5px;
+    font-size: 12px;
+    ion-col {
+    background-color: white;
+    text-align: -webkit-center;
+    div{
+      margin: 10px;
+    }
+    ion-icon{
+      font-size: 24px;
+      color:#898988;
+    }
+    }
+  }
+
+}

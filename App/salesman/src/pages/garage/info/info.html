@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-toolbar color="car">
+    <ion-buttons left>
+      <button ion-button icon-only (click)="GoBack()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>商家详情</ion-title>
+    <ion-buttons right>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content >
+  <ion-item-group>
+    <ion-item>
+      <ion-label>名称</ion-label>
+      <p item-right>{{bean.NAME}}</p>
+    </ion-item>
+    <ion-item>
+      <ion-label>地点</ion-label>
+      <p item-right>{{bean.ADDRESS}}</p>
+    </ion-item>
+    <ion-item >
+      <ion-label>联系电话</ion-label>
+      <p item-right>{{bean.PHONE}}</p>
+    </ion-item>
+    <ion-item>
+      <ion-label>备注</ion-label>
+      <p> {{bean.REMARK}}</p>
+    </ion-item>
+    <ion-item *ngIf="bean.picIdUrl!=null">
+      <img src="{{bean.picIdUrl|ImgUrl}}" height="70px"
+           width="70px" style="margin: 10px"
+           (click)="showBigImage(bean.picIdUrl)"/>
+    </ion-item>
+  </ion-item-group>
+</ion-content>

@@ -1,0 +1,110 @@
+﻿@model ProInterface.Models.TBulletin
+@{
+    ViewBag.Title = "编辑公告";
+}
+<link rel="stylesheet" href="~/Scripts/uploadify/uploadify.css">
+<script src="~/Scripts/uploadify/jquery.uploadify.js"></script>
+<link href="~/Styles/PublicStyle.css" rel="stylesheet" />
+
+<link rel="stylesheet" href="../Scripts/kindeditor/themes/default/default.css" />
+<link rel="stylesheet" href="../Scripts/kindeditor/plugins/code/prettify.css" />
+<script charset="utf-8" src="../Scripts/kindeditor/kindeditor.js"></script>
+<script charset="utf-8" src="../Scripts/kindeditor/lang/zh_CN.js"></script>
+<script charset="utf-8" src="../Scripts/kindeditor/plugins/code/prettify.js"></script>
+<div id="myPnl" style="display: none"></div>
+@using (Ajax.BeginForm("Details", new AjaxOptions
+{
+    UpdateTargetId = "myPnl",
+    Confirm = "确定要提交吗",
+    OnBegin = "OnBegin",
+    OnSuccess = "OnSuccess",
+    OnFailure = "OnFailure",
+    OnComplete = "OnComplete"
+}))
+{
+    @Html.HiddenFor(m => m.ID)
+    @Html.HiddenFor(m => m.IS_SHOW)
+    @Html.HiddenFor(m => m.IS_URGENT)
+    @Html.HiddenFor(m => m.TITLE)
+    @Html.HiddenFor(m => m.ISSUE_DATE)
+    
+    <div style="padding-left: 11px; padding-bottom: 5px;">
+        <table style="table-layout: fixed; width: 100%">
+            <tr>
+                <td class="td_text">@Html.LabelFor(m => m.TITLE)</td>
+                <td class="td_value">
+                    @Html.DisplayFor(m => m.TITLE)
+                </td>
+
+                <td class="td_text">@Html.LabelFor(m => m.PUBLISHER)</td>
+                <td class="td_value">
+                    @Html.DisplayFor(m => m.PUBLISHER)
+                </td>
+            </tr>
+            <tr>
+                <td class="td_text">@Html.LabelFor(m => m.CONTENT)</td>
+                <td colspan="3">
+                    @Html.TextAreaFor(m => m.CONTENT, new { style = "width:99%;height:200px;" })
+                    @Html.ValidationMessageFor(m => m.CONTENT)
+                </td>
+            </tr>
+            <tr>
+                <td class="td_text">附件上传
+                </td>
+                <td colspan="3">
+                    <input type="file" name="uploadify" id="uploadify" />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    @Html.HiddenFor(m => m.AllFilesStr)
+
+                    <table id="dg_AllFiles" class="easyui-datagrid" data-options="
+                        fitColumns:true,
+                        rownumbers:true
+                        ">
+                        <thead>
+                            <tr>
+                                <th data-options="field:'NAME',width:80">文件名称</th>
+                                <th data-options="field:'LENGTH',width:80">大小</th>
+                                <th data-options="field:'UPLOAD_TIME',width:80">添加时间</th>
+                                <th data-options="
+                                    field:'action',width:80,
+                                    formatter:ShowRowBtn
+                                    ">操作</th>
+
+                            </tr>
+                        </thead>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div style="text-align: center; padding: 10px;">
+        <a class="easyui-linkbutton" data-options="iconCls:'icon-save'" onclick="onSubmit()">保存</a>
+        <a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" onclick="parent.CloseWin();">取消</a>
+        <input style="width: 60px; display: none; margin-right: 20px;" type="submit" value="保存" />
+    </div> 
+}
+<script type="text/javascript" src="~/Scripts_Page/FunBase.js"></script>
+<script src="~/Scripts_Page/Bulletin.js"></script>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        KindEditor.ready(function (K) {
+            var editor1 = K.create('#CONTENT', {
+                cssPath: '../Scripts/kindeditor/plugins/code/prettify.css',
+                uploadJson: '../Scripts/kindeditor/asp.net/upload_json.ashx',
+                fileManagerJson: '../Scripts/kindeditor/asp.net/file_manager_json.ashx',
+                allowFileManager: true,
+                resizeType: 1,
+                allowPreviewEmoticons: false,
+                allowImageUpload: true,
+                items: [
+                    'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+                    'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
+                    'insertunorderedlist', '|', 'emoticons', 'image', 'link']
+            });
+        });
+    </script>
+}

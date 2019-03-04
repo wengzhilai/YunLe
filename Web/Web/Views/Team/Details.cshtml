@@ -1,0 +1,98 @@
+
+@model ProInterface.Models.YL_TEAM
+@{
+    ViewBag.Title = "编辑团队";
+}
+
+<style>
+    .col-md-6, .col-md-12 {
+        padding: 1px;
+        float: left;
+    }
+
+    .form-control[readonly] {
+        cursor: not-allowed;
+        background-color: #fff;
+    }
+</style>
+<link href="~/Scripts/datetimepicker/jquery.datetimepicker.css" rel="stylesheet" />
+<script type="text/javascript" src="~/Scripts/datetimepicker/jquery.datetimepicker.js"></script>
+
+<div id="myPnl" style="display:none"></div>
+@using (Ajax.BeginForm(new AjaxOptions
+{
+    UpdateTargetId = "myPnl",
+    Confirm = "确定要提交吗",
+    OnBegin = "OnBegin",
+    OnSuccess = "OnSuccess",
+    OnFailure = "OnFailure",
+    OnComplete = "OnComplete"
+}))
+{
+    @Html.HiddenFor(m => m.ID)
+    <table style="table-layout:fixed;width:100%">
+        <tr>
+            <td>
+
+                <div class="col-md-6">
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.NAME)</span>
+                        @Html.TextBoxFor(m => m.NAME, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.NAME)
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.DISTRICT_ID)</span>
+                        <div class="form-control">
+                            @Html.TextBoxFor(m => m.DISTRICT_ID, new
+                       {
+                           @class = "easyui-combotree",
+                           @data_options = @"
+                            url:'../District/GetAll?levelId=2',
+                            loadFilter: function (rows) {
+                                return convert(rows);
+                            },
+                            editable:false"
+                       })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.LEAD_ID_STR)</span>
+                        @Html.MyDropDownListFor(m => m.LEAD_ID_STR, ViewData["LEAD_ID_STR"] as IList<SelectListItem>, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.LEAD_ID_STR)
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.REMARK)</span>
+                        @Html.TextAreaFor(m => m.REMARK, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.REMARK)
+                    </div>
+                </div>
+
+            </td>
+        </tr>
+    </table>
+        <div style="text-align:center;padding:10px;display:none;">
+            <a class="easyui-linkbutton" data-options="iconCls:'icon-save'" onclick="onSubmit()">保存</a>
+            <a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" onclick="parent.CloseWin();">取消</a>
+            <input style="width: 60px; display:none; margin-right: 20px;" type="submit" value="保存" />
+        </div>
+}
+<script type="text/javascript" src="~/Scripts_Page/FunBase.js"></script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $(function () {
+            $('.form_datetime').datetimepicker({
+                timepicker: false,
+                step: 5,
+                format: 'Y/m/d'
+            });
+        })
+    </script>
+}

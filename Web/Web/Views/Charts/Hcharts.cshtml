@@ -1,0 +1,151 @@
+﻿@model ProInterface.Models.TQuery
+@{
+    Layout = null;
+    ViewBag.Title = "Hcharts";
+    System.Data.DataTable dt = ViewData["DT"] as System.Data.DataTable;
+}
+
+<!doctype html>
+<html>
+<head>
+    <style>
+        body, html {
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+        }
+    </style>
+    <title>@Model.NAME</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="text/javascript" src="~/Scripts/jquery.js"></script>
+    <script type="text/javascript" src="~/Scripts/Highcharts/js/highcharts.js"></script>
+    <script type="text/javascript" src="~/Scripts/Highcharts/js/highcharts-more.js"></script>
+</head>
+<script>
+    var allP =@MvcHtmlString.Create(Model.CHARTS_CFG);
+    if(allP.themes!=null)
+    {
+        $("<script>").attr({
+            type: "text/javascript",
+            src: "../Scripts/Highcharts/js/themes/"+allP.themes+".js"
+        }).appendTo("head");
+    }
+    $(function () {
+          
+        $('#container').highcharts({
+            credits: {
+                text: "查看表格",
+                href:"../Query/Query?code=@Model.CODE"
+              },
+              chart: {
+                  polar: (allP.polar==null)?false:allP.polar,
+                  type: (allP.type==null)?'line':allP.type,
+                  options3d:(allP.options3d==null)?{}:allP.options3d,
+              },
+              title: {
+                  text: allP.caption,
+              },
+              tooltip: {
+                  shared: true,
+                  pointFormat: '<span style="color:{series.color}">{series.name}: <b>{point.y:,.0f}</b><br/>'
+              },
+              yAxis: {
+                  title: {
+                      text: (allP.polar!=null && allP.polar)?'':allP.yAxisName
+                  },
+              },
+              
+              @switch (Model.CHARTS_TYPE)
+              {
+                  case "MultiSeries":
+                      IList<string> allCol = new List<string>();
+                      for (var i = 1; i < dt.Columns.Count; i++)
+                      {
+                          allCol.Add(string.Format("'{0}'", dt.Columns[i].Caption));
+                      }
+                      IList<string> allSeries = new List<string>();
+                      for (var i = 0; i < dt.Rows.Count; i++)
+                      {
+                          IList<string> allData = new List<string>();
+                          for (var x = 1; x < dt.Columns.Count; x++)
+                          {
+                              if (dt.Rows[i][x] == null || dt.Rows[i][x] == DBNull.Value)
+                              {
+                                  allData.Add("0");
+                              }
+                              else
+                              {
+                                  allData.Add(dt.Rows[i][x].ToString());
+                              }
+                          }
+                          if (dt.Columns.Count > 2)
+                          {
+                              allSeries.Add(string.Format("{{name: '{0}',data: [{1}],pointPlacement: 'on'}}", dt.Rows[i]["LABEL"], string.Join(",", allData)));
+                          }
+                      }
+                      <text>
+              xAxis: {
+                  title: {
+                      text:(allP.polar!=null && allP.polar)?'':allP.xAxisName 
+                  },
+                  categories: [@MvcHtmlString.Create(string.Join(",", allCol))],
+                  tickmarkPlacement: 'on',
+                  lineWidth: 0
+              },
+              series: [
+                          @MvcHtmlString.Create(string.Join(",", allSeries))
+              ]
+              </text>
+                      break;
+                  case "SingleSeries":
+                      var allDataSs = new List<string>();
+                      for (var i = 0; i < dt.Rows.Count; i++)
+                      {
+
+                          if (dt.Columns.Count > 1)
+                          {
+                              if (dt.Rows[i][1] == null || dt.Rows[i][1] == DBNull.Value)
+                              {
+                                  dt.Rows[i][1] = 0;
+                              }
+                              if (dt.Rows[i]["LABEL"] != DBNull.Value && dt.Rows[i]["LABEL"] != null && dt.Rows[i]["LABEL"].ToString() != "合计")
+                              {
+                              allDataSs.Add(string.Format("['{0}',{1}]", dt.Rows[i]["LABEL"], dt.Rows[i]["VALUE"]));
+                              }
+                          }
+                      }
+                  <text>
+              plotOptions: {
+              pie: {
+                          allowPointSelect: true,
+                          cursor: 'pointer',
+                          dataLabels: {
+                      enabled: true,
+                      format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                          }
+              }
+              },
+            xAxis: {
+                type: 'category'
+            },
+          series: [{
+              name: allP.yAxisName,
+              data: [@MvcHtmlString.Create(string.Join(",", allDataSs))]
+          }]
+          </text>
+                      break;
+              }
+
+
+
+      });
+    });
+
+
+
+</script>
+<body>
+    @Html.HiddenFor(x => x.CODE)
+    <div id="container" style="width: 100%; height: 100%"></div>
+</body>
+</html>

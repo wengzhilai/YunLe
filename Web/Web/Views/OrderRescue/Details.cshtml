@@ -1,0 +1,373 @@
+
+@model ProInterface.Models.YlOrderRescue
+@{
+    ViewBag.Title = "编辑救援和保养";
+}
+
+<style>
+    .col-md-6, .col-md-12 {
+        padding: 1px;
+        float: left;
+    }
+
+    .form-control[readonly] {
+        cursor: not-allowed;
+        background-color: #fff;
+    }
+</style>
+<link href="~/Scripts/datetimepicker/jquery.datetimepicker.css" rel="stylesheet" />
+<script type="text/javascript" src="~/Scripts/datetimepicker/jquery.datetimepicker.js"></script>
+<script type="text/javascript" src="~/Scripts/ajaxfileupload.js"></script>
+
+<div id="myPnl" style="display:none"></div>
+@using (Ajax.BeginForm(new AjaxOptions
+{
+    UpdateTargetId = "myPnl",
+    Confirm = "确定要提交吗",
+    OnBegin = "OnBegin",
+    OnSuccess = "OnSuccess",
+    OnFailure = "OnFailure",
+    OnComplete = "OnComplete"
+}))
+{
+    @Html.HiddenFor(m => m.ID)
+    <table style="table-layout:fixed;width:100%">
+        <tr>
+            <td>
+                <fieldset>
+                    <legend>基本信息</legend>
+                    <div class="col-md-6">
+                        <div class="input-group" style="width: 100%;">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.ClientName)</span>
+                            <div class="form-control">
+                                @Html.DisplayFor(m => m.ClientName)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group" style="width: 100%;">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.ClientPhone)</span>
+                            <div class="form-control">
+                                @Html.DisplayFor(m => m.ClientPhone)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group" style="width: 100%;">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.ORDER_NO)</span>
+                            <div class="form-control">
+                                @Html.DisplayFor(m => m.ORDER_NO)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group" style="width: 100%;">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.PAY_STATUS)</span>
+                            <div class="form-control">
+                                @Html.DisplayFor(m => m.PAY_STATUS)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group" style="width: 100%;">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.APPRAISE_SCORE)</span>
+                            <div class="form-control">
+                                @Html.DisplayFor(m => m.APPRAISE_SCORE)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group" style="width: 100%;">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.APPRAISE_CONTENT)</span>
+                            <div class="form-control">
+                                @Html.DisplayFor(m => m.APPRAISE_CONTENT)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group" style="width: 100%;">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.COST)</span>
+                            <div class="form-control">
+                                @Html.TextBoxFor(m => m.COST, new { @class = "easyui-numberbox", precision = "2" })
+                                @Html.ValidationMessageFor(m => m.COST)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group" style="width: 100%;">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.GarageName)</span>
+                            <div class="form-control">
+                                @Html.DisplayFor(m => m.GarageName)
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="input-group" style="width: 100%;">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.GARAGE_TYPE)</span>
+                            @Html.MyDropDownListFor(m => m.GARAGE_TYPE,
+                       new[] {
+                           new SelectListItem { Value= "保养", Text= "保养" },
+                           new SelectListItem { Value= "维修", Text= "维修" },
+                           new SelectListItem { Value= "救援", Text= "救援" }
+                       }, new { @class = "form-control" })
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div class="input-group" style="width: 100%;">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.REACH_TYPE)</span>
+                            @Html.MyDropDownListFor(m => m.REACH_TYPE,
+                       new[] {
+                           new SelectListItem { Value= "预约", Text= "预约" },
+                           new SelectListItem { Value= "送店", Text= "送店" },
+                           new SelectListItem { Value= "接车", Text= "接车" }
+                       }, new { @class = "form-control" })
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="input-group" style="width: 100%;">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.REACH_TIME)</span>
+                            @Html.TextBoxFor(m => m.REACH_TIME, new { @class = "form-control form_datetime" })
+                            @Html.ValidationMessageFor(m => m.REACH_TIME)
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="input-group" style="width: 100%;">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.CLIENT_NAME)</span>
+                            @Html.TextBoxFor(m => m.CLIENT_NAME, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.CLIENT_NAME)
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div class="input-group" style="width: 100%;">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.CLIENT_PHONE)</span>
+                            @Html.TextBoxFor(m => m.CLIENT_PHONE, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.CLIENT_PHONE)
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div class="input-group" style="width: 100%;">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.PLATE_NUMBER)</span>
+                            @Html.TextBoxFor(m => m.PLATE_NUMBER, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.PLATE_NUMBER)
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div class="input-group" style="width: 100%;">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.CAR_TYPE)</span>
+                            @Html.TextBoxFor(m => m.CAR_TYPE, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.CAR_TYPE)
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div class="input-group" style="width: 100%;">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.BRAND)</span>
+                            @Html.TextBoxFor(m => m.BRAND, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.BRAND)
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div class="input-group" style="width: 100%;">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.MODEL)</span>
+                            @Html.TextBoxFor(m => m.MODEL, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.MODEL)
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div class="input-group" style="width: 100%;">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.STATUS)</span>
+                            @Html.MyDropDownListFor(m => m.STATUS,
+                       new[] {
+                           new SelectListItem { Value= "接单", Text= "接单" },
+                           new SelectListItem { Value= "领单", Text= "领单" },
+                           new SelectListItem { Value= "维修", Text= "维修" },
+                           new SelectListItem { Value= "待收车", Text= "待收车" },
+                           new SelectListItem { Value= "完成", Text= "完成" }
+                       }, new { @class = "form-control" })
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="input-group" style="width: 100%;">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.STAUTS_TIME)</span>
+                            @Html.TextBoxFor(m => m.STAUTS_TIME, new { @class = "form-control form_datetime" })
+                            @Html.ValidationMessageFor(m => m.STAUTS_TIME)
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group" style="width: 100%;">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.HITCH_TYPE)</span>
+                            @Html.TextBoxFor(m => m.HITCH_TYPE, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.HITCH_TYPE)
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group" style="width: 100%;">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.PICK_TIME)</span>
+                            @Html.TextBoxFor(m => m.PICK_TIME, new { @class = "form-control form_datetime" })
+                            @Html.ValidationMessageFor(m => m.PICK_TIME)
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group" style="width: 100%;">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.ADDRESS)</span>
+                            @Html.TextBoxFor(m => m.ADDRESS, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.ADDRESS)
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group" style="width: 100%;">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.OTHER_PHONE)</span>
+                            @Html.TextBoxFor(m => m.OTHER_PHONE, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.OTHER_PHONE)
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="input-group" style="width: 100%;">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.REMARK)</span>
+                            @Html.TextAreaFor(m => m.REMARK, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.REMARK)
+                        </div>
+                    </div>
+                </fieldset>
+                @if (this.Model != null)
+                {
+
+                <fieldset>
+                    <legend>流程信息 <button type="button" class="btn btn-primary btn-xs" onclick="DivEditDialog('~/OrderFlow/Details?orderId=@Model.ID', '添加流程', 600, 300,ReFlashMy)">添加流程</button>
+</legend>
+                    @for (var i = 0; i < Model.AllFlow.Count(); i++)
+                    {
+                        var t = Model.AllFlow[i];
+                        <div class="col-md-12">
+                            <div class="input-group" style="width: 100%;">
+                                <span class="input-group-addon" data-size="4">第@(i + 1)步</span>
+                                <div class="form-control">
+                                    <div class="col-md-3">
+                                        <div class="input-group" style="width: 100%;">
+                                            <span class="input-group-addon" data-size="4">名称</span>
+                                            <div class="form-control">
+                                                @t.SUBJECT
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="input-group" style="width: 100%;">
+                                            <span class="input-group-addon" data-size="4">费用</span>
+                                            <div class="form-control">
+                                                @t.COST
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="input-group" style="width: 100%;">
+                                            <span class="input-group-addon" data-size="4">状态</span>
+                                            <div class="form-control">
+                                                @t.STATUS
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="input-group" style="width: 100%;">
+                                            <span class="input-group-addon" data-size="4">详情</span>
+                                            <div class="form-control">
+                                                @t.BODY
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    }
+                </fieldset>
+
+                <fieldset>
+                    <legend>
+                        图片 
+                        <button type="button" class="btn btn-primary btn-xs" id="image2" onmousemove="MoveFilePic(this,event,'_FilePic')"><span class="glyphicon glyphicon-upload"></span>上传</button>
+                        <input id="_FilePic" name="_FilePic" type="file" onchange="ChangePic('idNoUrl', 'ID_NO_PIC_ID', '_FilePic', ReCallBack)" style="display: none">
+                        @Html.Hidden("idNoUrl")
+                        @Html.Hidden("ID_NO_PIC_ID")
+                        @Html.HiddenFor(m=>m.AllFilesStr)
+                    </legend>
+                    
+                        <div class="col-md-12">
+                            <div class="input-group" style="width: 100%;">
+                                <span class="input-group-addon" data-size="4">包含图片</span>
+                                <div class="form-control" id="allFileTmp">
+
+                                @for (var i = 0; i < Model.AllFiles.Count(); i++)
+                                {
+                                    var t = Model.AllFiles[i];
+                                    <img src="@Url.Content(t.URL)" width="500" height="600" />
+                                 }
+                                </div>
+                            </div>
+                        </div>
+
+
+                </fieldset>
+                }
+
+</td>
+        </tr>
+    </table>
+    <div style="text-align:center;padding:10px;display:none;">
+        <a class="easyui-linkbutton" data-options="iconCls:'icon-save'" onclick="onSubmit()">保存</a>
+        <a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" onclick="parent.CloseWin();">取消</a>
+        <input style="width: 60px; display:none; margin-right: 20px;" type="submit" value="保存" />
+    </div>
+}
+<script type="text/javascript" src="~/Scripts_Page/FunBase.js"></script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $(function () {
+            $('.form_datetime').datetimepicker({
+                timepicker: true,
+                step: 5,
+                format: 'Y-m-d H:i'
+            });
+        })
+        function ReFlashMy()
+        {
+            window.location.reload()
+        }
+        function ReCallBack(json)
+        {
+            var str = "<img src='" + json.URL.replace("~/", bootPATH) + "' width=\"500\" height=\"600\" />";
+            var jsonObject = JSON.parse($("#AllFilesStr").val())
+            jsonObject[jsonObject.length] = json;
+            $("#AllFilesStr").val(JSON.stringify(jsonObject))
+            alert($("#AllFilesStr").val());
+            $(str).appendTo("#allFileTmp");
+        }
+    </script>
+}

@@ -1,0 +1,77 @@
+﻿@model ProInterface.Models.LOGIN
+@{
+    ViewBag.Title = ProInterface.AppSet.SysName;
+     
+}
+<style>
+    .footer {
+        height: 22px;
+        width: 100%;
+        text-align: center;
+        font-size: 12px;
+        color: #808080;
+    }
+</style>
+
+<script type="text/javascript" src="~/Scripts_Page/FunBase.js"></script>
+<script type="text/javascript" src="~/Scripts_Page/login.js"></script>
+<script type="text/javascript" src="~/Scripts/jquery.cookie.js"></script> 
+<script type="text/javascript" src="~/Scripts/easyui/jquery.dialog.js"></script>
+@using (Ajax.BeginForm(new AjaxOptions
+{
+    UpdateTargetId = "myPnl",
+    OnBegin = "OnBegin",
+    OnSuccess = "OnSuccess",
+    OnFailure = "OnFailure",
+    OnComplete = "OnComplete"
+}))
+{
+    <div style="height: 30px">
+        @*<img style="margin: 30px 90px" src="~/Styles/Images/Login/logo.png" />*@
+    </div>
+    <div style="height: 541px; background: url(../Styles/Images/Login/main_back.jpg); background-repeat: repeat-x">
+        <div style="width: 974px; height: 541px; margin-left: 90px; margin-top: 0px; position: absolute; background: url(../Styles/Images/Login/back.png);">
+@if(ProInterface.AppSet.CityId==852)
+{
+<div style="height: 104px;"><a href="http://jubao.china.cn:13225/reportform.do" target="_blank"><img src="../Styles/Images/Login/fankong.png" /></a></div>
+}
+            <div style="width: 314px; height: 322px; margin-left: 750px; position: absolute; background: url(../Styles/Images/Login/loginDiv_@(ProInterface.AppSet.CityId).png);">
+                @Html.TextBoxFor(m => m.LOGIN_NAME, new { @class = "search-query", @style = "border-width: 0px; position: absolute; top: 67px; left: 64px", @placeholder = "请输入账号" })
+                @Html.ValidationMessageFor(m => m.LOGIN_NAME)
+                @Html.PasswordFor(m => m.PASSWORD, new { @class = "search-query", @style = "border-width: 0px; position: absolute; top: 130px; left: 64px", @placeholder = "请输入密码" })
+                @Html.ValidationMessageFor(m => m.PASSWORD)
+                <div style="border-width: 0px; position: absolute; top: 185px; left: 30px; width: 252px">
+                    <table style="width: 100%; left: 0px; color: #848585">
+                        <tr>
+                            <td>
+                                <input id="chkcookie" type="checkbox" />记住用户</td>
+                            <td align="right">
+                                <div id="repwd" onclick="DivOpen('~/Login/Repwd','找回密码',500,300)" class="btn-link">
+                                    忘记密码
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <input type="image" onclick="OnSubmit(this)" style="position: absolute; top: 224px; left: 26px;" src="~/Styles/Images/Login/loginBtn.png" />
+                <input type="submit" id="btnsubmit" style="display: none" />
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <span>技术支持：@ProInterface.AppSet.Support</span>&nbsp;&nbsp;&nbsp;<span>交流QQ群：327012338</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <span><a href="http://www.easyman.com.cn/" target="_blank">关于我们</a></span>&nbsp;&nbsp;|&nbsp;&nbsp;
+            <span><a href="javascript:void(0)">帮助中心</a></span>&nbsp;&nbsp;|&nbsp;&nbsp;
+            <span><a href="javascript:void(0)" onclick="SaveUrl()">收藏网址</a></span>
+        <div class="message">
+            <span>手机端安装包下载<a href="@Url.Content("~/coss.apk")">点击下载安装</a></span>
+            <span>提高您的效率，美化您的视觉，提升系统安全，我们推荐您使用Google浏览器，安装包已经准备好——<a href="@Url.Content("~/ChromeStandaloneSetup.exe")">点击下载安装</a></span>
+        </div>
+    </div>
+
+    <div style="clear: both;"></div>
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+

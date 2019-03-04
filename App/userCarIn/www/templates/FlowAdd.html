@@ -1,0 +1,30 @@
+<ion-modal-view>
+    <ion-header-bar class="bar bar-header bar-positive">
+        <h1 class="title">处理订单</h1>
+        <button class="button button-clear button-primary" ng-click="modal.hide()">关闭</button>
+    </ion-header-bar>
+    <ion-content class="padding">
+        <div class="list">
+            <label class="item item-input">
+                <span class="input-label">费用</span>
+                <input ng-model="bean.cost" type="number">
+            </label>
+            <label class="item item-input">
+                <span class="input-label">说明</span>
+                <input ng-model="bean.body" type="text">
+            </label>
+            <div class="item item-icon-left">
+                <div class="input-label" style="font-weight:bold;">
+                    <button class="button button-small button-calm" on-tap="func.AddImg()">上传照片</button>
+                </div>
+            </div>
+            <div class="item item-input" style="padding-left: 20px;line-height: 1">
+                <div ng-if="bean.AllFiles.length>0" ng-repeat="o in bean.AllFiles">
+                    <img src="{{o.URL|imgUrl}}" height="50px" width="50px" style="margin: 10px"
+                         data-id="{{o.ID}}" data-indexNo="{{o.indexNo}}" ng-click="func.upImg($event)"/>
+                </div>
+            </div>
+            <button class="button button-full button-positive" ng-click="func.createFlow(bean)">{{helpOrder.bean.NextButton}}</button>
+        </div>
+    </ion-content>
+</ion-modal-view>

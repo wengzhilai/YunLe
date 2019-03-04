@@ -1,0 +1,68 @@
+<ion-view view-title="定单详情" hide-back-button="true">
+    <ion-nav-buttons side="left">
+        <button class="button button-icon icon ion-ios-arrow-back light" ng-click="$ionicGoBack()"></button>
+    </ion-nav-buttons>
+
+    <ion-content class="has-header">
+        <div class="list" style="margin-top: 10px;margin-bottom: 10px;">
+            <div class="item item-icon-left">
+                <i class="icon ion-ios-list-outline" style="font-size:20px;font-weight:bold;margin-left: -15px;max-width: 15px;"></i>
+                <div class="input-label" style="margin-left: 20px;"><span style="font-weight:bold;">订单号：</span>{{followOrder.bean.ORDER_NO}}</div>
+            </div>
+
+        </div>
+        <div class="list">
+            <div class="item item-icon-left">
+                <i class="icon ion-grid" style="font-size:20px;margin-left: -15px;max-width: 15px;" ng-click="followOrder.showInsureSingle()"></i>
+                <div class="input-label" style="margin-left: 20px;font-weight:bold;">订单详情</div>
+            </div>
+            <div id="insureSingleDiv">
+                <div class="list" style="margin-bottom: 10px;">
+                    <label class="item item-input" style="padding-left: 20px;line-height: 1">
+                        <div class="input-label" style="margin-left: 20px;"><span style="font-weight:bold;">定单日期：</span>{{followOrder.bean.CREATE_TIME|UnixNum| date:"yyyy-MM-dd HH:mm"}}</div>
+                    </label>
+                    <label class="item item-input" style="padding-left: 20px;line-height: 1">
+                        <div class="input-label" style="margin-left: 20px;"><span style="font-weight:bold;">定单类型：</span>{{followOrder.bean.ORDER_TYPE}}</div>
+                    </label>
+                    <label class="item item-input" style="padding-left: 20px;line-height: 1">
+                        <div class="input-label" style="margin-left: 20px;"><span style="font-weight:bold;">车牌号：</span>{{followOrder.bean.CarPlateNumber}}</div>
+                    </label>
+                    <label class="item item-input" style="padding-left: 20px;line-height: 1">
+                        <div class="input-label" style="margin-left: 20px;"><span style="font-weight:bold;">车主姓名：</span>{{followOrder.bean.ClientName}}</div>
+                    </label>
+                    <label class="item item-input" style="padding-left: 20px;line-height: 1">
+                        <div class="input-label" style="margin-left: 20px;"><span style="font-weight:bold;">车主联系电话：</span>{{followOrder.bean.ClientPhone}}</div>
+                    </label>
+                </div>
+            </div>
+            <div class="item item-icon-left">
+                <i class="icon ion-grid" style="font-size:20px;margin-left: -15px;max-width: 15px;"></i>
+                <div class="input-label" style="margin-left: 20px;font-weight:bold;">照片</div>
+            </div>
+            <div class="item item-input" style="padding-left: 20px;line-height: 1" >
+                <img src="{{o.idNoUrl|imgUrl}}"  height="50px" width="50px" style="margin: 10px" />
+                <img src="{{o.driverPicUrl|imgUrl}}"  height="50px" width="50px" style="margin: 10px" />
+                <img src="{{o.DrivingPicUrl|imgUrl}}"  height="50px" width="50px" style="margin: 10px" />
+            </div>
+            <div ng-if="followOrder.bean.AllFiles.length>0">
+                <div class="item item-icon-left">
+                    <i class="icon ion-grid" style="font-size:20px;margin-left: -15px;max-width: 15px;"></i>
+                    <div class="input-label" style="margin-left: 20px;font-weight:bold;">附件</div>
+                </div>
+                <div class="item item-input"  ng-repeat="o in followOrder.bean.AllFiles" style="padding-left: 20px;line-height: 1" >
+                    <a href="{{o.URL|imgUrl}}">{{o.NAME}}</a>
+                </div>
+            </div>
+            <div ng-repeat="o in followOrder.bean.AllFlow" ng-if="followOrder.bean.AllFlow.length!=0">
+                <div class="item item-thumbnail-left" style="min-height: 0px;">
+                    <img style="top: 0px;width: 30px;margin: 0px;" src="img/follow1.png">
+                    <div style="margin-left: 40px;margin-top: 10px;">
+                        <span style="font-size: 14px">{{o.BODY}}</span>
+                        <p style="font-size: 12px">{{o.STATUS_TIME|UnixNum| date:"yyyy-MM-dd h:mma"}}</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </ion-content>
+</ion-view>

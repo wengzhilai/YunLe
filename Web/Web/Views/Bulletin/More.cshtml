@@ -1,0 +1,86 @@
+﻿@model ProInterface.Models.TBulletin
+@{
+    ViewBag.Title = "More";
+}
+<style type="text/css">
+    html, body {
+        height: 100%;
+    }
+</style>
+<div style="height:5px;line-height:5px"></div>
+<div id="toolbar">
+    <label style="font-size:13px;font-weight:100">公告类型：</label>@Html.DropDownListFor(m => m.TYPE_CODE, ViewData["TYPE_CODE"] as IList<SelectListItem>, new { @class = "filtrClass easyui-combobox" })&nbsp;
+    <label style="font-size:13px;font-weight:100">发布时间：</label>&nbsp;<input type="text" id="PublishTimeStart" name="PublishTimeStart" class = "filtrClass easyui-datebox"/>&nbsp;至<input type="text" id="PublishTimeEnd" name="PublishTimeEnd" class = "filtrClass easyui-datebox"/>&nbsp;
+    <label style="font-size:13px;font-weight:100">发布人：</label>&nbsp;<input type="text" id="Publisher" name="Publisher" class = "filtrClass easyui-textbox"/>&nbsp;
+     <label style="font-size:13px;font-weight:100">标题：</label>&nbsp;<input type="text" id="Title" name="Title" class = "filtrClass easyui-textbox"/>&nbsp;
+    &nbsp;<a type="button" class="btn btn-default btn-xs" onclick="seart()">查询</a></div>
+
+
+<table id="dg" style="height:100%" data-options="
+    pageSize:10,
+    rownumbers: false,
+    pagination: true,
+    fitColumns: true,
+    toolbar:'#toolbar',
+    showHeader: false,
+    nowrap: false,
+    singleSelect:true
+    ">
+    <thead>
+        <tr>
+            <th field="TITLE" width="80" sortable="false" data-options="
+                formatter: FormatV">
+            </th>
+        </tr>
+    </thead>
+</table>
+<script type="text/javascript" src="~/Scripts_Page/FunBase.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $('#dg').datagrid({
+            url: '../Query/QueryList',
+            queryParams: {
+                AllParaStr: $("#AllPara").val(),
+                Code: 'bulletin',
+                WhereStr: '[{"ObjFiled":"IS_SHOW","OpType":"=","Value":"1","FieldType":"System.Int"}]'
+            }
+        })
+    })
+    function FormatV(value,row,index)
+    {
+        var reStr="";
+        reStr+='<li class="list-group-item" style="font-size: 12px; border: 0;">';
+        reStr+='    <span class="badge" style="background-color: #ff6a00; font-size: 12px; padding: 2px 5px">NEW</span>';
+        reStr += '    <a style="color:red" href="javascript:DivOpenThis(' + row.ID + ')">' + value + '</a><span style="color: #bdbdbd">(' + row.TYPE_CODE + ')</span>';
+        reStr+='    <br>';
+        reStr += '    <span style="color: #bdbdbd">' + row.PUBLISHER + '(' + row.ISSUE_DATE + ')</span>';
+        reStr+='</li>';
+        return reStr;
+    }
+    function DivOpenThis(id,title)
+    {
+        DivOpen("~/Bulletin/Look?id=" + id, title, 0, 0);
+    }
+    function seart()
+    {
+        var TypeCode = $("#TYPE_CODE").combobox('getValue');
+        var PublishTimeStart = $("#PublishTimeStart").datebox("getValue");
+        var PublishTimeEnd = $("#PublishTimeEnd").datebox("getValue");
+        var Publisher = $("#Publisher").val();
+        var Title = $("#Title").val();
+        $('#dg').datagrid({
+            url: '../Bulletin/QueryList',
+            queryParams: {
+                AllParaStr: $("#AllPara").val(),
+                Code: 'bulletin',
+               // WhereStr: '[{"ObjFiled":"IS_SHOW","OpType":"=","Value":"1","FieldType":"System.Int"},{"ObjFiled":"TYPE_CODE","OpType":"=","Value":TypeCode,"FieldType":"System.Int"},{"ObjFiled":"CREATE_TIME","OpType":"=","Value":"PublishTime","FieldType":"System.DateTime"},{"ObjFiled":"PUBLISHER","OpType":"like","Value":"Publisher","FieldType":"System.String"}]',
+          
+                TypeCode: TypeCode,
+                PublishTimeStart: PublishTimeStart,
+                PublishTimeEnd:PublishTimeEnd,
+                Publisher: Publisher,
+                Title: Title
+            }
+        })
+    }
+</script>

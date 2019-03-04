@@ -1,0 +1,37 @@
+<ion-view view-title="维修站详情" hide-back-button="true">
+  <ion-nav-buttons side="left">
+    <button class="button button-icon icon ion-ios-arrow-back light" ng-click="$ionicGoBack()"></button>
+  </ion-nav-buttons>
+  <ion-nav-buttons side="right">
+    <!--<button class="button button-clear" ng-click="garage.getInsure()">-->
+      <!--<img src="img/carInfo-h-right.png" width="25px" height="25px"/>-->
+    <!--</button>-->
+  </ion-nav-buttons>
+  <ion-content class="has-header">
+    <div class="list" style="margin-top: 10px;">
+      <label class="item item-input" style="padding-left: 20px;line-height: 1">
+        <span class="input-label" style="width:20%;font-weight:bold">名称</span>
+        <span class="input-label">{{garage.bean.NAME}}</span>
+      </label>
+      <label class="item item-input" style="padding-left: 20px;line-height: 1">
+        <span class="input-label" style="width:20%;font-weight:bold">地点</span>
+
+        <span class="input-label" >{{garage.bean.ADDRESS}}</span>
+      </label>
+      <label class="item item-input" style="padding-left: 20px;line-height: 1">
+        <span class="input-label" style="width:20%;font-weight:bold">联系电话</span>
+        <span class="input-label" >{{garage.bean.PHONE}}</span>
+      </label>
+      <label class="item item-input" style="padding-left: 20px;line-height: 1">
+        <span class="input-label" style="width:20%;font-weight:bold">备注</span>
+        <span class="input-label" >{{garage.bean.REMARK}}</span>
+      </label>
+      <label class="item item-input" style="padding-left: 20px;line-height: 1">
+        <img name="iconURL" src="{{user.bean.picIdUrl|imgUrl}}" height="60px"
+             width="60px" alt="请点击上传" style="margin: 10px" ng-click="user.showBigImage($event)"
+            />
+      </label>
+
+    </div>
+  </ion-content>
+</ion-view>

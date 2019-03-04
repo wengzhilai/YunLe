@@ -1,0 +1,119 @@
+@model ProInterface.Models.CI_USER_NOTE
+@{
+    ViewBag.Title = "编辑用户笔记";
+}
+<link href="~/Scripts/datetimepicker/jquery.datetimepicker.css" rel="stylesheet" />
+<script type="text/javascript" src="~/Scripts/datetimepicker/jquery.datetimepicker.js"></script>
+<div id="myPnl" style="display: none"></div>
+@using (Ajax.BeginForm(new AjaxOptions
+{
+    UpdateTargetId = "myPnl",
+    Confirm = "确定要提交吗",
+    OnBegin = "OnBegin",
+    OnSuccess = "OnSuccess",
+    OnFailure = "OnFailure",
+    OnComplete = "OnComplete"
+}))
+{
+    @Html.HiddenFor(m => m.ID)
+    <table style="table-layout: fixed; width: 100%">
+        @if(string.IsNullOrEmpty(Request["type"]))
+        {
+        <tr>
+            <td>
+                <div class="input-group" style="width: 100%;">
+                    <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.TYPE)</span>
+                    @Html.TextBoxFor(m => m.TYPE, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.TYPE)
+                </div>
+            </td>
+        </tr>
+        }
+        else
+        {
+            Html.Hidden("TYPE", Request["type"]);
+        }
+        @if(string.IsNullOrEmpty(Request["key"]))
+        {
+        <tr>
+            <td>
+                <div class="input-group" style="width: 100%;">
+                    <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.KEY)</span>
+                    
+
+                    @Html.TextBoxFor(m => m.KEY, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.KEY)
+                </div>
+            </td>
+        </tr>
+        }
+        else
+        {
+            Html.Hidden("KEY", Request["key"]);
+        } 
+        @if (string.IsNullOrEmpty(Request["be_month"]))
+        {
+        <tr>
+            <td>
+                <div class="input-group" style="width: 100%;">
+                    <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.BE_MONTH)</span>
+                    @Html.TextBoxFor(m => m.BE_MONTH, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.BE_MONTH)
+                </div>
+            </td>
+        </tr>
+        }
+        else
+        {
+            Html.Hidden("BE_MONTH", Request["be_month"]);
+        } 
+        <tr>
+            <td>
+                <div class="input-group" style="width: 100%;">
+                    <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.ADD_TIME)</span>
+                    @Html.MyDateTimeFor(m => m.ADD_TIME, new { @class = "form-control form_datetime" })
+                    @Html.ValidationMessageFor(m => m.ADD_TIME)
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="input-group" style="width: 100%;">
+                    <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.NOTE)</span>
+                    <select class = "form-control" onchange="$('#NOTE').val($(this).val());if($(this).val()!='其它'){$('#NOTE').hide();}else {$('#NOTE').show()}">
+                        <option>换卡告知</option>
+                        <option>畅玩包办理</option>
+                        <option>LTE功能打开</option>
+                        <option>LTE功能打开</option>
+                        <option>4G主资费推广</option>
+                        <option>流量套餐推广</option>
+                        <option>应用推广</option>
+                        <option>其它</option>
+                    </select>
+                    @Html.TextBoxFor(m => m.NOTE, new { @class = "form-control",@style="display:none" })
+                    @Html.ValidationMessageFor(m => m.NOTE)
+                </div>
+            </td>
+        </tr>
+
+    </table>
+    <div style="text-align: center; padding: 10px; display: none;">
+        <a class="easyui-linkbutton" data-options="iconCls:'icon-save'" onclick="onSubmit()">保存</a>
+        <a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" onclick="parent.CloseWin();">取消</a>
+        <input style="width: 60px; display: none; margin-right: 20px;" type="submit" value="保存" />
+    </div> 
+}
+<script type="text/javascript" src="~/Scripts_Page/FunBase.js"></script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+
+        $(function () {
+            $('.form_datetime').datetimepicker({
+                step: 5,
+                format: 'Y-m-d H:i'
+            });
+        })
+     </script>
+}

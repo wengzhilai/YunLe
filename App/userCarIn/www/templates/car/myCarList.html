@@ -1,0 +1,31 @@
+<ion-view view-title="我的爱车" hide-back-button="true" ng-init="carList.loadMore()">
+    <ion-nav-buttons side="left">
+        <button class="button button-icon icon ion-ios-arrow-back light" ui-sref="home({reload: true})"></button>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+        <button class="button button-icon icon  ion-ios-plus-empty light" ng-click="carList.addCar()"></button>
+    </ion-nav-buttons>
+    <ion-content class="has-header" style="background-color: #f0f0f0"    >
+        <ion-refresher pulling-text="下拉刷新" on-refresh="carList.doRefresh()"></ion-refresher>
+        <div collection-repeat="o in carList.lists.data">
+            <div class="list light-bg" style="margin-top: 10px;">
+                <a class="item item-thumbnail-left" on-tap="carList.toEditCar(o)" on-hold="carList.showSDD(o.ID)">
+                    <img src="{{o.DrivingPicUrl|imgUrl}}">
+                    <div class="carlist-div">
+                        <div>品牌： {{o.BRAND}}</div>
+                        <div>车牌： {{o.PLATE_NUMBER}}</div>
+                        <div>有无过户： {{o.TRANSFER_DATA|toBool:2}}</div>
+                    </div>
+                </a>
+            </div>
+            <div style="background-color: #f0f0f0;height:1px;margin-top: -10px;margin-bottom: -10px"></div>
+        </div>
+        <ion-infinite-scroll ng-if="carList.hasNextPage()||carList.bean.currentPage >1"
+                             on-infinite="carList.loadMore()"
+                             distance="1%">
+        </ion-infinite-scroll>
+    </ion-content>
+    <div class="bar bar-footer bar-balanced">
+        <div class="title">注：长按删除或设置默认车辆</div>
+    </div>
+</ion-view>

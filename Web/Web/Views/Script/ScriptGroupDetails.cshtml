@@ -1,0 +1,144 @@
+@model ProInterface.Models.FaScriptGroup
+@{
+    ViewBag.Title = "任务组管理";
+}
+
+<div id="myPnl" style="display: none"></div>
+@using (Ajax.BeginForm(new AjaxOptions
+{
+    UpdateTargetId = "myPnl",
+    Confirm = "确定要提交吗",
+    OnBegin = "OnBegin",
+    OnSuccess = "OnSuccess",
+    OnFailure = "OnFailure",
+    OnComplete = "OnComplete"
+}))
+{
+    <link href="~/Scripts/dist/css/bootstrap.css" rel="stylesheet" />
+    <script src="~/Scripts/dist/js/bootstrap.js"></script>
+    <script src="~/Scripts_Page/SetTitleWidth.js"></script>
+    @Html.HiddenFor(m => m.ID)
+    <div class="boot-panel boot-panel-default  boot-panel-success">
+        <div class="boot-panel-heading">任务组编辑</div>
+        <div class="boot-panel-body">
+
+            <div class="input-group input-group-sm" style="padding-top: 10px;">
+                <span class="input-group-addon" data-size="5">@Html.LabelFor(m => m.NAME)</span>
+                @Html.TextBoxFor(m => m.NAME, new { @class = "form-control", @placeholder = "名称" })
+                @Html.ValidationMessageFor(m => m.NAME)
+            </div>
+
+            <div class="input-group input-group-sm" style="padding-top: 10px;">
+                <span class="input-group-addon" data-size="5">@Html.LabelFor(m => m.SERVICE_FLAG)</span>
+                @Html.DropDownListFor(m => m.SERVICE_FLAG, new List<SelectListItem>(){
+    new SelectListItem{ Value="MONTHLY07", Text="MONTHLY07(川北月结)" },
+    new SelectListItem{ Value="MONTHLY06", Text="MONTHLY06(川南月结)" },
+    new SelectListItem{ Value="REALTIME07", Text="REALTIME07(川北实时)" },
+    new SelectListItem{ Value="REALTIME06", Text="REALTIME06(川南实时)" },
+    new SelectListItem{ Value="RCREALTIME07", Text="RCREALTIME07(川北实时重采)" },
+    new SelectListItem{ Value="RCREALTIME06", Text="RCREALTIME06(川南实时重采)" }
+   }, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.SERVICE_FLAG)
+            </div>
+
+
+
+            <div class="input-group input-group-sm" style="padding-top: 10px;">
+                <span class="input-group-addon" data-size="5">@Html.LabelFor(m => m.RUN_WHEN)</span>
+                <div class="form-control">
+                    <div class="form-inline" role="form">
+                        <div class="form-group">
+                            <label class="sr-only"></label>
+                            <select id="droprunwhen" onchange="GetRunWhenChange(this)" class="form-control">
+                                <option value="" selected="selected">常用执行时间表达式</option>
+                                <option value="0 0 15 * * ?">每天下午三点执行</option>
+                                <option value="0 0 15 ? * MON">每周一下午三点执行</option>
+                                <option value="0 0 15 30,31 1-12 ?">每月30号31号下午3点执行一次</option>
+                                <option value="0/15 0/30 * * * ?">在半点每15秒执行一次</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only"></label>
+                            @Html.TextBoxFor(m => m.RUN_WHEN, new { @class = "form-control", @placeholder = "时间可在空，单格式错误时任务不能执行" })
+                            @Html.ValidationMessageFor(m => m.RUN_WHEN)
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-group input-group-sm" style="padding-top: 10px;">
+                <span class="input-group-addon" data-size="5">@Html.LabelFor(m => m.RUN_ARGS)</span>
+                @Html.TextBoxFor(m => m.RUN_ARGS, new { @class = "form-control", @placeholder = "任务组参数" })
+                @Html.ValidationMessageFor(m => m.RUN_ARGS)
+            </div>
+
+
+
+            <div class="input-group input-group-sm" style="padding-top: 10px;">
+                <span class="input-group-addon" data-size="5">@Html.LabelFor(m => m.RUN_ORDER)</span>
+                @Html.TextBoxFor(m => m.RUN_ORDER, new { @class = "form-control", @placeholder = "顺序（数字）" })
+                @Html.ValidationMessageFor(m => m.RUN_ORDER)
+            </div>
+
+            <div class="input-group input-group-sm" style="padding-top: 10px;">
+                <span class="input-group-addon" data-size="5">@Html.LabelFor(m => m.RUN_PARALLEL)</span>
+                <div class="form-control">
+                    @Html.RadioBoxListFor(m => m.RUN_PARALLEL, new List<SelectListItem>() { 
+            new SelectListItem{ Value="1", Text="是",Selected=true},
+            new SelectListItem{ Value="0",Text="否"}
+           })
+                    @Html.ValidationMessageFor(m => m.RUN_PARALLEL)
+                </div>
+            </div>
+
+            <div class="input-group input-group-sm" style="padding-top: 10px;">
+                <span class="input-group-addon" data-size="5">@Html.LabelFor(m => m.CASCADE_MODE)</span>
+                <div class="form-control">
+                    @Html.RadioBoxListFor(m => m.CASCADE_MODE, new List<SelectListItem>() { 
+            new SelectListItem{ Value="1", Text="是"},
+            new SelectListItem{ Value="0",Text="否",Selected=true}
+           })
+                    @Html.ValidationMessageFor(m => m.CASCADE_MODE)
+                </div>
+            </div>
+            <div class="input-group input-group-sm" style="padding-top: 10px;">
+                <span class="input-group-addon" data-size="5">@Html.LabelFor(m => m.CASCADE_GROUP_ID)</span>
+                @if (Model.CascadeGroupList != null)
+                {
+                    @Html.DropDownListFor(m => m.CASCADE_GROUP_ID, Model.CascadeGroupList, new { @class = "form-control" })
+        
+                    @Html.ValidationMessageFor(m => m.CASCADE_GROUP_ID)
+                }
+                else
+                {
+                    <select class="form-control">
+                        <option selected="selected">暂无数据</option>
+                    </select>
+                }
+            </div>
+        </div>
+        <div style="text-align: center; padding: 10px;">
+            <button onclick="onSubmit()" style="width: 180px;" type="button" class="btn btn-success btn-sm">
+                <span class="glyphicon glyphicon-floppy-disk"></span>&nbsp;&nbsp;保&nbsp;&nbsp;&nbsp;&nbsp;存
+            </button>
+            <a  href="@Url.Content("~/Script/ShowScriptGroup?id="+Model.ID)" style="width: 180px;" type="button" class="btn btn-success btn-sm">
+                <span class="glyphicon glyphicon-floppy-disk"></span>&nbsp;&nbsp;取&nbsp;&nbsp;&nbsp;&nbsp;消
+            </a>
+            <input style="width: 60px; display: none; margin-right: 20px;" type="submit" value="保存" />
+        </div>
+    </div>
+    <input type="hidden" id="flagstate" value="@Model.SERVICE_FLAG" />
+}
+<script type="text/javascript" src="~/Scripts_Page/FunBase.js"></script>
+<script type="text/javascript">
+   
+    function GetRunWhenChange(obj) {
+        var val = $(obj).val();
+        $("#RUN_WHEN").val(val);
+    }
+</script>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+}

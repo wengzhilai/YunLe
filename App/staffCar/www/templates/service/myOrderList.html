@@ -1,0 +1,44 @@
+<ion-view hide-back-button="true">
+    <ion-nav-title>我的订单</ion-nav-title>
+    <ion-nav-buttons side="left">
+        <button class="button button-icon icon ion-ios-arrow-back light" ui-sref="user"></button>
+    </ion-nav-buttons>
+
+       <ion-nav-buttons side="right">
+
+        <button class="button button-icon icon ion-funnel light" ng-click="orderList.showFilter()"></button>
+    </ion-nav-buttons>
+
+    <div class="bar  bar-subheader" style="padding-left: 30px;line-height: 30px;background-color: #fe8900;color: #fff">
+        {{orderList.sumTitle}}
+    </div>
+
+    <ion-content class="has-header has-subheader" style="background-color: #f0f0f0">
+
+     <ion-refresher pulling-text="下拉刷新" on-refresh="orderList.doRefresh()"></ion-refresher>
+
+     <div class="list" style="margin-top: 10px;" collection-repeat="o in orderList.lists.data">
+            <div class="row light-bg" style="height: 40px;">
+              <div class="col col-20 assertive h4" style="padding-left: 10px;text-align:center;margin: auto;">
+                  {{o.COST| currency:'￥'}}</div>
+               <div class="col col-offset-60" style="padding-top: 5px;font-size: 13px;">
+                  <button class="button-clear" style="float: right;">{{o.CREATE_TIME|UnixNum| date:"yyyy-MM-dd h:mma"}}</button>
+               </div>
+          </div>
+
+    <div class="item" >
+        <p style="font-size: 13px;padding-left: 10px">订单号： {{o.ORDER_NO}}</p>
+        <p style="font-size: 13px;padding-left: 10px">客户姓名： {{o.ClientName}}</p>
+        <p style="font-size: 13px;padding-left: 10px"> 订单类型： {{o.ORDER_TYPE}}</p>
+        <span class="badge assertive-bg light" style="margin-top: 30px">{{o.STATUS}}</span>
+    </div>
+    <div style="background-color: #f0f0f0;height:10px"></div>
+   </div>
+
+        <ion-infinite-scroll ng-if="orderList.hasNextPage()"
+                on-infinite="orderList.loadMore()"
+                distance="1%">
+        </ion-infinite-scroll>
+
+    </ion-content>
+</ion-view>

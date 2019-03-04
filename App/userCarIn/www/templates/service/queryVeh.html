@@ -1,0 +1,30 @@
+<ion-view view-title="违章查询" hide-back-button="true">
+  <ion-nav-buttons side="left">
+    <button class="button button-icon icon ion-ios-arrow-back light" ui-sref="home"></button>
+  </ion-nav-buttons>
+  <ion-content class="has-header">
+    <div class="list" style="margin-top: 30px">
+      <div class="item item-icon-left" style="padding-left: 65px;">
+        <i class="icon iconfont">&#xe65e;</i>
+        <input type="text" ng-model="queryVeh.Peccancy.IdNo" placeholder="请输入身份证号">
+      </div>
+      <div class="item item-icon-left" style="padding-left: 65px;" ng-show="queryVeh.Peccancy.Images.length>0">
+        <i class="icon iconfont">&#xe617;</i>
+        <input type="text" ng-model="queryVeh.Peccancy.PicCode" placeholder="请输入图片验证码">
+        <i class="badge assertive button" style="float: right;"><img height="30px" width="100px" src="{{queryVeh.Peccancy.Images|imgUrl}}"/></i>
+      </div>
+      <div class="item item-icon-left" style="padding-left: 65px;">
+        <i class="icon iconfont">&#xe647;</i>
+        <input type="text" ng-model="queryVeh.Peccancy.Code" placeholder="请输入短信验证码">
+        <i class="badge assertive-bg light button" id="sendCode" style="float: right;" ng-click="queryVeh.SendCode()"> 获取验证码</i>
+      </div>
+
+
+      <div class="button-div" ng-show="queryVeh.Peccancy.Code.length>0">
+        <button type="submit" class="button button-energized carIn-button" on-tap="queryVeh.onSubmit()">
+          下一步
+        </button>
+      </div>
+      </div>
+  </ion-content>
+</ion-view>

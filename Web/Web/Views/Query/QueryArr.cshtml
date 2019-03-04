@@ -1,0 +1,27 @@
+﻿@{
+    ViewBag.Title = "QueryArr";
+}
+
+@foreach (var t in Request["code"].Split(','))
+{
+     <div>
+         <iframe id="Query_@t" src="~/Query/Query?code=@t&simple=1" style="width:100%" onLoad="iFrameHeight(this)"></iframe>
+     </div>
+}
+<script type="text/javascript">
+    function iFrameHeight(obj) {
+
+        setTimeout(function () {
+
+            var id = $(obj).attr("id");
+            var ifm = document.getElementById(id);
+            var subWeb = ifm.contentDocument;
+
+            if (ifm != null && subWeb != null) {
+                alert(subWeb.body.scrollHeight);
+                ifm.height = subWeb.body.scrollHeight;
+                ifm.width = subWeb.body.scrollWidth;
+            }
+        }, 1000);
+    }
+</script>

@@ -1,0 +1,118 @@
+﻿@{
+    ViewBag.Title = "QdnImport";
+}
+
+
+@section HeadScripts {
+    <script type="text/javascript" src="~/Scripts/ajaxfileupload.js"></script>
+    <script type="text/javascript" src="~/Scripts_Page/FunBase.js"></script>
+
+}
+<div id="myPnl" style="display: none"></div>
+@using (Ajax.BeginForm(new AjaxOptions
+{
+    UpdateTargetId = "myPnl",
+    Confirm = "确定要提交吗",
+    OnBegin = "OnBegin",
+    OnSuccess = "OnSuccess",
+    OnFailure = "OnFailure",
+    OnComplete = "OnComplete"
+}))
+{
+    <table style="width: 100%">
+        <tr>
+            <td colspan="2">
+                <div class="input-group input-group-sm" style="width: 100%;">
+                    <span class="input-group-addon" data-size="5">
+                        选择EXCEL文件
+                    </span>
+                    <div class="form-control">
+                        <button type="button" class="btn btn-default btn-xs" onmousemove="MoveFilePic(this,event,'_Up_AllFiles')"><span class="glyphicon glyphicon-upload"></span>上传</button>
+                        <button type="button" class="btn btn-default btn-xs" id="down_Excel" onclick="WindowOpenByFileID($('#FILE_ID').val())"><span class="glyphicon glyphicon-download-alt"></span>下载</button>
+                        <input id="_Up_AllFiles" name="_Up_AllFiles" type="file" onchange="ChangeAllFiles()" style="display: none">
+                        @Html.TextBox("FILE_ID")
+                    </div>
+                </div>
+            </td>
+
+        </tr>
+        <tr>
+            <td colspan="2">
+                导入原理，根据渠道编号更新所有资料，如果渠道编号不在系统里存在，则增加
+                <a href="~/Content/ChannelInfo.xls">下载渠道资料模板</a>
+            </td>
+        </tr>
+    </table>
+    <div style="text-align: center; padding: 10px; display: none">
+        <a class="easyui-linkbutton" data-options="iconCls:'icon-save'" onclick="onSubmit()">保存</a>
+        <a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" onclick="parent.CloseWin();">取消</a>
+        <input style="width: 60px; display: none; margin-right: 20px;" type="submit" value="保存" />
+    </div>
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $(function () {
+
+        })
+
+        function ChangeAllFiles() {
+            OnBegin();
+            $.ajaxFileUpload
+            (
+                {
+                    url: '../Fun/FileUp', //用于文件上传的服务器端请求地址
+                    type: 'post',
+                    data: { nameType: '0', fileType: '*', dirPath: "~/UpFiles/Tmp/" },//nameType(命名方式):0表示随机文件名，1表示使用原文件名;fileType(文件类型):image、flash、media、file
+                    secureuri: false, //一般设置为false
+                    fileElementId: '_Up_AllFiles', //文件上传空间的id属性  <input type="file" id="file" name="file" />
+                    dataType: 'json', //返回值类型 一般设置为json
+                    success: function (data, status)  //服务器成功响应处理函数
+                    {
+                        OnComplete();
+                        if (data.Message == null) data.Message = "";
+                        data.Message = data.Message.replace('\r\n', '<br />')
+                        data.Message = data.Message.replace('\\r\\n', '<br />')
+                        if (data.IsError != null) {
+                            if (data.IsError) {
+                                divalert("失败", data.Message);
+                                return;
+                            }
+                            else {
+
+                                $.ajax({
+                                    url: bootPATH + "/Fun/AddFile?t=" + Math.random(),
+                                    dateType: "JSON",
+                                    data: {
+                                        name: data.Params.split('|')[1],
+                                        size: data.Params.split('|')[0],
+                                        savePath: data.Message,
+                                        remark: "上传投保文件"
+                                    },
+                                    success: function (data) {
+                                        $("#FILE_ID").val(data.ID);
+                                    },
+                                    error: function (data) {
+                                        alert('失败:' + data.responseText);
+                                    }
+                                });
+                                //divalert("成功", data.Message);
+                            }
+                        }
+                        else {
+                            divalert(data);
+                        }
+                    },
+                    error: function (data, status, e)//服务器响应失败处理函数
+                    {
+                        OnComplete();
+                        alert(data);
+                    }
+                }
+            )
+            return false;
+        }
+    </script>
+}
+
+

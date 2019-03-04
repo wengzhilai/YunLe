@@ -1,0 +1,337 @@
+﻿@{
+    ViewBag.Title = "Index1";
+
+}
+@section HeadScripts
+{
+    <style>
+        .float-left {
+            float: left;
+        }
+    </style>
+}
+@using (Ajax.BeginForm("CreateMenu1", "Menu", FormMethod.Post,new AjaxOptions
+{
+    UpdateTargetId = "myPnl",
+    Confirm = "确定要提交吗",
+    OnBegin = "OnBegin",
+    OnSuccess = "OnSuccess",
+    OnFailure = "OnFailure",
+    OnComplete = "OnComplete"
+}))
+{
+    <table>
+        <tr>
+            <td>
+
+
+    <div class="float-left">
+        <table>
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>第一列</th>
+                    <th>第二列</th>
+                    <th>第三列</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < 6; i++)
+                {
+                    var isRootMenu = i == 5;
+                    <tr id="@(isRootMenu ? "subMenuRow_" + i : "rootMenuRow")">
+                        <td>
+                            @(isRootMenu ? "一级菜单按钮" : ("二级菜单No." + (i + 1)))
+                        </td>
+                        @for (int j = 0; j < 3; j++)
+                        {
+                            var namePrefix = isRootMenu ? string.Format("menu.button[{0}]", j) : string.Format("menu.button[{0}].sub_button[{1}]", j, i);
+                            var idPrefix = isRootMenu ? string.Format("menu_button{0}", j) : string.Format("menu_button{0}_sub_button{1}", j, i);
+                            <td>
+                                <input type="hidden" name="@(namePrefix).key" id="@(idPrefix)_key"/>
+                                <input type="hidden" name="@(namePrefix).type" id="@(idPrefix)_type" value="click"/>
+                                <input type="hidden" name="@(namePrefix).url" id="@(idPrefix)_url" />
+                                <input type="text" name="@(namePrefix).name" id="@(idPrefix)_name" class="txtButton" data-i="@i" data-j="@j" @Html.Raw(isRootMenu ? string.Format(@"data-root=""{0}""", j) : "") />
+                            </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="float-left" id="buttonDetails">
+        <h3>按钮其他参数</h3>
+        <p>名称：<input type="text" id="buttonDetails_name" class="txtButton" disabled="disabled" /></p>
+        <p>
+            类型：
+                    <select id="buttonDetails_type" class="dllButtonDetails">
+                        <option value="click" selected="selected">点击事件（传回服务器）</option>
+                        <option value="view">访问网页（直接跳转）</option>
+                        <option value="content">内容</option>
+                    </select>
+        </p>
+        <p id="buttonDetails_key_area">
+            键值：<input id="buttonDetails_key" type="text" class="txtButtonDetails" />
+        </p>
+        <p id="buttonDetails_url_area">
+            连接：<input id="buttonDetails_url" type="text" class="txtButtonDetails" />
+        </p>
+        <p id="buttonDetails_editContent_area">
+            <input type="button" value="编辑内容" onclick="EditContent()" />
+        </p>
+        <p>
+            如果还有下级菜单请忽略Type和Key、Url。<br />
+        </p>
+    </div>
+    <div class="clear-fix"></div>
+                            </td>
+        </tr>
+    </table>
+    <div>
+        <p>
+            <input type="submit" value="更新到服务器" id="submitMenu" />
+        </p>
+        <p>
+            操作状态：<strong id="menuState">-</strong>
+        </p>
+    </div>
+    <p id="advContent" >
+        @Html.TextBox("token",ViewData["token"], new { style="width:100%"})
+        @Html.TextArea("menuJson", new { style="width:100%;height:100px"})
+    </p>
+
+}
+<script type="text/javascript" src="~/Scripts_Page/FunBase.js"></script>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+<script>
+    var nowUrl="";
+    var menuState;
+    var jsonObj = {
+        "menu":
+            {"button":
+                [
+                    {"sub_button":
+                        [
+                            {"key":"test1","type":"click","name":"测试1"},
+                            {"key":"test4","type":"click","name":"测试4"}
+                        ],"name":"栏目一"
+                    },
+                    {"sub_button":
+                            [
+                                {"key":"test2","type":"click","name":"测试2"},
+                                {"key":"test5","type":"click","name":"测试5"}
+                            ],"name":"栏目二"
+                    },
+                    {"sub_button":
+                        [
+                        {"key":"test3","type":"click","name":"测试3"},
+                        {"key":"test6","type":"click","name":"测试6"}
+                        ],"name":"栏目三"
+                    }
+                ]
+            }
+    };
+    $(function(){
+        jsonObj = @(MvcHtmlString.Create(ViewData["menuJson"].ToString()));
+        $("#menuJson").val(JSON.stringify(jsonObj));
+        $('#buttonDetails').hide();
+        menuState = $('#menuState');
+        if (jsonObj.menu) {
+            $(':input[id^=menu_button]:not([id$=_type])').val('');
+            $('#buttonDetails:input').val('');
+
+            var buttons = jsonObj.menu.button;
+            //此处i与j和页面中反转
+            for (var i = 0; i < buttons.length; i++) {
+                var button = buttons[i];
+                $('#menu_button' + i + '_name').val(button.name);
+                $('#menu_button' + i + '_key').val(button.key);
+                $('#menu_button' + i + '_type').val(button.type || 'click');
+                $('#menu_button' + i + '_url').val(button.url);
+
+                if (button.sub_button && button.sub_button.length > 0) {
+                    //二级菜单
+                    for (var j = 0; j < button.sub_button.length; j++) {
+                        var subButton = button.sub_button[j];
+                        var idPrefix = '#menu_button' + i + '_sub_button' + j;
+                        $(idPrefix + "_name").val(subButton.name);
+                        $(idPrefix + "_type").val(subButton.type || 'click');
+                        $(idPrefix + "_key").val(subButton.key);
+                        $(idPrefix + "_url").val(subButton.url);
+                    }
+                } else {
+                    //底部菜单
+                    //...
+                }
+            }
+            menuState.html('已完成');
+        } else {
+            menuState.html(json.error || '执行过程有错误，请检查！');
+        }
+
+        $("#buttonDetails_type").change(typeChanged);
+
+        function typeChanged() {
+            var val = $('#buttonDetails_type').val();
+            $("#buttonDetails_editContent_area").hide();
+            switch(val.toUpperCase())
+            {
+                case 'CLICK':
+                    $('#buttonDetails_key_area').slideDown(100);
+                    $('#buttonDetails_url_area').slideUp(100);
+                    break;
+                case 'VIEW':
+                    $('#buttonDetails_key_area').slideUp(100);
+                    $('#buttonDetails_url_area').slideDown(100);
+                    break;
+                case 'CONTENT':
+                    $('#buttonDetails_key_area').slideUp(100);
+                    $('#buttonDetails_url_area').hide();
+                    $("#buttonDetails_editContent_area").show();
+                    break;
+            }
+
+        }
+
+        $('.txtButton').blur(function () {
+            if($(this).val()=='')return;
+            if($(this).attr('data-root'))
+            {
+                if(jsonObj.menu.button[$(this).attr('data-root')]==null)
+                {
+                    jsonObj.menu.button[$(this).attr('data-root')]={"type":"click","name":$(this).val(),"key":"OneClick","sub_button":[]};
+                }
+                else
+                {
+                    jsonObj.menu.button[$(this).attr('data-root')].name=$(this).val();
+                }
+            }
+            else
+            {
+                if(jsonObj.menu.button[$(this).attr('data-j')].sub_button==null)
+                {
+                    jsonObj.menu.button[$(this).attr('data-j')].sub_button=[];
+                }
+                if(jsonObj.menu.button[$(this).attr('data-j')].sub_button[$(this).attr('data-i')]==null)
+                {
+                    jsonObj.menu.button[$(this).attr('data-j')].sub_button[$(this).attr('data-i')]={"key":"","type":"click","name":$(this).val()}
+                }
+                else
+                {
+                    jsonObj.menu.button[$(this).attr('data-j')].sub_button[$(this).attr('data-i')].name=$(this).val();
+                }
+            }
+            $("#menuJson").val(JSON.stringify(jsonObj));
+        });
+
+        $('.txtButton').click(function () {
+
+            $('#buttonDetails').show();
+            var idPrefix = $(this).attr('data-root')
+                            ? ('menu_button' + $(this).attr('data-root'))
+                            : ('menu_button' + $(this).attr('data-j') + '_sub_button' + $(this).attr('data-i'));
+
+            var keyId = idPrefix + "_key";
+            var nameId = idPrefix + "_name";
+            var typeId = idPrefix + "_type";
+            var urlId = idPrefix + "_url";
+
+
+
+            $('#buttonDetails_key').val($('#' + keyId).val());
+            $('#buttonDetails_name').val($('#' + nameId).val());
+            $('#buttonDetails_url').val($('#' + urlId).val());
+            if($('#buttonDetails_url').val().indexOf('LookByTitle')>0)
+            {
+                $('#buttonDetails_type').val('content');
+            }
+            else
+            {
+                $('#buttonDetails_type').val($('#' + typeId).val());
+            }
+
+            typeChanged();
+            var isRoot=true;
+            var root,i,j;
+            root=$(this).attr('data-root');
+            i=$(this).attr('data-i');
+            j=$(this).attr('data-j');
+
+            $('#buttonDetails_key').unbind('blur').blur(function () {
+                if(root)
+                {
+                    jsonObj.menu.button[root].key=$(this).val();
+                }
+                else
+                {
+                    jsonObj.menu.button[j].sub_button[i].key=$(this).val();
+                }
+                $("#menuJson").val(JSON.stringify(jsonObj));
+                $('#' + keyId).val($(this).val());
+            });
+
+            $('#buttonDetails_type').unbind('blur').blur(function () {
+
+                $("#buttonDetails_editContent_area").hide();
+                var tmpType=$(this).val();
+                
+
+                if(root)
+                {
+                    if(tmpType=="content")
+                    {
+                        tmpType='view';
+                        $("#buttonDetails_url").val(nowUrl+"/Bulletin/LookByTitle?title="+jsonObj.menu.button[root].name);
+                        jsonObj.menu.button[root].url=$("#buttonDetails_url").val();
+                        $("#buttonDetails_url").hide();
+                        $("#buttonDetails_editContent_area").show();
+                    }
+                    else{
+                        $("#buttonDetails_url").show();
+                    }
+                    jsonObj.menu.button[root].type=tmpType;
+                }
+                else
+                {
+                    if(tmpType=="content")
+                    {
+                        tmpType='view';
+                        $("#buttonDetails_url").val(nowUrl+"/Bulletin/LookByTitle?title="+jsonObj.menu.button[j].sub_button[i].name);
+                        jsonObj.menu.button[j].sub_button[i].url=$("#buttonDetails_url").val();
+                        $("#buttonDetails_url").hide();
+                        $("#buttonDetails_editContent_area").show();
+                    }
+                    else{
+                        $("#buttonDetails_url").show();
+                    }
+                    jsonObj.menu.button[j].sub_button[i].type=tmpType;
+                }
+                $("#menuJson").val(JSON.stringify(jsonObj));
+                $('#' + typeId).val($(this).val());
+            });
+
+            $('#buttonDetails_url').unbind('blur').blur(function () {
+                if(root)
+                {
+                    jsonObj.menu.button[root].url=$(this).val();
+                }
+                else
+                {
+                    jsonObj.menu.button[j].sub_button[i].url=$(this).val();
+                }
+                $("#menuJson").val(JSON.stringify(jsonObj));
+                $('#' + urlId).val($(this).val());
+            });
+        });
+
+    })
+
+    function EditContent()
+    {
+        var title=$("#buttonDetails_name").val();
+        DivOpen(bootPATH+"/Bulletin/EditByTitle?title="+encodeURI(title),'编辑公告'+title,0,0);
+    }
+
+</script>

@@ -1,0 +1,327 @@
+﻿@model ProInterface.Models.TTask
+@{
+    ViewBag.Title = "编辑任务";
+}
+<link href="~/Scripts/datetimepicker/jquery.datetimepicker.css" rel="stylesheet" />
+<script type="text/javascript" src="~/Scripts/datetimepicker/jquery.datetimepicker.js"></script>
+<link rel="stylesheet" href="~/Scripts/uploadify/uploadify.css">
+<script src="~/Scripts/uploadify/jquery.uploadify.js"></script>
+<link rel="stylesheet" href="../Scripts/kindeditor/themes/default/default.css" />
+<script charset="utf-8" src="../Scripts/kindeditor/kindeditor.js"></script>
+<script charset="utf-8" src="../Scripts/kindeditor/lang/zh_CN.js"></script>
+<style>
+    .col-md-6,.col-md-12 {
+        padding: 1px;
+    }
+    .form-control[readonly] {
+        cursor: not-allowed;
+        background-color: #fff;
+    }
+</style>
+<div id="myPnl" style="display: none"></div>
+@using (Ajax.BeginForm(new AjaxOptions
+{
+    UpdateTargetId = "myPnl",
+    Confirm = "确定要提交吗",
+    OnBegin = "OnBegin",
+    OnSuccess = "OnSuccess",
+    OnFailure = "OnFailure",
+    OnComplete = "OnComplete"
+}))
+{
+    @Html.HiddenFor(m => m.ID)
+    <table style="table-layout: fixed; width: 100%">
+        <tr>
+            <td style="width: 50%;" valign="top">
+                <div class="container-fluid">
+                    <div class="col-md-12">
+                        <div class="input-group" style="width: 100%;">
+                            <span class="input-group-addon" data-size="4" for="FLOW_ID">@Html.LabelFor(m => m.FLOW_ID)</span>
+                            @Html.MyDropDownListFor(m => m.FLOW_ID, ViewData["FLOW_ID"] as IList<SelectListItem>, new { @class = "form-control", onchange = "OnchangeFlow()" })
+                            @Html.ValidationMessageFor(m => m.FLOW_ID)
+                        </div>
+                    </div>
+                    @if (this.Model != null && this.Model.AllButton != null && this.Model.AllButton.Count()>0)
+                    {
+                    <div class="col-md-12">
+                        <div class="input-group" style="width: 100%;">
+                            <span class="input-group-addon" data-size="4">选择处理类型</span>
+                            @Html.MyDropDownListFor(m=>m.NowSubmitType, this.Model.AllButton.Select(x => new SelectListItem { Value=x,Text=x }).ToList(), new { @class = "form-control", onchange = "OnchangeFlow()" })
+                        </div>
+                    </div>
+                    }
+                    <div class="col-md-12">
+                        <div class="input-group" style="width: 100%;">
+                            <span class="input-group-addon" data-size="4">任务名称</span>
+                            @Html.TextBoxFor(m=>m.TASK_NAME,  new { @class = "form-control"})
+                        </div>
+                    </div>
+                    <div id="allContent">
+                        <div class="col-md-6">
+                            <div class="input-group" style="width: 100%;">
+                                <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.START_TIME)</span>
+                                @Html.MyDateTimeFor(m => m.START_TIME, new { @class = "form-control form_datetime", @readonly = "readonly" })
+                                @Html.ValidationMessageFor(m => m.TASK_NAME)
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="input-group" style="width: 100%;">
+                                <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.END_TIME)</span>
+                                @Html.MyDateTimeFor(m => m.END_TIME, new { @class = "form-control form_datetime", @readonly = "readonly" })
+                                @Html.ValidationMessageFor(m => m.TASK_NAME)
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-6">
+                            <div class="input-group" style="width: 100%;">
+                                <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.REMARK)</span>
+                                <div class="form-control">
+                                    @Html.TextAreaFor(m => m.REMARK, new { @style = "height:200px;width:100%" })
+                                    @Html.ValidationMessageFor(m => m.REMARK)
+                                </div>
+                            </div>
+                        </div>
+
+                        @if (Request.UserAgent.ToLower().IndexOf("iphone") == -1 && Request.UserAgent.ToLower().IndexOf("android") == -1)
+                        {
+                            <div class="col-md-6">
+                                <div class="input-group" style="width: 100%;">
+                                    <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.AllFilesStr)</span>
+                                    <div class="form-control">
+                                        <input type="file" name="uploadify" id="uploadify" />
+                                        @Html.HiddenFor(m => m.AllFilesStr)
+                                        <table id="dg_AllFiles" class="easyui-datagrid" style="width: 98%" data-options="rownumbers:true,fitColumns:true">
+                                            <thead>
+                                                <tr>
+                                                    <th data-options="field:'NAME',width:80">文件名称</th>
+                                                    <th data-options="field:'LENGTH',width:80">大小</th>
+                                                    <th data-options="field:'UPLOAD_TIME',width:80">添加时间</th>
+                                                    <th data-options="field:'action',width:80,formatter:ShowRowBtn">操作</th>
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        <div class="col-md-6" id="tt_div">
+                            <div class="input-group" style="width: 100%;">
+                                <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.UserIdArrStr)</span>
+                                <div class="form-control">
+                                    @Html.CheckBoxListFor(m => m.ROLE_ID_STR, ViewData["AllRole"] as IList<SelectListItem>)
+                                    <div id="tt_checkUser">
+                                    <button onclick="CheckUser()">选择人</button>
+                                    @Html.TextBoxFor(m => m.UserIdArrStr, new { @class="easyui-combobox",@data_options = "multiple:true,multiline:true,editable:false,panelHeight:100", @style = "width:90%;height:50px" })
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+        
+    <div style="text-align: center; padding: 10px; display: none;">
+        <a class="easyui-linkbutton" data-options="iconCls:'icon-save'" onclick="onSubmit()">保存</a>
+        <a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" onclick="parent.CloseWin();">取消</a>
+        <input style="width: 60px; display: none; margin-right: 20px;" type="submit" value="保存" />
+    </div> 
+}
+
+@section Scripts {
+    <script type="text/javascript" src="~/Scripts_Page/FunBase.js"></script>
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $(function () {
+            OnchangeFlow();
+            $('.form_datetime').datetimepicker({
+                step: 5,
+                format: 'Y-m-d H:i'
+            });
+
+
+@if (Request.UserAgent.ToLower().IndexOf("iphone") == -1 && Request.UserAgent.ToLower().IndexOf("android") == -1)
+{
+<text>IsNoApp();</text>
+}
+
+        });
+
+        function IsNoApp() {
+            $("#uploadify").uploadify({
+                swf: bootPATH + '/Scripts/uploadify/uploadify.swf',
+                uploader: bootPATH + '/Scripts/uploadify/UploadHandler.ashx',
+                buttonText: "　",
+                formData: {
+                    'folder': '~/UpFiles/Task/',
+                    'customname': Date.now().toString()
+                },
+                onUploadSuccess: function (a, b, c, d, e) {
+                    var fileName = a.name;
+                    var bArr = b.split(',');
+                    if (bArr.length > 1) {
+                        fileName = bArr[1];
+                    }
+                    $.ajax({
+                        url: "../Fun/AddFile?t=" + Math.random(),
+                        dateType: "JSON",
+                        data: {
+                            name: a.name,
+                            size: a.size,
+                            savePath: '~/UpFiles/Task/' + fileName
+                        },
+                        success: function (data) {
+
+                            $('#dg_AllFiles').datagrid('appendRow', data);
+                            var data = $('#dg_AllFiles').datagrid('getData');
+                            var strJson = JSON.stringify(data.rows);
+                            $("#AllFilesStr").val(strJson)
+                        },
+                        error: function (data) {
+                            alert('失败:' + data.responseText);
+                        }
+                    });
+                }
+            });
+
+
+
+            KindEditor.create('textarea[name="REMARK"]', {
+                cssPath: '../Scripts/kindeditor/plugins/code/prettify.css',
+                uploadJson: '../Scripts/kindeditor/asp.net/upload_json.ashx',
+                fileManagerJson: '../Scripts/kindeditor/asp.net/file_manager_json.ashx',
+                allowFileManager: true,
+                resizeType: 1,
+                allowPreviewEmoticons: false,
+                allowImageUpload: true,
+                items: [
+                    'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+                    'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
+                    'insertunorderedlist', '|', 'emoticons', 'image', 'link']
+            });
+        }
+
+
+        function ShowRowBtn(value, row, index) {
+            var tmp = '<a  class="easyui-linkbutton l-btn l-btn-small" href="#" ';
+            tmp += ' onclick="DelFile(' + row.ID + ',' + index + ')">';
+            tmp += ' <span class="l-btn-left"><span class="l-btn-text">删除</span></span></a>  '
+            return tmp;
+        }
+        function DelFile(id, index) {
+            if (window.confirm("确定要删除该文件吗？")) {
+                $.ajax({
+                    url: "../Fun/DelFile?t=" + Math.random(),
+                    data: {
+                        fileID: id
+                    },
+                    success: function (data) {
+                        $('#dg_AllFiles').datagrid('deleteRow', index);
+                        var data = $('#dg_AllFiles').datagrid('getData');
+                        var strJson = JSON.stringify(data.rows);
+                        $("#AllFilesStr").val(strJson)
+                    },
+                    error: function (data) {
+                        alert('失败');
+                    }
+                });
+            }
+        }
+
+
+        function OnchangeFlow() {
+            if ($("#FLOW_ID").val() == "") {
+                $("#allContent").hide();
+                return;
+            }
+            $("#allContent").show();
+
+            if ($("#FLOW_ID").val() == "0") {
+                $("input[name='ROLE_ID_STR_JSITEM']").each(function () {
+                    $(this).parent("label").show();
+                })
+                $("#tt_checkUser").show();
+
+                return;
+            }
+            $.ajax({
+                url: "../Flow/GetFristNode?t=" + Math.random(),
+                dataType: 'json',
+                data: {
+                    flowId: $("#FLOW_ID").val(),
+                    status: $("#NowSubmitType").val()
+                },
+                success: function (data) {
+                    $("#ROLE_ID_STR").val(data.AllRoleStr);
+                    if (data.HandleUrl != null && data.HandleUrl != "") {
+                        var url = data.HandleUrl.replace("~/", bootPATH);
+                        if (window.location.href != url) {
+                            OnBegin();
+                            window.location = url;
+                            return;
+                        }
+                    }
+
+                    BoxListDisplayV('ROLE_ID_STR')
+                    HideAllItem('ROLE_ID_STR')
+                    /*指定人*/
+                    if (data.ASSIGNER == 1) {
+                        $("#tt_div").show();
+
+                    }
+                    else {
+                        $("#tt_div").hide();
+                    }
+                },
+                error: function (data) {
+                    alert('失败:' + data.responseText);
+                }
+            });
+        }
+
+        function onSubmit() {
+
+            var com = $(".combo-text")
+            if (com.attr('name') == null) {
+                com.attr('name', 'combo_text')
+            }
+
+            $("#UserIdArrStr").val($('#UserIdArrStr').combobox("getValues"));
+            var obj = $('input[type="submit"]');
+            obj[0].click()
+        }
+
+
+        function HideAllItem(name) {
+            var num = [];
+            $("input[name='" + name + "_JSITEM']").each(function () {
+                if ($(this).attr("checked") != 'checked') {
+                    $(this).parent("label").hide();
+                }
+            })
+        }
+
+
+
+        function CheckUser() {
+            DivOpen("~/User/CheckUser?id=" + $('#UserIdArrStr').combobox("getValues") + "&roleIdStr=" + $("#ROLE_ID_STR").val(), "选择用户", 0, 0, SetNowUser);
+        }
+
+        function SetNowUser(userIdStr) {
+            if (userIdStr.length > 0 && userIdStr.substring(userIdStr.length - 1) == ',') {
+                userIdStr = userIdStr.substring(0, userIdStr.length - 1);
+            }
+            $('#UserIdArrStr').combobox({
+                url: '../User/GetBylUserId?userIdStr=' + userIdStr,
+                checkbox: true,
+                valueField: 'id',
+                textField: 'name'
+            });
+            $('#UserIdArrStr').combobox("setValues", userIdStr.split(','));
+        }
+
+    </script>
+
+}

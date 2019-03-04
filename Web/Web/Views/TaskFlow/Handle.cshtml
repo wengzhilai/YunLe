@@ -1,0 +1,226 @@
+﻿@model ProInterface.Models.TTaskFlow
+@{
+    ViewBag.Title = "Create";
+}
+<style>
+    .col-md-6 {
+        padding: 1px;
+    }
+
+    .tree-folder {
+        display: none;
+    }
+
+    .tree-file {
+        display: none;
+    }
+</style>
+
+<link rel="stylesheet" href="~/Scripts/uploadify/uploadify.css">
+<script src="~/Scripts/uploadify/jquery.uploadify.js"></script>
+<script type="text/javascript" src="~/Scripts_Page/FunBase.js"></script>
+<link href="~/Styles/PublicStyle.css" rel="stylesheet" />
+<div id="myPnl" style="display: none">
+</div>
+@using (Ajax.BeginForm(new AjaxOptions
+{
+    UpdateTargetId = "myPnl",
+    Confirm = "确定要提交吗",
+    OnBegin = "OnBegin",
+    OnSuccess = "OnSuccess",
+    OnFailure = "OnFailure",
+    OnComplete = "OnComplete"
+}))
+{
+    @Html.HiddenFor(m => m.ID)
+    <table style="width: 100%">
+        <tr>
+            <td>
+                <div style="text-align: center; font-size: 18px; color: #000;">@Html.SpanFor(m => m.TaskName)</div>
+                <div style="text-align: center; font-size: 14px; color: #6f6f6f;"><span style="margin-left: 20px">发布者：</span>@Html.SpanFor(m => m.SendUserName)【@Html.SpanFor(m => m.DistrictName)】</div>
+                <div style="font-size: 14px; color: #3e3e3e; margin: 10px; text-indent: 2em;">@Html.SpanFor(m => m.TaskContent)</div>
+                <table title="流程审批日志" class="easyui-treegrid" style="width:100%"
+        data-options="
+                url: '../Task/GetTreeFlow?id=@Model.TASK_ID',
+                method: 'get',
+                rownumbers: true,
+                    collapsible:true,
+                    collapsed:true,
+                idField: 'ID',
+                treeField: 'NAME'"
+        >
+                    <thead>
+                        <tr>
+                            <th data-options="field:'NAME'" width="20%">任务名称</th>
+                            <th data-options="field:'DEAL_USER_NAME'" width="10%">处理人</th>
+                            <th data-options="field:'REMARK'" width="20%">处理意见</th>
+                            <th data-options="field:'DEAL_TIME'" width="20%">处理时间</th>
+                            <th data-options="field:'DealRole'" width="20%">所选决策</th>
+                            <th data-options="field:'NextDealUserName'">下步处理人</th>
+                        </tr>
+                    </thead>
+                </table>
+
+                <div class="container-fluid">
+
+                    <div class="col-md-6">
+                        <div class="input-group" style="width: 100%;">
+                            <span class="input-group-addon" data-size="4">处理意见</span>
+                            <div class="form-control">
+                                @Html.TextAreaFor(m => m.REMARK, new { @style = "height:60px;width:100%" })
+                                @Html.ValidationMessageFor(m => m.REMARK)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group" style="width: 100%;">
+                            <span class="input-group-addon" data-size="4">请选择决策</span>
+                            <div class="form-control">
+                                <div style="height: 60px; overflow: auto">
+                                    @Html.CheckBoxListFor(m => m.ROLE_ID_STR, ViewData["AllRole"] as IList<SelectListItem>)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+@if (Request.UserAgent.ToLower().IndexOf("iphone") ==-1 && Request.UserAgent.ToLower().IndexOf("android") ==-1)
+{
+                    <div class="col-md-6">
+                        <div class="input-group" style="width: 100%;">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.AllFilesStr)</span>
+                            <div class="form-control">
+                                @*<input class="easyui-filebox" name="file1" data-options="prompt:'选择文件',buttonText:'选择文件'" onchange="alert('')">*@
+                                <input type="file" name="uploadify" id="uploadify" />
+                                @Html.HiddenFor(m => m.AllFilesStr)
+                                <table id="dg_AllFiles" class="easyui-datagrid" style="width: 98%" data-options="rownumbers:true,fitColumns:true">
+                                    <thead>
+                                        <tr>
+                                            <th data-options="field:'NAME',width:80">文件名称</th>
+                                            <th data-options="field:'LENGTH',width:80">大小</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+    }
+                    <div class="col-md-6" id="CheckUser">
+                        <div class="input-group" style="width: 100%;">
+                            <span class="input-group-addon" data-size="4">下步处理人</span>
+                            <div class="form-control">
+                                @Html.TextBoxFor(m => m.UserIdArrStr, new { @class = "easyui-combobox", @data_options = "multiple:true,multiline:true,editable:false,panelHeight:100", @style = "width:90%;height:60px" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align: center">
+                <button type="button" class="btn btn-success btn-sm" onclick="onSubmit()">
+                    <span class="glyphicon glyphicon-ok"></span>
+                    <span id="submitName">处理完成</span></button>
+                <input style="width: 60px; display: none; margin-right: 20px;" type="submit" value="保存" />
+            </td>
+        </tr>
+    </table>
+
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+
+        $(function () {
+
+@if (Request.UserAgent.ToLower().IndexOf("iphone") ==-1 && Request.UserAgent.ToLower().IndexOf("android") ==-1)
+{
+    <text>
+            $("#uploadify").uploadify({
+                swf: bootPATH + '/Scripts/uploadify/uploadify.swf',
+                uploader: bootPATH + '/Scripts/uploadify/UploadHandler.ashx',
+                buttonText: "　",
+                formData: {
+                    'folder': '~/UpFiles/Task/',
+                    'customname': Date.now().toString()
+                },
+                onUploadSuccess: function (a, b, c, d, e) {
+                    var fileName = a.name;
+                    var bArr = b.split(',');
+                    if (bArr.length > 1) {
+                        fileName = bArr[1];
+                    }
+                    $.ajax({
+                        url: "../Fun/AddFile?t=" + Math.random(),
+                        dateType: "JSON",
+                        data: {
+                            name: a.name,
+                            size: a.size,
+                            savePath: '~/UpFiles/Task/' + fileName
+                        },
+                        success: function (data) {
+
+                            $('#dg_AllFiles').datagrid('appendRow', data);
+                            var data = $('#dg_AllFiles').datagrid('getData');
+                            var strJson = JSON.stringify(data.rows);
+                            $("#AllFilesStr").val(strJson)
+                        },
+                        error: function (data) {
+                            alert('失败:' + data.responseText);
+                        }
+                    });
+                }
+            });
+    </text>
+}
+        });
+
+        function BoxListSetV(name) {
+            var num = [];
+            $("input[name='" + name + "_JSITEM']").each(function () {
+                if ($(this).attr("checked") == 'checked') {
+                    num.push($(this).attr("value"));
+                }
+            })
+            $("#" + name).val(num.join(","));
+            if (name == "ROLE_ID_STR") {
+
+                if ($("#" + name).val() == "") {
+                    $("#CheckUser").hide();
+                    $("#submitName").text("处理完成");
+                }
+                else {
+                    $("#CheckUser").show();
+                    $("#submitName").text("分派");
+                    OnchangeUserType();
+                }
+            }
+        }
+
+        function OnchangeUserType() {
+            $('#UserIdArrStr').combobox({
+                url: '../User/AjaxAllBylRole?roleIdStr=' + $("#ROLE_ID_STR").val(),
+                checkbox: true,
+                valueField: 'id',
+                textField: 'name'
+            });
+        }
+
+
+        function onSubmit() {
+
+            var com = $(".combo-text")
+            if (com.attr('name') == null) {
+                com.attr('name', 'combo_text')
+            }
+
+            $("#UserIdArrStr").val($('#UserIdArrStr').combobox("getValues"));
+            var obj = $('input[type="submit"]');
+            obj[0].click()
+        }
+
+    </script>
+
+}
+
+

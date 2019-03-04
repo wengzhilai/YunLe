@@ -1,0 +1,130 @@
+﻿@model ProInterface.Models.TTask
+@{
+    Layout = null;
+    var   UseNode=ViewData["UseNode"] as List<ProInterface.Models.TTaskFlow>;
+}
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>@ViewBag.Title</title>
+    <link rel="stylesheet" href="~/Scripts/jqueryui/jquery-ui.min.css">
+    <link rel="stylesheet" href="~/Scripts/jsplumbtoolkit/demo.css">
+    <script type="text/javascript" src="~/Scripts/jquery-1.8.1.min.js"></script>
+    <script type='text/javascript' src="~/Scripts/jqueryui/jquery-ui-1.9.2.min.js"></script>
+    <script type='text/javascript' src="~/Scripts/jqueryui/jquery.ui.touch-punch-0.2.2.min.js"></script>
+    <script type='text/javascript' src='~/Scripts/jsplumbtoolkit/jquery.jsPlumb-1.7.2-min.js'></script>
+
+    <link href="~/Scripts/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Scripts/bootstrap/mybootcss.css" rel="stylesheet" />
+
+    <style type="text/css">
+        body {
+
+        }
+    </style>
+</head>
+<style type="text/css">
+    .wused {
+        padding: 16px;
+        position: absolute;
+        border: 1px solid black;
+        z-index: 4;
+        border-radius: 1em;
+        border: 1px solid #2e6f9a;
+        box-shadow: 2px 2px 19px #e0e0e0;
+        -o-box-shadow: 2px 2px 19px #e0e0e0;
+        -webkit-box-shadow: 2px 2px 19px #e0e0e0;
+        -moz-box-shadow: 2px 2px 19px #e0e0e0;
+        -moz-border-radius: 8px;
+        border-radius: 8px;
+        opacity: 0.8;
+        filter: alpha(opacity=80);
+        cursor: move;
+        background-color: #808080;
+        font-size: 11px;
+        -webkit-transition: background-color 0.25s ease-in;
+        -moz-transition: background-color 0.25s ease-in;
+        transition: background-color 0.25s ease-in;
+    }
+
+        .wused:hover {
+            background-color: #808080;
+            color: white;
+        }
+
+    .wnow {
+        padding: 16px;
+        position: absolute;
+        border: 1px solid black;
+        z-index: 4;
+        border-radius: 1em;
+        border: 1px solid #2e6f9a;
+        box-shadow: 2px 2px 19px #e0e0e0;
+        -o-box-shadow: 2px 2px 19px #e0e0e0;
+        -webkit-box-shadow: 2px 2px 19px #e0e0e0;
+        -moz-box-shadow: 2px 2px 19px #e0e0e0;
+        -moz-border-radius: 8px;
+        border-radius: 8px;
+        opacity: 0.8;
+        filter: alpha(opacity=80);
+        cursor: move;
+        background-color: green;
+        color: white;
+        font-size: 11px;
+        -webkit-transition: background-color 0.25s ease-in;
+        -moz-transition: background-color 0.25s ease-in;
+        transition: background-color 0.25s ease-in;
+    }
+
+        .wnow:hover {
+            background-color: green;
+            color: white;
+        }
+</style>
+<body>
+
+        @Html.HiddenFor(m => m.ID)
+        @Html.HiddenFor(m => m.REGION)
+        @Html.Hidden("FlowListStr")
+        <div id="statemachine-demo" style="width: 98%; height: 400px; border: 1px solid #000000; position: absolute; left: 10px; top: 10px; background-repeat: repeat">
+                @{
+                int row=0,clo=0;
+                for (var i = 0; i < UseNode.Count(); i++)
+                {
+                    int top = 0,left=0;
+                   
+                    top = 10 + (row*100);
+                    left = 150 * clo;
+                    if (clo > 6)
+                    {
+                        clo =0;
+                        row++;
+                    }
+                    else
+                    {
+                        clo++;
+                    }
+                    var t = UseNode[i];
+                    <div class="w" id="NODE_@t.ID" style="top:@(top)px;left:@(left)px"><span>@(t.ID+"_"+t.NAME)</span><div class="ep"></div></div>
+                }
+                }
+              
+        </div>
+
+    <div id="dialog_FullWin" title="查看" class="easyui-dialog" style="height: 600px; width: 400px" data-options="closed: true,iconCls:'icon-properties',maximizable:true">
+        <iframe scrolling="auto" id='openWindowIframe' frameborder="0" style="width: 99%; height: 99%;"></iframe>
+    </div>
+
+    <link rel="stylesheet" href="~/Scripts/jsplumbtoolkit/demo.css">
+
+    <script type="text/javascript" src="~/Scripts_Page/LookFlow.js"></script>
+    <script>
+    </script>
+</body>
+<script type="text/javascript" src="~/Scripts_Page/FunBase.js"></script>
+
+
+</html>

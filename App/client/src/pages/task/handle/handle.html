@@ -1,0 +1,54 @@
+<ion-header>
+  <ion-toolbar color="car">
+    <ion-buttons left>
+      <button ion-button icon-only (click)="GoBack()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>处理</ion-title>
+    <ion-buttons right>
+      <button ion-button icon-only (click)="save()">
+        <ion-icon name="checkmark-circle"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-item-group>
+    <ion-item-divider color="light">
+      处理
+    </ion-item-divider>
+    <ion-item  *ngIf="bean.stauts.indexOf('定价')>-1">
+      <ion-label floating>费用</ion-label>
+      <ion-input type="text" [(ngModel)]="bean.cost"></ion-input>
+    </ion-item>
+    <ion-item *ngIf="bean.stauts=='接车'">
+      <ion-label floating>预计到达时间</ion-label>
+      <ion-datetime
+        displayFormat="YYYY-MM-DD HH:mm"
+        yearValues="2017"
+        [(ngModel)]="bean.PickTime"
+        cancelText="取消"
+        doneText="完成"
+      ></ion-datetime>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>处理说明</ion-label>
+      <ion-textarea type="text" [(ngModel)]="bean.body"></ion-textarea>
+    </ion-item>
+    <ion-item>
+        <button ion-button (click)="AddImg()">
+          <ion-icon name="cloud-upload">&nbsp;</ion-icon>
+          上传图片
+        </button>
+    </ion-item>
+    <ion-item>
+      <img *ngFor="let o of bean.AllFiles" name="allFile_{{o.indexNo}}" src="{{o.URL|ImgUrl}}" height="70px"
+           width="70px" style="margin: 10px"
+           (click)="upImg('allFile_'+o.indexNo)"/>
+    </ion-item>
+  </ion-item-group>
+  <div padding>
+    <button ion-button color="car" block (click)="save()">{{bean.stauts}}</button>
+  </div>
+</ion-content>

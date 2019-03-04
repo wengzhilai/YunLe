@@ -1,0 +1,37 @@
+<ion-modal-view>
+  <ion-header-bar class="bar bar-header bar-positive">
+    <h1 class="title">处理订单</h1>
+    <button class="button button-clear button-primary" ng-click="modal.hide()">关闭</button>
+  </ion-header-bar>
+  <ion-content class="padding">
+    <div class="list">
+      <label class="item item-input">
+        <span class="input-label">费用</span>
+        <input ng-model="bean.cost" type="number">
+      </label>
+          <span class="item item-input" ng-if="Order.bean.NextButton=='接车'">
+            <span class="input-label">预计到达时间1</span>
+            <time-picker inmodal="true" title="预计到达时间" yearstart="2016" yearend="2017" time-picker-result="bean.body1"
+                         format="yyyy-MM-dd hh:mm"></time-picker>
+          </span>
+      <label class="item item-input">
+        <span class="input-label">说明</span>
+        <input ng-model="bean.body" type="text">
+      </label>
+      <div class="item item-icon-left">
+        <div class="input-label" style="font-weight:bold;">
+          <button class="button button-small button-calm" on-tap="func.AddImg()">上传照片</button>
+        </div>
+      </div>
+      <div class="item item-input" style="padding-left: 20px;line-height: 1">
+        <div ng-if="bean.AllFiles.length>0" ng-repeat="o in bean.AllFiles">
+          <img src="{{o.URL|imgUrl}}" height="50px" width="50px" style="margin: 10px"
+               data-id="{{o.ID}}" data-indexNo="{{o.indexNo}}" ng-click="func.upImg($event)"/>
+        </div>
+      </div>
+      <div class="button-bar bar-positive" style="margin-top: 5px;">
+        <a class="button " ng-repeat="o in Order.bean.NextButton" ng-click="func.createFlow(o)">{{o}}</a>
+      </div>
+    </div>
+  </ion-content>
+</ion-modal-view>

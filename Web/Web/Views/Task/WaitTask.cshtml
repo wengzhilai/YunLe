@@ -1,0 +1,57 @@
+﻿@model ProInterface.Models.CiBbs
+@{
+    ViewBag.Title = "More";
+}
+<style type="text/css">
+    html, body {
+        height: 100%;
+    }
+</style>
+
+<div style="height:5px;line-height:5px"></div>
+
+<table id="dg" style="height:100%" data-options="
+    pageSize:10,
+    rownumbers: false,
+    pagination: true,
+    fitColumns: true,
+    toolbar:'#toolbar',
+    showHeader: false,
+    nowrap: false,
+    singleSelect:true
+    ">
+    <thead>
+        <tr>
+            <th field="TASK_NAME" width="80" sortable="false" data-options="
+                formatter: FormatV">
+            </th>
+        </tr>
+    </thead>
+</table>
+<script type="text/javascript" src="~/Scripts_Page/FunBase.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $('#dg').datagrid({
+            url: '../Query/QueryList',
+            queryParams: {
+                Code: 'taskOp',
+                WhereStr: '[]'
+            }
+        })
+    })
+    function FormatV(value,row,index)
+    {
+        var reStr="";
+        reStr+='<li class="list-group-item" style="font-size: 12px; border: 0;">';
+        reStr += '    <a  href="javascript:DivOpenThis(' + row.ID + ',\'' + row.HANDLE_URL + '\',\'' + row.NAME + '\')">' + value + '</a>';
+        reStr += '    <br><span style="color: #bdbdbd">' + row.DEAL_USER_NAME + '(' + row.DEAL_TIME + ')</span>';
+        reStr += '    <br><span>' + row.NAME + '</span>';
+        reStr += '</li>';
+        return reStr;
+    }
+    function DivOpenThis(id,rul,title)
+    {
+        DivOpen(rul + "?id=" + id, title, 0, 0);
+    }
+
+</script>

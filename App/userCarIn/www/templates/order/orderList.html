@@ -1,0 +1,55 @@
+<ion-view hide-back-button="true" ng-init="orderList.init()">
+  <ion-nav-title>{{title}}客户订单</ion-nav-title>
+  <ion-nav-buttons side="left">
+    <button class="button button-icon icon ion-ios-arrow-back light" ui-sref="home"></button>
+  </ion-nav-buttons>
+  <ion-nav-buttons side="right">
+    <button class=" button button-icon icon light ion-ios-plus" data-pack="default" data-tags="添加"
+            style="display: inline-block;font-size: 30px"  ng-click="orderList.addOrder()"></button>
+  </ion-nav-buttons>
+  <div class="bar bar-subheader">
+    <div class="button-bar bar-stable">
+      <a class="button" data-value='救援' ng-click="orderList.filterKey($event)">救援</a>
+      <a class="button" data-value='审车' ng-click="orderList.filterKey($event)">审车</a>
+      <a class="button" data-value='维保' ng-click="orderList.filterKey($event)">维保</a>
+    </div>
+  </div>
+
+
+  <ion-content class="has-header " style="margin-top:44px;background-color: #f0f0f0">
+
+    <ion-refresher pulling-text="下拉刷新" on-refresh="orderList.doRefresh()"></ion-refresher>
+
+    <div class="list" style="margin-top: 10px;" collection-repeat="o in orderList.lists.data">
+      <div>
+        <div class="row light-bg" style="height: 40px;">
+          <div class="col col-30 assertive h4" style="padding-left: 10px;text-align:left;margin: auto;">
+            {{o.PAY_STATUS}}
+          </div>
+        </div>
+
+        <div class="item" data-id="{{o.ID}}" data-type="{{o.ORDER_TYPE}}"
+             ng-click="orderList.toFollowOrder(o.ID,o.ORDER_TYPE)">
+          <p style="font-size: 13px;padding-left: 10px">车牌号： {{o.CarPlateNumber}}</p>
+          <p style="font-size: 13px;padding-left: 10px">客户姓名： {{o.ClientName}}</p>
+          <p style="font-size: 13px;padding-left: 10px">订单金额： {{o.COST| currency:'￥'}}</p>
+          <p style="font-size: 13px;padding-left: 10px">付款状态： {{o.LastStatus}}</p>
+          <p style="font-size: 13px;padding-left: 10px">创建时间： {{o.CREATE_TIME|UnixNum|date:"yyyy-MM-dd H:mm"}}</p>
+        </div>
+        <div style="background-color: #f0f0f0;height:10px"></div>
+      </div>
+    </div>
+    <div class="list" ng-if="orderList.lists.data.length==0">
+      <div>
+        <div class="row light-bg" style="height: 40px;">
+          <span>无数据</span>
+        </div>
+      </div>
+    </div>
+    <ion-infinite-scroll ng-if="orderList.hasNextPage()"
+                         on-infinite="orderList.loadMore()"
+                         distance="1%">
+    </ion-infinite-scroll>
+
+  </ion-content>
+</ion-view>

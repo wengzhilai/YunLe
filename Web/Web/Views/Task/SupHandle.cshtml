@@ -1,0 +1,61 @@
+﻿@model ProInterface.Models.TNode
+@{
+    ViewBag.Title = "Create";
+}
+<script type="text/javascript" src="~/Scripts_Page/FunBase.js"></script>
+<link href="~/Styles/PublicStyle.css" rel="stylesheet" />
+<div id="myPnl" style="display: none">
+</div>
+@using (Ajax.BeginForm(new AjaxOptions
+{
+    UpdateTargetId = "myPnl",
+    Confirm = "确定要提交吗",
+    OnBegin = "OnBegin",
+    OnSuccess = "OnSuccess",
+    OnFailure = "OnFailure",
+    OnComplete = "OnComplete"
+}))
+{
+    @Html.HiddenFor(m => m.ID)
+
+    <fieldset class="fieldset">
+        <legend>当前信息</legend>
+        <table class="public-table">
+            <tr>
+                <td class="td-header">@Html.LabelFor(m => m.FlowNodeName)</td>
+                <td class="td-content">
+                    @Html.TextBoxFor(p => p.FlowNodeName, new { @disabled = "disabled" })
+                </td>
+                <td colspan="2"></td>
+            </tr>
+            <tr>
+                <td class="td-header">@Html.LabelFor(m => m.Remark)</td>
+                <td colspan="2" style="padding-left: 5px;" class="td-content">
+                    @Html.TextAreaFor(m => m.Remark, new { @class = "textarea" })
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="td-header">@Html.LabelFor(m => m.ToFlowNodeID)</td>
+                <td class="td-content" colspan="3">
+                    @if (@Model.AllFlowNode.Count > 0)
+                    {
+                        @Html.DropDownListFor(m => m.ToFlowNodeID, Model.AllFlowNode)
+                    }
+                     <a class="easyui-linkbutton" data-options="iconCls:'icon-save'" onclick="onSubmit()">保存</a>
+                    <a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" onclick="CloseWin()">取消</a>
+                    <input style="width: 60px; display: none; margin-right: 20px;" type="submit" value="保存" />
+                </td>
+
+            </tr>
+
+        </table>
+    </fieldset>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+
+

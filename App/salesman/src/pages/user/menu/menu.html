@@ -1,0 +1,51 @@
+<ion-header>
+
+  <ion-toolbar color="car">
+    <ion-buttons left>
+      <button ion-button icon-only (click)="goHome()">
+        <ion-icon name="home"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>我的</ion-title>
+    <ion-buttons right style="width: 30px">
+
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <div class="user-head" (click)="goEdit()">
+    <ion-icon name="settings" class="settingIco"></ion-icon>
+    <img src="{{user.iconURL|ImgUrl}}" class="userIco" />
+    <div style="color: white">{{user.NAME}}</div>
+  </div>
+
+    <ion-list class="menu">
+      <ion-item (click)="GoOrderListPage()">
+        <ion-icon name="cash" style="background-color: #FFD04F"></ion-icon>
+        <span>客户订单</span>
+      </ion-item>
+      <ion-item (click)="GoCustomerList()">
+        <ion-icon name="contacts"></ion-icon>
+        <span>我的客户</span>
+      </ion-item>
+      <!--<button ion-item (click)="watting()">
+        <ion-icon name="headset" style="background-color: #FFD04F"></ion-icon>
+        <span>客服中心</span>
+      </button>
+      <button ion-item>
+        <ion-icon name="chatbubbles"></ion-icon>
+        <span>用户反馈</span>
+      </button>-->
+      <ion-item (click)="toShare()">
+        <ion-icon name="share" style="background-color: #FFD04F"></ion-icon>
+        <span>分享注册</span>
+      </ion-item>
+    </ion-list>
+    <ion-list class="menu">
+      <ion-item  (click)="outLogin()">
+        <ion-icon name="exit"></ion-icon>
+        <span>退出登录</span>
+      </ion-item>
+    </ion-list>
+    
+</ion-content>

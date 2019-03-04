@@ -1,0 +1,18 @@
+<ion-header>
+  <ion-toolbar color="car">
+    <ion-buttons left >
+      <button ion-button icon-only (click)="GoBack()" large>
+        <ion-icon name="arrow-back"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>{{title}}</ion-title>
+    <ion-buttons right style="width: 30px">
+
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-tabs  #myTabs (ionChange)="ChangeTabs" >
+  <ion-tab #tab1 tabTitle="团队信息" (ionSelect)="IonSelect('团队信息')"></ion-tab>
+  <ion-tab #tab2 tabTitle="团队成员" (ionSelect)="IonSelect('团队成员')"></ion-tab>
+  <ion-tab #tab3 tabTitle="所有定单" (ionSelect)="IonSelect('所有定单')"></ion-tab>
+</ion-tabs>

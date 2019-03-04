@@ -1,0 +1,250 @@
+﻿@{
+    ViewBag.Title = "主页";
+
+}
+<script type="text/javascript" src="~/Scripts_Page/FunBase.js"></script>
+<link href="~/Content/Styles/home.css" rel="stylesheet" />
+<script type="text/javascript">
+    $(function () {
+        //SetHomeHeight();
+        setTimeout("SetHomeHeight()", 100);
+    });
+    $(window).resize(function () { SetHomeHeight(); });
+    function SetHomeHeight() {
+        var win_h = $(window).innerHeight() - 3;
+
+        var win_w = $(window).innerWidth() - 300;
+        $("#td_center").css("width", win_w / 2);
+
+        $("#home-tab").height(win_h);
+        $("#home-left").css("height", win_h / 2 - 8);
+        $("#home-left1").css("height", win_h / 2 - 8);
+        $("#home-right").css("height", win_h - 10);
+        $("#home-right1").css("height", win_h - 10);
+        $("#home-right2").css("height", win_h - 10);
+        $("#iframewaittask").height(win_h - 43);
+        //$("#iframewaittask1").height(win_h - 43);
+        $("#left_Item").css("height", win_h / 2 - 50);
+        $("#left_Item1").css("height", win_h / 2 - 50);
+        $("#home_content").css("height", win_h - 57);
+        $("#home_content1").css("height", win_h - 57);
+        $("#home_content2").css("height", win_h - 57);
+
+        @switch (ProInterface.AppSet.CityId)
+        {
+            case 4:
+            <text>
+                //$('#iframewaittask')[0].src = "@MvcHtmlString.Create(Url.Content("~/Query/Query?code=KPI_ZBWCL&simple=1"))";
+            </text>
+                break;
+            case 852:
+            <text>
+                //$('#iframewaittask')[0].src = "@MvcHtmlString.Create(Url.Content("~/Charts/Charts?code=KpiFinishRate&type=Column3D&simple=1"))";
+            </text>
+                break;
+            default:
+                <text>
+                //$('#iframewaittask')[0].src = "@MvcHtmlString.Create(Url.Content("~/Charts/Hcharts?code=kpi63&MONTHDAY=20160112"))";
+            </text>
+                break;
+        }
+    }
+</script>
+
+<table id="home-tab"  style="margin: 0; width: 100%; border: 0;background-image:url(@Url.Content("~/UpFiles/" + Web.Fun.UserKey + ".jpg"));">
+    <tr>
+        <td style="padding: 5px 0 5px 5px; margin: 0; width: 260px; border-right: 5px solid #fff;">
+            @*信息公告*@
+            <div id="home-left" class="boot-panel boot-panel-default">
+                <div class="boot-panel-heading">
+                    <table style="padding: 0; margin: 0; border: 0; width: 100%; height: 24px; vertical-align: middle; color: #6d6c6c">
+                        <tr>
+                            <td><span><span class="glyphicon glyphicon-volume-up" style="font-size: 14px;"></span>&nbsp;信息公告</span></td>
+                            <td style="width: 45px;">
+                                <button id="mymore" onclick="parent.OpenTab('~/Bulletin/More', '更多公告信息')" type="button" class="btn btn-link btn-xs" style="text-decoration: none;" title="更多公告信息">更多...</button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="boot-panel-body">
+                    <ul class="list-group" id="left_Item" style="overflow: auto;">
+                        @foreach (var t in (ViewData["BulletinList"] as IList<ProInterface.Models.TBulletin>).Take(6).ToList())
+                        { 
+                            <li class="list-group-item" style="font-size: 12px; border: 0;">
+                                @if ((DateTime.Now - Convert.ToDateTime(t.UPDATE_TIME)).Days <= 7)
+                                {
+                                    <span class="badge" style="background-color: #ff6a00; font-size: 12px; padding: 2px 5px">NEW</span>
+                                }
+                                <a href="javascript:OpenBill('@t.ID','@(t.TITLE)')"  style="@if (t.IS_IMPORT == 1)
+                                                                                            {<text>color:red</text>}"      title="@t.TITLE">@(t.TITLE)</a>
+                                <span style="color: #bdbdbd">(@(t.TYPE_CODE))</span>
+                                <br />
+                                <span style="color: #bdbdbd">@(t.PUBLISHER)(@(t.UPDATE_TIME.ToString("yyyy/MM/dd")))</span>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+            <div style="height: 5px; line-height: 5px"></div>
+            @*交流互动*@
+            <div id="home-left1" class="boot-panel boot-panel-default">
+                <div class="boot-panel-heading">
+                    <table style="padding: 0; margin: 0; border: 0; width: 100%; height: 24px; vertical-align: middle; color: #6d6c6c">
+                        <tr>
+                            <td><span><span class="glyphicon glyphicon-volume-up" style="font-size: 14px;"></span>&nbsp;交流互动</span></td>
+                            <td style="width: 45px;">
+                                <button onclick="parent.OpenTab('~/Bbs/More', '更多交流互动')" type="button" class="btn btn-link btn-xs" style="text-decoration: none;" title="更多交流互动">更多...</button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="boot-panel-body">
+                    <ul class="list-group" id="left_Item1" style="overflow: auto;">
+
+                    </ul>
+                </div>
+            </div>
+        </td>
+        <td id="td_center" style="padding: 5px 5px 5px 0; margin: 0;">
+            <div id="home-right" class="boot-panel boot-panel-default">
+                <div class="boot-panel-heading">
+                    <span style="color: #6d6c6c"><span class="glyphicon glyphicon-list-alt"></span>&nbsp;指标完成率占比</span>
+                </div>
+                <div id="home_content" class="boot-panel-body">
+                    <iframe id="iframewaittask" name="iframewaittask" frameborder="0" style="width: 100%; margin-top: 2px; height: 100%; padding: 0; margin: 0; border: 0; overflow: hidden;"></iframe>
+                </div>
+            </div>
+        </td>
+        <td style="width:400px">
+            <div id="home-right1" class="boot-panel boot-panel-default">
+                <div class="boot-panel-heading">
+                    <table style="padding: 0; margin: 0; border: 0; width: 100%; height: 24px; vertical-align: middle; color: #6d6c6c">
+                        <tr>
+                            <td><span><span class="glyphicon glyphicon-list-alt" style="font-size: 14px;"></span>&nbsp;拜访日志</span></td>
+                            <td style="width: 45px;">
+                                <button onclick="parent.OpenTab('~/Visit/More', '更多拜访日志')" type="button" class="btn btn-link btn-xs" style="text-decoration: none;" title="更多拜访日志">更多...</button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="boot-panel-body">
+                    <ul class="list-group" id="home_content1" style="overflow: auto;">
+                        
+                    </ul>
+                </div>
+            </div>
+        </td>
+        @if (ProInterface.AppSet.CityId == 852)
+        {
+        <td>
+            @*服务支撑*@
+            <div id="home-right2" class="boot-panel boot-panel-default">
+                <div class="boot-panel-heading">
+                    <table style="padding: 0; margin: 0; border: 0; width: 100%; height: 24px; vertical-align: middle; color: #6d6c6c">
+                        <tr>
+                            <td><span><span class="glyphicon glyphicon-volume-up" style="font-size: 14px;"></span>&nbsp;便捷查询</span></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="boot-panel-body">
+                    <ul class="list-group" id="home_content2" style="overflow: auto;">
+                        @foreach (var bul in ViewData["BulletinQueryList"] as IList<SelectListItem>)
+                        {
+                            <li class="list-group-item" style="font-size: 12px; border: 0;">
+                                <a href="javascript:OpenBill('@bul.Value','@bul.Text')">@bul.Text</a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </td>
+        }
+    </tr>
+</table>
+
+
+<div style="clear: both"></div>
+
+<link href="~/Content/HomeNew.css" rel="stylesheet" />
+
+<div id="dialog_FullWin" title="对话框" class="easyui-dialog" style="height: 600px; width: 800px" data-options="closed: true,iconCls:'icon-properties',modal:true,resizable:true">
+    <iframe scrolling="auto" id='openWindowIframe' frameborder="0" src="" style="width: 99%; height: 99%;"></iframe>
+</div>
+
+
+</div>
+<script>
+    $(function () {
+        var h = $("#homediv").parent("body").height() - 10;
+        $("#homediv").height(h - 1);
+        $("#homequery").height(h - 10);
+        $("#homemaintr").height(h);
+        $("#toolbar").remove();
+        $("#homemain").height(h);
+        $("#homemain").find(".home-right").height(h);
+        $("#homemain").find(".home-right").children(".content").height(h - 30);
+        $("#iframewaittask").height(h - 31);
+
+        $("#homemain").find("a").each(function (index, obj) {
+            var d = $(obj).attr("data-import");
+            if (d == "1") {
+                $(obj).css("color", "red");
+            }
+        });
+
+    });
+    function GetBulletMore() {
+        var date = new Date();
+        $("#morebullet").window("open");
+
+        $.ajax({
+            type: "POST",
+            dataType: "text",
+            url: '../Home/GetBulletMore',
+            data: { "time": date },
+            success: function (data) {
+                data = $.parseJSON(data);
+                $('#dgbulletmore').datagrid({
+                    fitColumns: true,
+                    data: data,
+                    columns: [[
+                          {
+                              field: 'ID', title: '操作', width: 80, align: 'center',
+                              formatter: function (value, row, index) {
+
+                                  var s = "<a href='javascript:void(0)' onclick='OpenBill(" + value + ", \"" + row.TITLE + "\")' >查看详细</a>";
+                                  return s;
+                              }
+                          },
+                        { field: 'TITLE', title: '标题', width: 100 },
+                        { field: 'PUBLISHER', title: '发布人', width: 100, align: 'right' },
+                        { field: 'UPDATE_TIME', title: '更新时间', width: 100, align: 'right' }
+                    ]]
+                });
+            },
+
+        });
+
+
+    }
+
+
+    function OpenBill(id, title) {
+        DivOpen('@Url.Content("~/Bulletin/Look?id=")' + id, title, 0, 0);
+    }
+
+    function OpenBbs(id, title) {
+        DivOpen('@Url.Content("~/Bbs/Look?id=")' + id, title, 0, 0);
+    }
+
+    function OpenVisit(id, title) {
+        DivOpen('@Url.Content("~/Visit/Look?id=")' + id, title, 0, 0);
+    }
+    function closeWindow() {
+        $('#dialog_FullWin').dialog("close");
+    }
+
+
+
+
+</script>

@@ -1,0 +1,20 @@
+<ion-view hide-back-button="true">
+  <ion-nav-title>违章情况</ion-nav-title>
+  <ion-nav-buttons side="left">
+    <button class="button button-icon icon ion-ios-arrow-back light" on-tap="vehList.goQuery()"></button>
+  </ion-nav-buttons>
+
+  <ion-content class="has-header" style="background-color: #f0f0f0">
+     <div collection-repeat="o in vehList.lists">
+      <div class="list" style="margin-top: 10px">
+        <div class="item service-div">
+          <div class="service-first">ID：{{o.Id}} 号牌号码：{{o.PlateNumber}}</div>
+          <div class="service-second">违法时间：{{o.HappenTime|UnixNum| date:"yyyy-MM-dd h:mma"}}</div>
+          <div class="service-third"> 违法行为：{{o.Action}}</div>
+          <div class="service-fourth">违法扣分：{{o.Score}} 违法罚款：{{o.Money}}</div>
+        </div>
+      </div>
+    </div>
+
+  </ion-content>
+</ion-view>

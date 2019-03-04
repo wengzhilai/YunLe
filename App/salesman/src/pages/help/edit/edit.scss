@@ -1,0 +1,15 @@
+@import "../../../theme/variables.scss";
+help-edit {
+
+  .isAll{
+    background-color:map-get($colors,car);
+    font-size: 12px;
+    padding: 0px 5px;
+    color: #FFFFFF;
+    text-align: center
+  }
+  .car{
+    background-color: #0c60ee;
+    color: wheat;
+  }
+}

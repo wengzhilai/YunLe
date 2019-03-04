@@ -1,0 +1,73 @@
+<ion-view view-title="业务员信息" hide-back-button="true" ng-init="salesman.init()">
+  <ion-nav-buttons side="left">
+    <button class="button button-icon icon ion-ios-arrow-back light"
+            UI-SREF="teamDetail({reload: true})"></button>
+  </ion-nav-buttons>
+
+  <ion-content class="has-header" style="margin-bottom: 44px">
+    <div class="list">
+      <div class="item item-divider editcust" style="font-size: 14px;margin-top: 0px">
+        基本资料
+      </div>
+      <a class="item item-thumbnail-right" style="padding-left: 20px;">
+        <img name="iconURL" src="{{salesman.bean.iconURL|imgUrl}}" alt="头像照片" style="margin: 10px;max-width: 100px;max-height: 100px" on-tap="salesman.showBigImage($event)"/>
+        <h2 style="line-height: 30px"><span style="font-weight:bold">推荐码：</span>{{salesman.bean.REQUEST_CODE}}</h2>
+        <h2 style="line-height: 30px"><span style="font-weight:bold">姓  名：</span>{{salesman.bean.NAME}}({{salesman.bean.SEX}})</h2>
+        <h2 style="line-height: 30px"><span style="font-weight:bold">电  话：</span>{{salesman.bean.LOGIN_NAME}}</h2>
+        <h2 style="line-height: 30px"><span style="font-weight:bold">备  注：</span>{{salesman.bean.REMARK}}</h2>
+      </a>
+      <label class="item item-input"  style="padding-left: 20px;">
+        <span class="input-label" style="width:20%;font-weight:bold">登录次数：</span>
+        <span class="custInfo">{{salesman.bean.LOGIN_COUNT}}</span>
+        <span class="input-label" style="width:20%;font-weight:bold">客户数：</span>
+        <span class="custInfo">{{salesman.bean.clientNum}}</span>
+      </label>
+      <label class="item item-input"  style="padding-left: 20px;">
+        <span class="input-label" style="width:20%;font-weight:bold">注册时间：</span>
+        <span class="custInfo">{{salesman.bean.CREATE_TIME|UnixNum| date:"yyyy-MM-dd HH:mm"}}</span>
+      </label>
+      <label class="item item-input"  style="padding-left: 20px;">
+        <span class="input-label" style="width:20%;font-weight:bold">活动时间：</span>
+        <span class="custInfo">{{salesman.bean.LAST_LOGIN_TIME|UnixNum| date:"yyyy-MM-dd HH:mm"}}</span>
+      </label>
+      <ion-scroll class="item item-input" style="height: {{salesman.scrollHeight}}px;width:100%;" >
+        <div class="list" style="width: 100%">
+          <div ng-if="salesman.nowTabsIndex==1" class="item item-thumbnail-left" style="margin: 5px" ng-repeat="customer in salesman.bean.allClient" >
+            <img name="iconURL" src="{{customer.iconURL|imgUrl}}" height="70px"
+                 width="70px" alt="头像照片" style="margin-left: 200px" on-tap="salesman.showBigImage($event)"
+            />
+            <div on-tap="customerInfo({id:customer.ID})">
+              <h2 ><span style="font-weight:bold">客户编号：</span>{{customer.ID}}</h2>
+              <h2 ><span style="font-weight:bold">客户姓名：</span>{{customer.NAME}}</h2>
+              <h2><span style="font-weight:bold">性别：</span>{{customer.SEX}}</h2>
+              <h2><span style="font-weight:bold">电话：</span>{{customer.LOGIN_NAME}}</h2>
+            </div>
+          </div>
+
+          <div ng-if="salesman.nowTabsIndex==2" class="item" style="margin: 5px;width: 100%" ng-repeat="order in salesman.bean.allOrder" >
+            <h2 ><span style="font-weight:bold">订单编号：</span>{{order.ORDER_NO}}</h2>
+            <h2 ><span style="font-weight:bold">订单类型：</span>{{order.ORDER_TYPE}}</h2>
+            <h2><span style="font-weight:bold">当前状态：</span>{{order.LastStatus}}</h2>
+            <h2><span style="font-weight:bold">客户姓名：</span>{{order.ClientName}}</h2>
+            <h2><span style="font-weight:bold">客户电话：</span>{{order.ClientPhone}}</h2>
+            <h2><span style="font-weight:bold">车牌号：</span>{{order.CarPlateNumber}}</h2>
+          </div>
+
+        </div>
+      </ion-scroll>
+    </div>
+  </ion-content>
+  <div class="tabs-striped ">
+    <div class="tabs tabs-icon-left">
+      <a class="tab-item active" ng-click="salesman.onTab($event,1)">
+        <i class="icon ion-person-stalker"></i>
+        所有客户
+      </a>
+      <a class="tab-item " ng-click="salesman.onTab($event,2)">
+        <i class="icon ion-load-a"></i>
+        所有定单
+      </a>
+    </div>
+  </div>
+
+</ion-view>

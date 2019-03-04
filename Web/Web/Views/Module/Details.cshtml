@@ -1,0 +1,123 @@
+﻿@model ProInterface.Models.TModule
+@{
+    var allRoleSelect = ViewData["allRole"] as IList<SelectListItem>;
+    ViewBag.Title = "Create";
+}
+
+<div id="myPnl" style="display: none"></div>
+@using (Ajax.BeginForm(new AjaxOptions
+{
+    UpdateTargetId = "myPnl",
+    Confirm = "确定要提交吗",
+    OnBegin = "OnBegin",
+    OnSuccess = "OnSuccess",
+    OnFailure = "OnFailure",
+    OnComplete = "OnComplete"
+}))
+{ 
+    <link href="~/Scripts/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/Scripts/bootstrap/js/bootstrap.min.js"></script>
+    <link href="~/Scripts/bootstrap/mybootcss.css" rel="stylesheet" />
+    <script src="~/Scripts/bootstrap/Settitlewidth.js"></script>
+    @Html.HiddenFor(m => m.ID)
+    <table class="boot-tablong">
+        <tr>
+            <td>
+                <div class="input-group" >
+                    <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.CODE)</span>
+                    @Html.TextBoxFor(m => m.CODE, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.CODE)
+                </div>
+            </td>
+            <td>
+                <div class="input-group" >
+                    <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.NAME)</span>
+                    @Html.TextBoxFor(m => m.NAME, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.NAME)
+                </div>
+            </td>
+        </tr>
+        <tr >
+            <td colspan="2" >
+                <div class="input-group" style="width: 100%;">
+                    <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.PARENT_ID)</span>
+                    <div class="form-control">
+                        @Html.TextBoxFor(m => m.PARENT_ID, new { @class = "easyui-combotree", @data_options = "url:'../Home/GetAllModules'" })
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="input-group" >
+                    <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.IS_HIDE)</span>
+                        @Html.DropDownListFor(m => m.IS_HIDE, new[]{
+                       new SelectListItem(){ Text="是", Value="1"},
+                       new SelectListItem(){ Text="否", Value="0",Selected=true}
+                   }, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.IS_HIDE)
+                </div>
+            </td>
+            <td>
+                <div class="input-group" >
+                    <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.SHOW_ORDER)</span>
+                    @Html.TextBoxFor(m => m.SHOW_ORDER, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.SHOW_ORDER)
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <div class="input-group" style="width: 100%;">
+                    <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.AllRoleIdArrStr)</span>
+                    <div class="form-control">
+                        @Html.CheckBoxListFor(m => m.AllRoleIdArrStr,allRoleSelect )
+                </div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <div class="input-group" style="width: 100%;">
+                    <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.LOCATION)</span>
+                    @Html.TextBoxFor(m => m.LOCATION, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.LOCATION)
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <div class="input-group" style="width: 100%;">
+                    <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.IMAGE_URL)</span>
+                    @Html.TextBoxFor(m => m.IMAGE_URL, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.IMAGE_URL)
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <div class="input-group" style="width: 100%;">
+                    <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.DESCRIPTION)</span>
+                    @Html.TextBoxFor(m => m.DESCRIPTION, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.DESCRIPTION)
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <div style="text-align: center; padding: 10px;display: none">
+        <button type="button" class="btn btn-success btn-sm" onclick="onSubmit()">
+            <span class="glyphicon glyphicon-floppy-disk"></span>
+            &nbsp; &nbsp;保 &nbsp; &nbsp;存 &nbsp; &nbsp;</button>
+        <button type="button" class="btn btn-success btn-sm" onclick="CloseWin();">
+            <span class="glyphicon glyphicon-remove"></span>
+            &nbsp; &nbsp;取 &nbsp; &nbsp;消 &nbsp; &nbsp;</button>
+        <input style="width: 60px; display: none; margin-right: 20px;" type="submit" value="保存" />
+    </div> 
+}
+<script type="text/javascript" src="~/Scripts_Page/FunBase.js"></script>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

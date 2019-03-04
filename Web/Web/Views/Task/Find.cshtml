@@ -1,0 +1,166 @@
+﻿@model ProInterface.Models.TTask
+@{
+    ViewBag.Title = "Find";
+}
+<style>
+    .col-md-6,.col-md-12 {
+        padding: 1px;
+    }
+
+    .form-control[readonly] {
+        cursor: not-allowed;
+        background-color: #fff;
+    }
+
+    fieldset {
+        padding: .35em .625em .75em;
+        margin: 0 2px;
+        border: 1px solid silver;
+    }
+
+    legend {
+        padding: 0px 10px;
+        border: 0;
+        width: auto;
+        height:35px;
+    }
+</style>
+
+<table style="table-layout: fixed; width: 100%">
+    <tr>
+        <td>
+            <fieldset>
+                <legend>工单信息</legend>
+                <div class="col-md-6">
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.TASK_NAME)</span>
+                        <div class="form-control">
+                            @Html.DisplayFor(m => m.TASK_NAME)
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.STATUS)</span>
+                        <div class="form-control">
+                            @Html.DisplayFor(m => m.STATUS)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.CREATE_TIME)</span>
+                        <div class="form-control">
+                            @Html.DisplayFor(m => m.CREATE_TIME)
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.CREATE_USER_NAME)</span>
+                        <div class="form-control">
+                            @Html.DisplayFor(m => m.CREATE_USER_NAME)
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.CreatePhone)</span>
+                        <div class="form-control">
+                            @Html.DisplayFor(m => m.CreatePhone)
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.REMARK)</span>
+                        <div class="form-control">
+                            @Html.DisplayFor(m => m.REMARK)
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <fieldset>
+                <legend>流转明细</legend>
+                @foreach (var flow in this.Model.AllFlow.ToList())
+                {
+                    <fieldset style="margin:5px">
+                        <legend><span style="color:blue;font-weight:bold;font-size:14px">第 @flow.LEVEL_ID 步</span></legend>
+                        <div class="col-md-6">
+                            <div class="input-group" style="width: 100%;">
+                                <span class="input-group-addon" data-size="8">操作人</span>
+                                <div class="form-control" style="color:blue;">@flow.DealUserName (@flow.DealUserPhone)</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="input-group" style="width: 100%;">
+                                <span class="input-group-addon" data-size="8">受理时间</span>
+                                <div class="form-control">@flow.ACCEPT_TIME</div>
+                            </div>
+                        </div>
+                        
+                         <div class="col-md-6" style="display:none">
+                            <div class="input-group" style="width: 100%;">
+                                <span class="input-group-addon" data-size="8">操作人角色</span>
+                                <div class="form-control">@flow.DealRole</div>
+                            </div>
+                        </div>
+                         <div class="col-md-6">
+                            <div class="input-group" style="width: 100%;">
+                                <span class="input-group-addon" data-size="8">操作人归属</span>
+                                <div class="form-control">@flow.DealUserDistrictName</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="input-group" style="width: 100%;">
+                                <span class="input-group-addon" data-size="8">处理状态</span>
+                                <div class="form-control" style="color:red">@flow.DEAL_STATUS (@flow.DEAL_TIME)</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="input-group" style="width: 100%;">
+                                <span class="input-group-addon" data-size="8">操作类型</span>
+                                <div class="form-control">@flow.NAME</div>
+                            </div>
+                        </div>
+                      
+                        @for (var i = 0; i < flow.AllHandle.Count;i++)
+                        {
+                            var handle = flow.AllHandle[i];
+                            <div class="col-md-12">
+                                <div class="input-group" style="width: 100%;">
+                                    <span class="input-group-addon" data-size="8">处理内容</span>
+                                    <div class="form-control">
+                                        @string.Format("{0}({1})",handle.CONTENT,handle.DEAL_USER_NAME) 
+                                        @foreach (var file in handle.AllFiles)
+                                        {
+                                            <div><a href="@Url.Content(file.URL)" target="_blank">@file.NAME</a> </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        @if (!string.IsNullOrEmpty(flow.SHOW_URL))
+                        {
+                            <div class="col-md-12">
+                                <div class="input-group" style="width: 100%;">
+                                    <span class="input-group-addon" data-size="8">详情内容</span>
+                                    <div class="form-control">
+                                    <iframe onload="Javascript: $(this).height(this.contentWindow.window.document.body.scrollHeight)" src="@Url.Content(flow.SHOW_URL+"?id="+flow.ID)" frameborder="0" scrolling="no" style="width:100%;height:100%"></iframe>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </fieldset>
+                }
+            </fieldset>
+        </td>
+    </tr>
+</table>
+

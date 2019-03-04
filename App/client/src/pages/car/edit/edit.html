@@ -1,0 +1,114 @@
+<ion-header>
+  <ion-toolbar color="car">
+    <ion-buttons left>
+      <button ion-button icon-only (click)="GoBack()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>车辆信息</ion-title>
+    <ion-buttons right>
+      <button ion-button icon-only (click)="save()">
+        <ion-icon name="checkmark-circle"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-item-group [formGroup]="userForm">
+    <ion-item>
+      <ion-label>是否新车</ion-label>
+      <ion-toggle color="car"  formControlName="IS_NEW"></ion-toggle>
+    </ion-item>
+    <ion-item>
+      <ion-label>车牌</ion-label>
+      <ion-select [ngModelOptions]="{standalone: true}" (ionChange)="ChangCityCode($event)" [(ngModel)]="cityCode" okText="确定"
+        cancelText="取消">
+        <ion-option *ngFor="let key of allCityCode" value="{{key}}">{{key}}</ion-option>
+      </ion-select>
+        <ion-input type="text" formControlName="PLATE_NUMBER" capitalize></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>发动机号</ion-label>
+      <ion-input type="text" formControlName="ENGINE_NUMBER" capitalize></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>车架号</ion-label>
+      <ion-input type="text" formControlName="FRAME_NUMBER" capitalize></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>车辆类型</ion-label>
+      <ion-input type="text" formControlName="CAR_TYPE"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>价格(￥)</ion-label>
+      <ion-input type="text" formControlName="PRICE"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>品牌型号</ion-label>
+      <ion-input type="text" formControlName="BRAND"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>注册日期</ion-label>
+      <ion-datetime displayFormat="YYYY-MM-DD HH:mm" formControlName="REG_DATA" cancelText="取消" doneText="完成"></ion-datetime>
+    </ion-item>
+
+    <ion-item *ngIf="isNew">
+      <ion-row>
+        <ion-col *ngIf="bean.billUrl!=null">
+          <img src="{{bean.billUrl|ImgUrl}}" height="70px" width="70px" alt="发票" style="margin: 10px" (click)="upImg('billUrl')"
+          />
+          <p>发票</p>
+        </ion-col>
+        <ion-col *ngIf="bean.billUrl==null">
+          <button ion-button icon-right ion-button (click)="upImg('billUrl')">
+              <ion-icon name="cloud-upload">&nbsp;</ion-icon>
+              发票
+            </button>
+        </ion-col>
+
+         <ion-col *ngIf="bean.certificatePicUrl!=null">
+          <img src="{{bean.certificatePicUrl|ImgUrl}}" height="70px" width="70px" alt="合格证" style="margin: 10px" (click)="upImg('certificatePicUrl')"
+          />
+          <p>合格证</p>
+        </ion-col>
+        <ion-col *ngIf="bean.certificatePicUrl==null">
+          <button ion-button icon-right ion-button (click)="upImg('certificatePicUrl')">
+              <ion-icon name="cloud-upload">&nbsp;</ion-icon>
+              合格证
+            </button>
+        </ion-col>
+      </ion-row>
+    </ion-item>
+    <ion-item>
+      <ion-row>
+        <ion-col *ngIf="bean.DrivingPicUrl!=null">
+          <img src="{{bean.DrivingPicUrl|ImgUrl}}" height="70px" width="70px" alt="行驶证正面" style="margin: 10px" (click)="upImg('DrivingPicUrl')"
+          />
+          <p>行驶证正面</p>
+        </ion-col>
+        <ion-col *ngIf="bean.DrivingPicUrl==null">
+          <button ion-button icon-right ion-button (click)="upImg('DrivingPicUrl')">
+              <ion-icon name="cloud-upload">&nbsp;</ion-icon>
+              行驶证正面
+            </button>
+        </ion-col>
+        <ion-col *ngIf="bean.DrivingPicUrl1!=null">
+          <img src="{{bean.DrivingPicUrl1|ImgUrl}}" height="70px" width="70px" alt="行驶证附页" style="margin: 10px" (click)="upImg('DrivingPicUrl1')"
+          />
+          <p>行驶证附页</p>
+        </ion-col>
+        <ion-col *ngIf="bean.DrivingPicUrl1==null">
+          <button ion-button icon-right ion-button (click)="upImg('DrivingPicUrl1')">
+              <ion-icon name="cloud-upload">&nbsp;</ion-icon>
+              行驶证附页
+            </button>
+        </ion-col>
+      </ion-row>
+    </ion-item>
+  </ion-item-group>
+
+
+  <div padding>
+    <button ion-button color="car" block (click)="save()">保存</button>
+  </div>
+</ion-content>

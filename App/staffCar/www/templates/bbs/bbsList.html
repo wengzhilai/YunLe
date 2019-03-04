@@ -1,0 +1,66 @@
+<ion-view hide-back-button="true"  ng-init="bbsList.init()">
+  <ion-nav-title>用户反馈</ion-nav-title>
+  <ion-nav-buttons side="left">
+    <button class="button button-icon icon ion-ios-arrow-back light" ui-sref="home"></button>
+  </ion-nav-buttons>
+  <ion-nav-buttons side="right">
+    <button class=" button button-icon icon light ion-chatbubble-working" data-pack="default" data-tags="添加" style="display: inline-block;font-size: 30px" ng-click="modal.show()" ></button>
+  </ion-nav-buttons>
+  <div class="bar bar-subheader">
+    <div class="button-bar bar-stable">
+      <a class="button" ng-click="bbsList.filterKey($event)">问题咨询</a>
+      <a class="button" ng-click="bbsList.filterKey($event)">修改意见</a>
+      <a class="button" ng-click="bbsList.filterKey($event)">经验交流</a>
+    </div>
+  </div>
+
+
+  <ion-content class="has-header " style="margin-top:44px;background-color: #f0f0f0">
+
+    <ion-refresher pulling-text="下拉刷新" on-refresh="bbsList.doRefresh()"></ion-refresher>
+
+    <div class="list" style="margin-top: 10px;" collection-repeat="o in bbsList.lists.data" >
+      <div >
+        <div class="row light-bg" style="height: 40px;">
+          <div class="col col-20 assertive h4" style="padding-left: 10px;text-align:center;margin: auto;">
+            {{ o.addUserName}}</div>
+          <div class="col col-offset-60" style="padding-top: 5px;font-size: 13px;">
+            <span  style="float: right;" ng-click="callPhone(o.userPhone)">{{o.userPhone}}</span>
+          </div>
+        </div>
+
+        <div class="item" data-id="{{o.ID}}" >
+          <div data-type="{{o.ORDER_TYPE}}" ng-click="bbsList.toFollowOrder(o)">
+          <p style="font-size: 13px;padding-left: 10px">类型： {{o.CaseTypeName}}</p>
+          <p style="font-size: 13px;padding-left: 10px">状态： {{o.STATUS}}</p>
+          <p style="font-size: 13px;padding-left: 10px"> 时间： {{o.STATUS_TIME|UnixNum| date:"yyyy-MM-dd HH:mm"}}</p>
+          <p style="font-size: 13px;padding-left: 10px;color: #0c63ee;font-weight: bold"> 内容： {{o.CONTENT}}</p>
+          </div>
+
+          <div class="item" ng-repeat="o1 in o.AllChildrenItem">
+              <p style="font-size: 13px;padding-left: 10px;color: red">{{o1.addUserName}}回复： {{o1.CONTENT}}</p>
+          </div>
+        </div>
+        <div style="background-color: #f0f0f0;height:10px"></div>
+      </div>
+    </div>
+
+    <ion-infinite-scroll ng-if="bbsList.hasNextPage()"
+                         on-infinite="bbsList.loadMore()"
+                         distance="1%">
+    </ion-infinite-scroll>
+
+  </ion-content>
+  <div class="tabs-striped ">
+    <div class="tabs tabs-icon-left">
+      <a class="tab-item active" ng-click="bbsList.onTab($event,1)">
+        <i class="icon ion-person"></i>
+        与我相关的
+      </a>
+      <a class="tab-item " ng-click="bbsList.onTab($event,2)">
+        <i class="icon ion-ios-people"></i>
+        所有的
+      </a>
+    </div>
+  </div>
+</ion-view>

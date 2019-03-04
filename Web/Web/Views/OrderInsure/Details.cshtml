@@ -1,0 +1,332 @@
+
+@model ProInterface.Models.YlOrderInsure
+@{
+    ViewBag.Title = "编辑投保";
+}
+
+<style>
+    .col-md-6, .col-md-12 {
+        padding: 1px;
+        float: left;
+    }
+
+    .form-control[readonly] {
+        cursor: not-allowed;
+        background-color: #fff;
+    }
+</style>
+<link href="~/Scripts/datetimepicker/jquery.datetimepicker.css" rel="stylesheet" />
+<script type="text/javascript" src="~/Scripts/datetimepicker/jquery.datetimepicker.js"></script>
+<script type="text/javascript" src="~/Scripts/easyui/datagrid-groupview.js"></script>
+<script type="text/javascript" src="~/Scripts/ajaxfileupload.js"></script>
+
+
+<div id="myPnl" style="display:none"></div>
+@using (Ajax.BeginForm(new AjaxOptions
+{
+    UpdateTargetId = "myPnl",
+    Confirm = "确定要提交吗",
+    OnBegin = "OnBegin",
+    OnSuccess = "OnSuccess",
+    OnFailure = "OnFailure",
+    OnComplete = "OnComplete"
+}))
+{
+    @Html.HiddenFor(m => m.ID)
+    <table style="table-layout:fixed;width:100%">
+        <tr>
+            <td>
+                <div class="col-md-6">
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.CAR_ID)</span>
+                        @Html.TextBoxFor(m => m.CAR_ID, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.CAR_ID)
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.CLIENT_ID)</span>
+                        @Html.TextBoxFor(m => m.CLIENT_ID, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.CLIENT_ID)
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.ORDER_NO)</span>
+                        @Html.TextBoxFor(m => m.ORDER_NO, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.ORDER_NO)
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.PAY_STATUS)</span>
+                        @Html.MyDropDownListFor(m => m.PAY_STATUS,
+                       new[] {
+                           new SelectListItem { Value= "新生成", Text= "新生成" },
+                           new SelectListItem { Value= "待付款", Text= "待付款" },
+                           new SelectListItem { Value= "已付款", Text= "已付款" },
+                           new SelectListItem { Value= "待评论", Text= "待评论" }
+                       }, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.COST)</span>
+                        <div class="form-control">
+                            @Html.TextBoxFor(m => m.COST, new { @class = "easyui-numberbox", precision = "2" })
+                            @Html.ValidationMessageFor(m => m.COST)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.APPRAISE_SCORE)</span>
+                        <div class="form-control">
+                            @Html.TextBoxFor(m => m.APPRAISE_SCORE, new { @class = "easyui-numberbox", precision = "0" })
+                            @Html.ValidationMessageFor(m => m.APPRAISE_SCORE)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.APPRAISE_CONTENT)</span>
+                        @Html.TextBoxFor(m => m.APPRAISE_CONTENT, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.APPRAISE_CONTENT)
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.ORDER_NO)</span>
+                        @Html.TextBoxFor(m => m.ORDER_NO, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.ORDER_NO)
+                    </div>
+                </div>
+
+
+                <div class="col-md-6">
+
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.INSURER_ID)</span>
+                        @Html.MyDropDownListFor(m=>m.INSURER_ID,ViewData["insurerAll"] as List<SelectListItem>, new { @class = "form-control" })
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-6">
+
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.IS_TRANSFER)</span>
+                        @Html.DropDownListFor(m => m.INSURER_ID, new[] {
+                       new SelectListItem { Value="1",Text="是" },
+                       new SelectListItem { Value="0",Text="否" },
+                   }, new { @class = "form-control" })
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.CAR_USERNAME)</span>
+                        @Html.TextBoxFor(m => m.CAR_USERNAME, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.CAR_USERNAME)
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.ID_NO)</span>
+                        @Html.TextBoxFor(m => m.ID_NO, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.ID_NO)
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.CAR_OWNER)</span>
+                        @Html.TextBoxFor(m => m.CAR_OWNER, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.CAR_OWNER)
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.INSURED_NAME)</span>
+                        @Html.TextBoxFor(m => m.INSURED_NAME, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.INSURED_NAME)
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.PROPOSER_NAME)</span>
+                        @Html.TextBoxFor(m => m.PROPOSER_NAME, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.PROPOSER_NAME)
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.DELIVERY)</span>
+                        @Html.TextBoxFor(m => m.DELIVERY, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.DELIVERY)
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.ID_NO_PIC_ID)</span>
+                        <div class="form-control">
+                            <button type="button" class="btn btn-default btn-xs" id="image2" onmousemove="MoveFilePic(this,event,'_FilePic')"><span class="glyphicon glyphicon-upload"></span>上传</button>
+                            <button type="button" class="btn btn-default btn-xs" id="down_Excel" onclick="WindowOpen($('#idNoUrl').val())"><span class="glyphicon glyphicon-download-alt"></span>下载</button>
+                            <input id="_FilePic" name="_FilePic" type="file" onchange="ChangePic('idNoUrl', 'ID_NO_PIC_ID', '_FilePic')" style="display: none">
+                            @Html.TextBoxFor(m => m.idNoUrl, new { @style = "width:50%" })
+                            @Html.HiddenFor(m => m.ID_NO_PIC_ID)
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.DRIVING_PIC_ID)</span>
+                        <div class="form-control">
+                            <button type="button" class="btn btn-default btn-xs" id="image2" onmousemove="MoveFilePic(this,event,'_FilePic')"><span class="glyphicon glyphicon-upload"></span>上传</button>
+                            <button type="button" class="btn btn-default btn-xs" id="down_Excel" onclick="WindowOpen($('#DrivingPicUrl').val())"><span class="glyphicon glyphicon-download-alt"></span>下载</button>
+                            <input id="_FilePic2" name="_FilePic2" type="file" onchange="ChangePic('DrivingPicUrl', 'DRIVING_PIC_ID', '_FilePic2')" style="display: none">
+                            @Html.TextBoxFor(m => m.DrivingPicUrl, new { @style = "width:50%" })
+                            @Html.HiddenFor(m => m.DRIVING_PIC_ID)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.DRIVER_PIC_ID)</span>
+                        <div class="form-control">
+                            <button type="button" class="btn btn-default btn-xs" id="image2" onmousemove="MoveFilePic(this,event,'_FilePic')"><span class="glyphicon glyphicon-upload"></span>上传</button>
+                            <button type="button" class="btn btn-default btn-xs" id="down_Excel" onclick="WindowOpen($('#driverPicUrl').val())"><span class="glyphicon glyphicon-download-alt"></span>下载</button>
+                            <input id="_FilePic1" name="_FilePic1" type="file" onchange="ChangePic('driverPicUrl', 'DRIVER_PIC_ID', '_FilePic1')" style="display: none">
+                            @Html.TextBoxFor(m => m.driverPicUrl, new { @style = "width:50%" })
+                            @Html.HiddenFor(m => m.DRIVER_PIC_ID)
+                        </div>
+                    </div>
+                </div>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+
+                @Html.HiddenFor(m=>m.SaveProductIdStr)
+                <table id="CFG_JSON" class="easyui-datagrid" title="产品报价" style="width:100%;height:250px" data-options="singleSelect:true,
+                       rownumbers:true,
+                       fitColumns:true,
+                       data:data,
+                       view:groupview,
+                       onClickRow: onClickRow,
+                       groupField:'InsurerName',
+                        groupFormatter:function(value,rows){
+                            return value;
+                        }
+                       ">
+                    <thead>
+                        <tr>
+                            <th data-options="field:'InsurerName',width:80">保险公司</th>
+                            <th data-options="field:'InsurerProductName',width:100">产品</th>
+                            <th data-options="field:'MAX_PAY',width:80,align:'right',editor:{type:'numberbox'}">最大赔率</th>
+                            <th data-options="field:'COST',width:80,align:'right',editor:{type:'numberbox'}">投保费用</th>
+                        </tr>
+                    </thead>
+                </table>
+            </td>
+        </tr>
+    </table>
+        <div style="text-align:center;padding:10px;display:none;">
+            <a class="easyui-linkbutton" data-options="iconCls:'icon-save'" onclick="onSubmit()">保存</a>
+            <a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" onclick="parent.CloseWin();">取消</a>
+            <input style="width: 60px; display:none; margin-right: 20px;" type="submit" value="保存" />
+        </div>
+}
+<script type="text/javascript" src="~/Scripts_Page/FunBase.js"></script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $(function () {
+            $('.form_datetime').datetimepicker({
+                timepicker: false,
+                step: 5,
+                format: 'Y/m/d'
+            });
+        })
+
+
+        function onSubmit() {
+            var com = $(".combo-text")
+            if (com.attr('name') == null) {
+                com.attr('name', 'combo_text')
+            }
+
+            com = $(".textbox-text")
+            if (com.attr('name') == null) {
+                com.attr('name', 'textbox_text')
+            }
+            $('#CFG_JSON').datagrid('acceptChanges');
+            var data = $('#CFG_JSON').datagrid('getData');
+            var strJson = JSON.stringify(data.rows);
+            $("#SaveProductIdStr").val(strJson);
+
+            var obj = $('input[type="submit"]');
+            obj[0].click();
+        }
+
+
+        var data = @MvcHtmlString.Create(Model.SaveProductIdStr);
+
+        var editIndex = undefined;
+        function onClickRow(index) {
+            if (editIndex != index) {
+                if (endEditing()) {
+                    $('#CFG_JSON').datagrid('selectRow', index).datagrid('beginEdit', index);
+                    editIndex = index;
+                } else {
+                    $('#CFG_JSON').datagrid('selectRow', editIndex);
+                }
+            }
+        }
+        function endEditing() {
+            if (editIndex == undefined) { return true }
+            if ($('#CFG_JSON').datagrid('validateRow', editIndex)) {
+                $('#CFG_JSON').datagrid('endEdit', editIndex);
+                $('#CFG_JSON').datagrid('acceptChanges');
+                editIndex = undefined;
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+
+
+
+    </script>
+
+
+}

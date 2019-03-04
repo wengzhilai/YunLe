@@ -1,0 +1,32 @@
+<ion-view view-title="信息提醒" hide-back-button="true">
+    <ion-nav-buttons side="left">
+        <button class="button button-icon icon ion-ios-arrow-back light" ui-sref="home"></button>
+    </ion-nav-buttons>
+    <!--
+    <ion-nav-buttons side="right">
+        <button class="button button-icon icon ion-compose light" ng-click="messageList.sendMessage()"></button>
+
+    </ion-nav-buttons>
+-->
+
+   <ion-content class="has-header" >
+        <ion-refresher pulling-text="下拉刷新" on-refresh="messageList.doRefresh()"></ion-refresher>
+        <div collection-repeat="o in messageList.lists.data">
+            <div class="list light-bg" style="margin-top: 10px;">
+                <a class="item item-icon-right" style="padding-left: 20px" href="#/messageInfo/{{o.ID}}">
+
+                    <p style="font-size: 16px" class="iconfont">&#xe60b;&nbsp;{{o.NAME}}</p>
+                    <p style="color:#bbbbbb;font-size: 14px;padding-top: 10px">{{o.ADDRESS}}</p>
+                    <b style="padding-top: 5px;font-size: 15px">{{o.STATUS}}</b>
+                    <i class="icon ion-ios-arrow-right" style="font-size: 16px"></i>
+                </a>
+
+            </div>
+            <div style="background-color: #f0f0f0;height:1px;margin-top: -10px;margin-bottom: -10px"></div>
+        </div>
+        <ion-infinite-scroll ng-if="messageList.hasNextPage()"
+                             on-infinite="messageList.loadMore()"
+                             distance="1%">
+        </ion-infinite-scroll>
+    </ion-content>
+</ion-view>

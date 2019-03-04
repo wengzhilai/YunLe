@@ -1,0 +1,54 @@
+﻿@model ProInterface.Models.TRole
+@{
+    ViewBag.Title = "RoleDetails";
+}
+
+<script type="text/javascript" src="~/Scripts_Page/FunBase.js"></script>
+<div id="myPnl" style="display: none">
+</div>
+@using (Ajax.BeginForm(new AjaxOptions
+{
+    UpdateTargetId = "myPnl",
+    Confirm = "确定要提交吗",
+    OnBegin = "OnBegin",
+    OnSuccess = "OnSuccess",
+    OnFailure = "OnFailure",
+    OnComplete = "OnComplete"
+}))
+{
+
+    
+    @Html.HiddenFor(m => m.ID)
+    <div class="input-group" style="padding-top: 10px;">
+        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.NAME)</span>
+        @Html.TextBoxFor(m => m.NAME, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.NAME)
+    </div>
+
+    <div  class="input-group" style="padding-top: 10px;">
+        <span class="input-group-addon" data-size="4">选择模块</span>
+        @Html.DropDownList("queryId",null, new { @class = "form-control"})
+    </div>
+    <div  class="input-group" style="padding-top: 10px;">
+        <span class="input-group-addon" data-size="4">无权限按钮</span>
+        <div class = "form-control">
+        @Html.CheckBoxList("AuthArr",ViewData["AuthArr"] as IList<SelectListItem>)
+            </div>
+    </div>
+    <div style="text-align: center; padding: 10px;display: none">
+        <button type="button" class="btn btn-success btn-sm" onclick="onSubmit()">
+            <span class="glyphicon glyphicon-floppy-disk"></span>
+            &nbsp; &nbsp;保 &nbsp; &nbsp;存 &nbsp; &nbsp;</button>
+        <button type="button" class="btn btn-success btn-sm" onclick="CloseWin();">
+            <span class="glyphicon glyphicon-remove"></span>
+            &nbsp; &nbsp;取 &nbsp; &nbsp;消 &nbsp; &nbsp;</button>
+        <input style="width: 60px; display: none; margin-right: 20px;" type="submit" value="保存" />
+    </div> 
+       
+  
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+

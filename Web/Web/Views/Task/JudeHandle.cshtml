@@ -1,0 +1,54 @@
+﻿@model ProInterface.Models.TNodeFlow
+@{
+    ViewBag.Title = "JudeHandle";
+}
+<div style="overflow: inherit; height: 100%">
+    @Html.HiddenFor(m => m.ID)
+     @Html.HiddenFor(m => m.FlowID)
+    @*<iframe id="corretIframe" scrolling="auto" frameborder="0" style="height: 100%; width: 100%;"></iframe>*@
+</div>
+<script type="text/javascript">
+    $(function () {
+        
+        @if(Request["tag"].ToString()=="1")
+        {
+            string FlowID = Request["flow_id"].ToString();
+            <text>
+            //var FlowID = $("#FlowID").val();
+            @if (FlowID.Equals("1")) {
+                <text>
+                location.href = "../Task/HandleNode?id=@this.Model.ID";
+               </text>
+                @*   $("#corretIframe").attr("src", "../Task/HandleNode?id=@this.Model.ID");*@
+            }
+            else if (FlowID.Equals("2"))
+            {
+                 <text>
+                location.href = "../Merchant/Audit?id=@this.Model.ID";
+        </text>
+                @*  $("#corretIframe").attr("src", "../Merchant/Audit?id=@this.Model.ID");*@
+            }
+            else if (FlowID.Equals("3"))
+            {
+                 <text>
+                location.href = "../NodeGrade/NodeGrade?id=@this.Model.ID";
+        </text>
+                @*  $("#corretIframe").attr("src", "../NodeGrade/NodeGrade?id=@this.Model.ID");*@
+            }
+            </text>
+        }
+        else if (Request["tag"].ToString() == "2")
+        {
+            <text>
+            location.href = "../TalksCommi/Details?id=@this.Model.ID";
+            </text>
+        }
+        else if (Request["tag"].ToString() == "3")
+        {
+            <text>
+        location.href = "../NodeGrade/NodeGradeAudit?id=@this.Model.ID";
+            </text>
+        }
+    });
+
+</script>

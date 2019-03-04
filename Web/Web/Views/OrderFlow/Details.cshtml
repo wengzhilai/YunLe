@@ -1,0 +1,111 @@
+
+@model ProInterface.Models.YL_ORDER_FLOW
+@{
+    ViewBag.Title = "编辑订单流程";
+    string allStatusStr = "新生成,接单,领单,维修,待收车,完成";
+    if (Model != null)
+    {
+        switch (Model.ORDER_TYPE)
+        {
+            case "救援":
+                allStatusStr = "新生成,接车中,救援中,已接车,领单,等待定损,维护中,已质检,完成";
+                break;
+            case "维护":
+                allStatusStr = "新生成,接车中,已接车,等待定损,维护中,已质检,完成";
+                break;
+            case "保养":
+                allStatusStr = "新生成,接车中,已接车,等待定损,维护中,已质检,完成";
+                break;
+            case "投保":
+                allStatusStr = "新生成,已报价,待确认,已购买,完成";
+                break;
+            case "审车":
+                allStatusStr = "新生成,接单,领单,审车,待收车,完成";
+                break;
+        }
+    }
+}
+
+<style>
+    .col-md-6, .col-md-12 {
+        padding: 1px;
+    }
+
+    .form-control[readonly] {
+        cursor: not-allowed;
+        background-color: #fff;
+    }
+</style>
+<link href="~/Scripts/datetimepicker/jquery.datetimepicker.css" rel="stylesheet" />
+<script type="text/javascript" src="~/Scripts/datetimepicker/jquery.datetimepicker.js"></script>
+
+<div id="myPnl" style="display:none"></div>
+@using (Ajax.BeginForm(new AjaxOptions
+{
+    UpdateTargetId = "myPnl",
+    Confirm = "确定要提交吗",
+    OnBegin = "OnBegin",
+    OnSuccess = "OnSuccess",
+    OnFailure = "OnFailure",
+    OnComplete = "OnComplete"
+}))
+{
+    @Html.HiddenFor(m => m.ORDER_FLOW_NO)
+    @Html.HiddenFor(m => m.ORDER_ID)
+    <table style="table-layout:fixed;width:100%">
+        <tr>
+            <td>
+                <div class="col-md-12">
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.SUBJECT)</span>
+                        @Html.TextBoxFor(m => m.SUBJECT, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.SUBJECT)
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.COST)</span>
+                        <div class="form-control">
+                            @Html.TextBoxFor(m => m.COST, new { @class = "easyui-numberbox", precision = "2" })
+                            @Html.ValidationMessageFor(m => m.COST)
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.STATUS)</span>
+                        @Html.DropDownListFor(m => m.STATUS, allStatusStr.Split(',').Select(x => new SelectListItem { Value = x, Text = x }).ToList(), new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.BODY)</span>
+                        @Html.TextAreaFor(m => m.BODY, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.BODY)
+                    </div>
+                </div>
+
+                
+            </td>
+        </tr>
+    </table>
+        <div style="text-align:center;padding:10px;display:none;">
+            <a class="easyui-linkbutton" data-options="iconCls:'icon-save'" onclick="onSubmit()">保存</a>
+            <a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" onclick="parent.CloseWin();">取消</a>
+            <input style="width: 60px; display:none; margin-right: 20px;" type="submit" value="保存" />
+        </div>
+}
+<script type="text/javascript" src="~/Scripts_Page/FunBase.js"></script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $(function () {
+            $('.form_datetime').datetimepicker({
+                timepicker: false,
+                step: 5,
+                format: 'Y/m/d'
+            });
+        })
+    </script>
+}

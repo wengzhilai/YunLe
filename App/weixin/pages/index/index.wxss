@@ -1,0 +1,49 @@
+.slide-zoom {
+    display: block;
+    width: 100%;
+    text-align: center;
+}
+.slide-zoom image {
+    width: 100%;
+    height: 163px;
+    border: 0;
+}
+ion-row {
+    background-color: #F9FAFB;
+    display: flex;
+}
+ion-col {
+    background-color: #FFF;
+    border-radius: 2px;
+    text-align: -webkit-center;
+    margin: 1px;
+    display: block;
+    -webkit-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    padding: 5px;
+    width: 100%;
+}
+ion-col div image {
+    height: 50px;
+    width: 50px;
+    margin: 13px 0;
+    padding: 0;
+}
+.button-clear {
+font-size: 13px;
+}
+
+.divBack {
+    margin: 15px auto 23px;
+    border-radius: 50%;
+    color: #fff;
+    background-color: red;
+    height: 47px;
+    width: 47px;
+}
+.divBack ion-icon {
+    font-size: 30px;
+    text-align: center;
+    margin-top: 8px;
+}

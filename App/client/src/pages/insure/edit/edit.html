@@ -1,0 +1,218 @@
+<ion-header>
+  <ion-toolbar color="car">
+    <ion-buttons left>
+      <button ion-button icon-only (click)="GoBack()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>投保定单</ion-title>
+    <ion-buttons right>
+      <button ion-button icon-only (click)="save()">
+        <ion-icon name="checkmark-circle"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-item-group [formGroup]="userForm">
+    <ion-item-divider color="light">
+      车主信息
+    </ion-item-divider>
+    <ion-item>
+      <ion-label floating>车主姓名</ion-label>
+      <ion-input type="text" formControlName="CAR_USERNAME"></ion-input>
+    </ion-item>
+    <ion-item *ngIf="formErrors.CAR_USERNAME">
+      <div class="error-msg">{{ formErrors.CAR_USERNAME }}</div>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>配送地址</ion-label>
+      <ion-input type="text" formControlName="DELIVERY"></ion-input>
+    </ion-item>
+    <ion-item *ngIf="formErrors.DELIVERY">
+      <div class="error-msg">{{ formErrors.DELIVERY }}</div>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>备注</ion-label>
+      <ion-textarea type="text" formControlName="REMARK"></ion-textarea>
+    </ion-item>
+    <ion-item *ngIf="formErrors.REMARK">
+      <div class="error-msg">{{ formErrors.REMARK }}</div>
+    </ion-item>
+    <ion-item>
+      <button ion-button (click)="AddImg()">
+        <ion-icon name="cloud-upload">&nbsp;</ion-icon>
+        上传图片
+      </button>
+    </ion-item>
+    <ion-item>
+      <ion-scroll scrollX="true" style="height: 110px;">
+        <img *ngFor="let o of bean.AllFiles" name="allFile_{{o.indexNo}}" src="{{o.URL|ImgUrl}}" height="70px" width="70px" style="margin: 10px"
+          (click)="upImg('allFile_'+o.indexNo)" />
+      </ion-scroll>
+    </ion-item>
+  </ion-item-group>
+  <ion-item-group>
+    <ion-item-divider color="light">
+      车辆信息
+    </ion-item-divider>
+    <ion-item *ngIf="bean.Client.AllCar.length>0">
+      <ion-label>选择车辆</ion-label>
+      <ion-select [ngModelOptions]="{standalone: true}" (ngModelChange)="SelectedCar($event)" [(ngModel)]="bean.CarNumber" okText="确定"
+        cancelText="取消">
+        <ion-option *ngFor="let key of bean.Client.AllCar" value="{{key.PLATE_NUMBER}}">{{key.PLATE_NUMBER}}
+        </ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label>新车</ion-label>
+      <ion-toggle [ngModelOptions]="{standalone: true}" [(ngModel)]="bean.Car.isNew" checked="true"></ion-toggle>
+    </ion-item>
+    <ion-item *ngIf="!bean.Car.isNew">
+      <ion-label floating>车牌号</ion-label>
+      <ion-input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="bean.Car.PLATE_NUMBER" capitalize></ion-input>
+    </ion-item>
+    <ion-item *ngIf="bean.Car.isNew">
+      <img *ngIf="bean.Car.billUrl!=null" src="{{bean.Car.billUrl|ImgUrl}}" height="70px" width="70px" alt="发票" style="margin: 10px"
+        (click)="upImg('billUrl')" />
+      <ion-buttons>
+        <button ion-button icon-right *ngIf="bean.Car.billUrl==null" ion-button (click)="upImg('billUrl')">
+          <ion-icon name="cloud-upload">&nbsp;</ion-icon>
+          发票
+        </button>
+      </ion-buttons>
+      <img *ngIf="bean.Car.certificatePicUrl!=null" src="{{bean.Car.certificatePicUrl|ImgUrl}}" height="70px" width="70px" alt="合格证"
+        style="margin: 10px" (click)="upImg('certificatePicUrl')" />
+      <ion-buttons>
+        <button ion-button icon-right *ngIf="bean.Car.certificatePicUrl==null" ion-button (click)="upImg('certificatePicUrl')">
+          <ion-icon name="cloud-upload">&nbsp;</ion-icon>
+          合格证
+        </button>
+      </ion-buttons>
+    </ion-item>
+    <ion-item *ngIf="!bean.Car.isNew">
+      <ion-row>
+        <ion-col *ngIf="bean.Car.DrivingPicUrl!=null">
+          <img src="{{bean.Car.DrivingPicUrl|ImgUrl}}" height="70px" width="70px" alt="行驶证正面" style="margin: 10px" (click)="upImg('DrivingPicUrl')"
+          />
+          <p>行驶证正面</p>
+        </ion-col>
+        <ion-col *ngIf="bean.Car.DrivingPicUrl==null">
+          <button ion-button icon-right ion-button (click)="upImg('DrivingPicUrl')">
+              <ion-icon name="cloud-upload">&nbsp;</ion-icon>
+              行驶证正面
+            </button>
+        </ion-col>
+
+        <ion-col *ngIf="bean.Car.DrivingPicUrl1!=null">
+          <img src="{{bean.Car.DrivingPicUrl1|ImgUrl}}" height="70px" width="70px" alt="行驶证附页" style="margin: 10px" (click)="upImg('DrivingPicUrl1')"
+          />
+          <p>行驶证附页</p>
+        </ion-col>
+        <ion-col *ngIf="bean.Car.DrivingPicUrl1==null">
+          <button ion-button icon-right ion-button (click)="upImg('DrivingPicUrl1')">
+              <ion-icon name="cloud-upload">&nbsp;</ion-icon>
+              行驶证附页
+            </button>
+        </ion-col>
+      </ion-row>
+    </ion-item>
+    <ion-item>
+      <ion-row>
+        <ion-col *ngIf="bean.Car.idNoUrl!=null">
+          <img src="{{bean.Car.idNoUrl|ImgUrl}}" height="70px" width="70px" alt="车主证件正面" style="margin: 10px" (click)="upImg('idNoUrl')"
+          />
+          <p>车主证件正面</p>
+        </ion-col>
+        <ion-col *ngIf="bean.Car.idNoUrl==null">
+          <button ion-button icon-right ion-button (click)="upImg('idNoUrl')">
+              <ion-icon name="cloud-upload">&nbsp;</ion-icon>
+              车主证件正面
+            </button>
+        </ion-col>
+
+        <ion-col *ngIf="bean.Car.idNoUrl1!=null">
+          <img src="{{bean.Car.idNoUrl1|ImgUrl}}" height="70px" width="70px" alt="车主证件背面" style="margin: 10px" (click)="upImg('idNoUrl1')"
+          />
+          <p>车主证件背面</p>
+        </ion-col>
+        <ion-col *ngIf="bean.Car.idNoUrl1==null">
+          <button ion-button icon-right ion-button (click)="upImg('idNoUrl1')">
+              <ion-icon name="cloud-upload">&nbsp;</ion-icon>
+              车主证件背面
+            </button>
+        </ion-col>
+      </ion-row>
+
+    </ion-item>
+  </ion-item-group>
+  <ion-item-group>
+    <ion-item-divider color="light">
+      <ion-label style="color: #0000fe">投保信息</ion-label>
+      <ion-label item-right style="text-align: right;font-size: 12px;">不计=不计免赔</ion-label>
+    </ion-item-divider>
+    <ion-item>
+      <ion-label>是否续保</ion-label>
+      <ion-toggle item-right checked="true" [ngModelOptions]="{standalone: true}" [(ngModel)]="bean.PURCHASE_WAY"></ion-toggle>
+    </ion-item>
+    <ion-item>
+      <ion-label>选择保险公司</ion-label>
+      <ion-select (ngModelChange)="SelectedInsure($event)" [(ngModel)]="bean.INSURER_ID" okText="确定" cancelText="取消">
+        <ion-option *ngFor="let key of bean.AllInsurePrice" value="{{key.ID}}">{{key.NAME}}</ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item-divider color="light">
+      <ion-label style="color: #0000fe">主险</ion-label>
+    </ion-item-divider>
+    <div *ngFor="let x of nowInsurer.AllProductPrice">
+      <ion-item *ngIf="x.IS_MAIN==1">
+        <ion-label>{{x.NAME}}</ion-label>
+        <ion-select *ngIf="x.ALL_ITEM!=null && x.isCheck" [ngModelOptions]="{standalone: true}" [(ngModel)]="x.maxPay" okText="确定"
+          cancelText="取消">
+          <ion-option *ngFor="let key of x.ALL_ITEM.split(',')" value="{{key}}">{{key}}</ion-option>
+        </ion-select>
+        <span class="isAll" *ngIf="x.IS_ALL!=null && x.IS_ALL!=0" item-right>不计</span>
+        <ion-toggle item-right checked="true" [ngModelOptions]="{standalone: true}" [(ngModel)]="x.isCheck"></ion-toggle>
+      </ion-item>
+      <div *ngFor="let x1 of x.ChildItem">
+        <ion-item *ngIf="x.isCheck && x1.IS_MAIN==1">
+          <ion-label style="margin-left: 10px">{{x1.NAME}}</ion-label>
+          <ion-select *ngIf="x1.ALL_ITEM!=null && x1.isCheck" [(ngModel)]="x1.maxPay" okText="确定" cancelText="取消">
+            <ion-option *ngFor="let key of x1.ALL_ITEM.split(',')" value="{{key}}">{{key}}</ion-option>
+          </ion-select>
+          <span class="isAll" *ngIf="x.IS_ALL!=null && x.IS_ALL!=0" item-right>不计</span>
+          <ion-toggle item-right checked="true" [ngModelOptions]="{standalone: true}" [(ngModel)]="x1.isCheck"></ion-toggle>
+        </ion-item>
+      </div>
+    </div>
+    <ion-item-divider color="light">
+      <ion-label style="color: #0000fe">附加险</ion-label>
+    </ion-item-divider>
+    <div *ngFor="let x of nowInsurer.AllProductPrice">
+      <ion-item *ngIf="x.IS_MAIN==0 && x.PARENT_ID==null">
+        <ion-label>{{x.NAME}}</ion-label>
+        <ion-select *ngIf="x.ALL_ITEM!=null && x.isCheck" [ngModelOptions]="{standalone: true}" [(ngModel)]="x.maxPay" okText="确定"
+          cancelText="取消">
+          <ion-option *ngFor="let key of x.ALL_ITEM.split(',')" value="{{key}}">{{key}}</ion-option>
+        </ion-select>
+        <span class="isAll" *ngIf="x.IS_ALL!=null && x.IS_ALL!=0" item-right>不计</span>
+        <ion-toggle item-right checked="true" [ngModelOptions]="{standalone: true}" [(ngModel)]="x.isCheck"></ion-toggle>
+      </ion-item>
+      <div *ngFor="let x1 of x.ChildItem">
+        <ion-item *ngIf="x.isCheck && x1.IS_MAIN==0">
+          <ion-label>{{x1.NAME}}</ion-label>
+          <ion-select *ngIf="x1.ALL_ITEM!=null && x1.isCheck" [(ngModel)]="x1.maxPay" okText="确定" cancelText="取消">
+            <ion-option *ngFor="let key of x1.ALL_ITEM.split(',')" value="{{key}}">{{key}}</ion-option>
+          </ion-select>
+          <span class="isAll" *ngIf="x.IS_ALL!=null && x.IS_ALL!=0" item-right>不计</span>
+          <ion-toggle item-right checked="true" [ngModelOptions]="{standalone: true}" [(ngModel)]="x1.isCheck"></ion-toggle>
+        </ion-item>
+      </div>
+    </div>
+
+  </ion-item-group>
+
+  <div padding>
+    <button ion-button color="car" block (click)="save()">保存</button>
+  </div>
+</ion-content>

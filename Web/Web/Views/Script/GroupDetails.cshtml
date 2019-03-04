@@ -1,0 +1,193 @@
+﻿@model ProInterface.Models.TScript
+@{
+    ViewBag.Title = "编辑任务组";
+}
+<style>
+    .col-md-6, .col-md-12 {
+        padding: 1px;
+        float: left;
+    }
+
+    .form-control[readonly] {
+        cursor: not-allowed;
+        background-color: #fff;
+    }
+</style>
+<div id="myPnl" style="display: none"></div>
+@using (Ajax.BeginForm(new AjaxOptions
+{
+    UpdateTargetId = "myPnl",
+    Confirm = "确定要提交吗",
+    OnBegin = "OnBegin",
+    OnSuccess = "OnSuccess",
+    OnFailure = "OnFailure",
+    OnComplete = "OnComplete"
+}))
+{
+    @Html.HiddenFor(m => m.ID)
+    <table style="table-layout: fixed; width: 100%">
+        <tr>
+            <td>
+                <div class="col-md-6">
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.CODE)</span>
+                        @Html.TextBoxFor(m => m.CODE, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.CODE)
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.NAME)</span>
+                        @Html.TextBoxFor(m => m.NAME, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.NAME)
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.RUN_WHEN)</span>
+                        <div class="form-control">
+                            @Html.TextBoxFor(m => m.RUN_WHEN)
+                            @Html.ValidationMessageFor(m => m.RUN_WHEN)
+
+                            @Html.DropDownList("DrListRunWhen", new[]{
+                       new SelectListItem(){ Text="常用执行时间表达式", Value="", Selected=true},
+                       new SelectListItem(){ Text="每5秒执行一次", Value="0/5 * * * * ?"},
+                       new SelectListItem(){ Text="每10秒执行一次", Value="0/10 * * * * ?"},
+                       new SelectListItem(){ Text="每天下午三点执行", Value="0 0 15 * * ?"},
+                       new SelectListItem(){ Text="每周一下午三点执行", Value="0 0 15 ? * MON"},
+                       new SelectListItem(){ Text="每月30号31号下午3点执行一次", Value="0 0 15 30,31 1-12 ?"},
+                       new SelectListItem(){ Text="在半点每15秒执行一次", Value="0/15 0/30 * * * ?"}
+
+                   }, new { onchange = "$('#RUN_WHEN').val($(this).val())", style = "width:150px;" })
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4" for="RUN_DATA">@Html.LabelFor(m => m.RUN_DATA)</span>
+                        @Html.TextBoxFor(m => m.RUN_DATA, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.SERVICE_FLAG)
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.STATUS)</span>
+                        @Html.MyDropDownListFor(m => m.STATUS, new[]{
+                       new SelectListItem(){ Text="正常", Value="正常", Selected=true},
+                       new SelectListItem(){ Text="禁用", Value="禁用"}
+
+                   }, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.STATUS)
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="input-group" style="width: 100%;height:300px">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.ScriptGroupListJosn)
+                        </span>
+                        @Html.HiddenFor(m => m.ScriptGroupListJosn)
+                        <div class="form-control">
+                            <table id="CFG_JSON" class="easyui-datagrid" data-options="rownumbers:true,singleSelect:true,pagination:true">
+                                <thead>
+                                    <tr>
+                                        <th data-options="field:'SCRIPT_ID',width:40,editor:{type:'numberbox'}">脚本ID</th> 
+                                        <th data-options="field:'CODE',width:100">脚本代码</th>
+                                        <th data-options="field:'NAME',width:200">脚本名称</th>
+                                        <th data-options="field:'ORDER_INDEX',width:50,editor:{type:'numberbox'}">排序</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <div style="text-align: center; padding: 10px; display: none;">
+        <a class="easyui-linkbutton" data-options="iconCls:'icon-save'" onclick="onSubmit()">保存</a>
+        <a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" onclick="parent.CloseWin();">取消</a>
+        <input style="width: 60px; display: none; margin-right: 20px;" type="submit" value="保存" />
+    </div> 
+}
+<script type="text/javascript" src="~/Scripts_Page/FunBase.js"></script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $(function () {
+            $('#CFG_JSON').datagrid({
+                rownumbers: true,
+                singleSelect: true,
+                pagination: true,
+                fitColumns: true,
+                pageSize: 10,
+                onClickRow: onClickRow,
+            });
+            ShowQueryCfgPage();
+
+            var strJson = $("#ScriptGroupListJosn").val();
+            if (strJson.length > 0) {
+                $('#CFG_JSON').datagrid('loadData', JSON.parse(strJson));
+            }
+
+        });
+
+        function ShowQueryCfgPage() {
+            $('#CFG_JSON').datagrid().datagrid('getPager').pagination({
+                buttons: [{
+                    iconCls: 'icon-add',
+                    handler: function () {
+                        $('#CFG_JSON').datagrid('appendRow', {
+                        });
+                    }
+                },
+                {
+                    iconCls: 'icon-remove',
+                    handler: function () {
+                        var row = $('#CFG_JSON').datagrid('getSelected');
+                        if (row) {
+                            var index = $('#CFG_JSON').datagrid('getRowIndex', row);
+                            $('#CFG_JSON').datagrid('deleteRow', index);
+                        }
+                    }
+                }
+                ,
+                {
+                    iconCls: 'icon-ok',
+                    handler: function () {
+                        $('#CFG_JSON').datagrid('acceptChanges');
+                        editIndex = undefined;
+                        var data = $('#CFG_JSON').datagrid('getData');
+                        var strJson = JSON.stringify(data.rows);
+                        $("#ScriptGroupListJosn").val(strJson);
+                    }
+                }
+                ]
+            });
+        }
+        var editIndex = undefined;
+        function onClickRow(index) {
+            if (editIndex != index) {
+                if (endEditing()) {
+                    var rowv = $('#CFG_JSON').datagrid('selectRow', index).datagrid('beginEdit', index);
+                    editIndex = index;
+
+                } else {
+                    $('#CFG_JSON').datagrid('selectRow', editIndex);
+                }
+            }
+        }
+        function endEditing() {
+            if (editIndex == undefined) { return true }
+            if ($('#CFG_JSON').datagrid('validateRow', editIndex)) {
+                $('#CFG_JSON').datagrid('endEdit', editIndex);
+                $('#CFG_JSON').datagrid('acceptChanges');
+                editIndex = undefined;
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+    </script>
+}

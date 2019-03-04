@@ -1,0 +1,36 @@
+﻿@{
+    ViewBag.Title = "_PublicPosition";
+}
+    <div class="navi">
+        <span class="d-curr"></span><span style="float: left">当前位置：</span>
+        <div id="curr_navi"></div>
+    </div>
+
+ <script type="text/javascript">
+     var newDate = new Date();
+     $(function () {
+         var url = window.location.href;
+         $.ajax({
+             //url: "GetPath?query_id=" + $("#ID").val() + "&t=" + newDate,
+             url: "../Query/GetPathByUrl?url=" + url + "&t=" + newDate,
+             dataType: 'text',
+             success: function (result) {
+                 var modelArr = result.split(",");
+                 var htm = "";
+                 if (modelArr.length > 0) {
+                     for (i = 0; i < modelArr.length; i++) {
+                         if (i == modelArr.length - 1) {
+                             htm += '<span style="color:#3e3a39">' + modelArr[i] + '</span>'
+                         }
+                         else {
+                             htm += '<span style="color:#3e94e9">' + modelArr[i] + '</span>&nbsp;>>&nbsp;'
+                         }
+                     }
+                 }
+                 if (htm != "") {
+                     $("#curr_navi").html(htm);
+                 }
+             }
+         });
+     });
+ </script>

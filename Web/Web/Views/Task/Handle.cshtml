@@ -1,0 +1,599 @@
+﻿@model ProInterface.Models.TTask
+@{
+    ViewBag.Title = "编辑任务";
+}
+
+
+
+<link href="~/Scripts/datetimepicker/jquery.datetimepicker.css" rel="stylesheet" />
+<script type="text/javascript" src="~/Scripts/datetimepicker/jquery.datetimepicker.js"></script>
+
+<link rel="stylesheet" href="~/Scripts/uploadify/uploadify.css">
+<script src="~/Scripts/uploadify/jquery.uploadify.js"></script>
+
+<link rel="stylesheet" href="../Scripts/kindeditor/themes/default/default.css" />
+<script charset="utf-8" src="../Scripts/kindeditor/kindeditor.js"></script>
+<script charset="utf-8" src="../Scripts/kindeditor/lang/zh_CN.js"></script>
+
+
+
+@if (Model.STATUS == "归档" )
+{
+    <text>
+    <script>
+        alert('@string.Format("该任务已经【{0}】", Model.STATUS)');
+        parent.CloseWin();
+    </script>
+    </text> 
+    return;
+}
+
+<style>
+    .col-md-6, .col-md-12 {
+        padding: 1px;
+    }
+
+    .form-control[readonly] {
+        cursor: not-allowed;
+        background-color: #fff;
+    }
+        fieldset {
+        padding: .35em .625em .75em;
+        margin: 0 2px;
+        border: 1px solid silver;
+    }
+
+    legend {
+        padding: 0px 10px;
+        border: 0;
+        width: auto;
+        height:35px;
+    }
+</style>
+<div id="myPnl" style="display: none"></div>
+@using (Ajax.BeginForm(new AjaxOptions
+{
+    UpdateTargetId = "myPnl",
+    Confirm = "确定要提交吗",
+    OnBegin = "OnBegin",
+    OnSuccess = "OnSuccess",
+    OnFailure = "OnFailure",
+    OnComplete = "OnComplete"
+}))
+{
+    @Html.HiddenFor(m => m.ID)
+    @Html.HiddenFor(m => m.NowFlowId)
+    @Html.HiddenFor(m => m.NowNodeFlowId)
+    @Html.HiddenFor(m => m.FLOW_ID)
+    <table style="table-layout: fixed; width: 100%">
+        <tr>
+            <td style="width: 50%;" valign="top">
+                <div class="col-md-6">
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.TASK_NAME)</span>
+                        <div class="form-control">
+                            @Html.DisplayFor(m => m.TASK_NAME)
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.STATUS)</span>
+                        <div class="form-control">
+                            @Html.DisplayFor(m => m.STATUS)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.CREATE_TIME)</span>
+                        <div class="form-control">
+                            @Html.DisplayFor(m => m.CREATE_TIME)
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.CREATE_USER_NAME)</span>
+                        <div class="form-control">
+                            @Html.DisplayFor(m => m.CREATE_USER_NAME)
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.CreatePhone)</span>
+                        <div class="form-control">
+                            @Html.DisplayFor(m => m.CreatePhone)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.REMARK)</span>
+                        <div class="form-control">
+                            @Html.DisplayFor(m => m.REMARK)
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <div class="col-md-12">
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">处理流程</span>
+                        <div class="form-control">
+                            @foreach (var flow in this.Model.AllFlow.ToList())
+                {
+                                <fieldset style="margin:5px">
+                                    <legend><span style="color:blue;font-weight:bold;font-size:14px">第 @(flow.LEVEL_ID-1) 步</span></legend>
+                                    <div class="col-md-6">
+                                        <div class="input-group" style="width: 100%;">
+                                            <span class="input-group-addon" data-size="8">操作人</span>
+                                            <div class="form-control" style="color:blue;">@flow.DealUserName (@flow.DealUserPhone)</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="input-group" style="width: 100%;">
+                                            <span class="input-group-addon" data-size="8">受理时间</span>
+                                            <div class="form-control">@flow.ACCEPT_TIME</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6" style="display:none">
+                                        <div class="input-group" style="width: 100%;">
+                                            <span class="input-group-addon" data-size="8">操作人角色</span>
+                                            <div class="form-control">@flow.DealRole</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="input-group" style="width: 100%;">
+                                            <span class="input-group-addon" data-size="8">操作人归属</span>
+                                            <div class="form-control">@flow.DealUserDistrictName</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="input-group" style="width: 100%;">
+                                            <span class="input-group-addon" data-size="8">处理状态</span>
+                                            <div class="form-control" style="color:red">@flow.DEAL_STATUS (@flow.DEAL_TIME)</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="input-group" style="width: 100%;">
+                                            <span class="input-group-addon" data-size="8">操作类型</span>
+                                            <div class="form-control">@flow.NAME</div>
+                                        </div>
+                                    </div>
+
+                                    @for (var i = 0; i < flow.AllHandle.Count; i++)
+                                    {
+                                        var handle = flow.AllHandle[i];
+                                        <div class="col-md-12">
+                                            <div class="input-group" style="width: 100%;">
+                                                <span class="input-group-addon" data-size="8">处理内容</span>
+                                                <div class="form-control">
+                                                    @string.Format("{0}({1})", handle.CONTENT, handle.DEAL_USER_NAME)
+                                                    @foreach (var file in handle.AllFiles)
+                                                    {
+                                                        <div><a href="@Url.Content(file.URL)" target="_blank">@file.NAME</a> </div>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                    @if (!string.IsNullOrEmpty(flow.SHOW_URL))
+                                    {
+                                        <div class="col-md-12">
+                                            <div class="input-group" style="width: 100%;">
+                                                <span class="input-group-addon" data-size="8">详情内容</span>
+                                                <div class="form-control">
+                                                    <iframe onload="Javascript: $(this).height(this.contentWindow.window.document.body.scrollHeight)" src="@Url.Content(flow.SHOW_URL+"?id="+flow.ID)" frameborder="0" scrolling="no" style="width:100%;height:100%"></iframe>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </fieldset>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="col-md-12">
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">处理方式</span>
+                        <div class="form-control">
+                            @Html.RadioBoxListFor(m => m.NowSubmitType, this.Model.AllButton.Select(x => new SelectListItem() { Value = x, Text = x }).ToList(), new {onclick="OnChanageType(this)" })
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td id="submitTd" valign="top">
+                <div class="container-fluid">
+
+                    <div class="col-md-6">
+                        <div class="input-group" style="width: 100%;">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.TaskContent)</span>
+                            <div class="form-control">
+                                @Html.TextAreaFor(m => m.TaskContent, new { @style = "height:200px;width:100%" })
+                                @Html.ValidationMessageFor(m => m.TaskContent)
+                            </div>
+                        </div>
+                    </div>
+
+                    @if (Request.UserAgent.ToLower().IndexOf("iphone") == -1 && Request.UserAgent.ToLower().IndexOf("android") == -1)
+                    {
+                        <div class="col-md-6">
+                            <div class="input-group" style="width: 100%;">
+                                <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.AllFilesStr)</span>
+                                <div class="form-control">
+                                    <input type="file" name="uploadify" id="uploadify" />
+                                    @Html.HiddenFor(m => m.AllFilesStr)
+                                    <table id="dg_AllFiles" class="easyui-datagrid" style="width: 98%" data-options="rownumbers:true,fitColumns:true">
+                                        <thead>
+                                            <tr>
+                                                <th data-options="field:'NAME',width:80">文件名称</th>
+                                                <th data-options="field:'LENGTH',width:80">大小</th>
+                                                <th data-options="field:'UPLOAD_TIME',width:80">添加时间</th>
+                                                <th data-options="field:'action',width:80,formatter:ShowRowBtn">操作</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    <div class="col-md-6" id="tt_div">
+                        <div class="input-group" style="width: 100%;">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.UserIdArrStr)</span>
+                            <div class="form-control">
+                                @Html.CheckBoxListFor(m => m.ROLE_ID_STR, ViewData["AllRole"] as IList<SelectListItem>)
+                                <div id="tt_checkUser">
+                                    <button onclick="CheckUser()">选择人</button>
+                                    @Html.TextBoxFor(m => m.UserIdArrStr, new { @class = "easyui-combobox", @data_options = "multiple:true,multiline:true,editable:false,panelHeight:100", @style = "width:90%;height:50px" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12" style="text-align: center">
+                        <button type="button" class="btn btn-success btn-sm" onclick="onSubmit()" style="margin: 0px auto;">
+                            <span class="glyphicon glyphicon-ok"></span>
+                            &nbsp; &nbsp;提交 &nbsp; &nbsp;</button>
+                        <input style="width: 60px; display: none; margin-right: 20px;" type="submit" value="保存" />
+
+                    </div>
+                </div>
+            </td>
+        </tr>
+
+    </table>
+}
+
+@section Scripts {
+    <script type="text/javascript" src="~/Scripts_Page/FunBase.js"></script>
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $(function () {
+            $('.form_datetime').datetimepicker({
+                step: 5,
+                format: 'Y-m-d H:i'
+            });
+
+
+@if (Request.UserAgent.ToLower().IndexOf("iphone") == -1 && Request.UserAgent.ToLower().IndexOf("android") == -1)
+{
+<text>IsNoApp();</text>
+}
+
+        });
+        var jsonSucc = [
+            {
+                "id": "营业厅停电",
+                "text": "营业厅停电"
+            },
+            {
+                "id": "营业厅未营业",
+                "text": "营业厅未营业"
+            }
+            ,
+            {
+                "id": "已恢复",
+                "text": "已恢复"
+            }
+        ]
+        var jsonDt = [
+                {
+                    "id": "网络故障",
+                    "text": "网络故障",
+                    "children": [{
+                        "id": '传输故障',
+                        "text": "传输故障"
+                    }, {
+                        "id": "基站网络故障",
+                        "text": "基站网络故障"
+                    }, {
+                        "id": "营业厅内网故障",
+                        "text": "营业厅内网故障"
+                    }, {
+                        "id": "基站停电",
+                        "text": "基站停电"
+                    }]
+                },
+                {
+                    "id": "系统故障",
+                    "text": "系统故障",
+                    "children": [{
+                        "id": '软件驱动故障',
+                        "text": "软件驱动故障"
+                    }, {
+                        "id": "CRM系统故障",
+                        "text": "CRM系统故障"
+                    }, {
+                        "id": "操作系统故障",
+                        "text": "操作系统故障"
+                    }]
+                },
+                {
+                    "id": "设备故障",
+                    "text": "设备故障",
+                    "children": [{
+                        "id": '身份证识别器故障',
+                        "text": "身份证识别器故障"
+                    }, {
+                        "id": "写卡器故障",
+                        "text": "写卡器故障"
+                    }, {
+                        "id": "自助缴费机故障",
+                        "text": "自助缴费机故障"
+                    }]
+                },
+                {
+                    "id": "其他",
+                    "text": "其他",
+                    "children": [{
+                        "id": '已恢复',
+                        "text": "已恢复"
+                    }, {
+                        "id": "营业厅未营业",
+                        "text": "营业厅未营业"
+                    }, {
+                        "id": "营业厅停电",
+                        "text": "营业厅停电"
+                    }, {
+                        "id": "人为原因",
+                        "text": "人为原因"
+                    }]
+                },
+                {
+                    "id": "无法确定",
+                    "text": "无法确定"
+                }
+        ]
+
+        function OnChanageType(obj)
+        {
+            try{
+                switch ($(obj).val())
+                {
+                    case "完成":
+                        $("#chanageType").combotree({ data: jsonSucc, onSelect: OnSelect });
+                        break;
+                    default:
+                        $("#chanageType").combotree({ data: jsonDt, onSelect: OnSelect });
+                        break;
+                }
+            }catch(e){}
+        }
+
+        function OnSelect(node) {
+            $("#TaskContent").val(node.id);
+        }
+
+        function IsNoApp() {
+            $("#uploadify").uploadify({
+                swf: bootPATH + '/Scripts/uploadify/uploadify.swf',
+                uploader: bootPATH + '/Scripts/uploadify/UploadHandler.ashx',
+                buttonText: "　",
+                formData: {
+                    'folder': '~/UpFiles/Task/',
+                    'customname': Date.now().toString()
+                },
+                onUploadSuccess: function (a, b, c, d, e) {
+                    var fileName = a.name;
+                    var bArr = b.split(',');
+                    if (bArr.length > 1) {
+                        fileName = bArr[1];
+                    }
+                    $.ajax({
+                        url: "../Fun/AddFile?t=" + Math.random(),
+                        dateType: "JSON",
+                        data: {
+                            name: a.name,
+                            size: a.size,
+                            savePath: '~/UpFiles/Task/' + fileName
+                        },
+                        success: function (data) {
+
+                            $('#dg_AllFiles').datagrid('appendRow', data);
+                            var data = $('#dg_AllFiles').datagrid('getData');
+                            var strJson = JSON.stringify(data.rows);
+                            $("#AllFilesStr").val(strJson)
+                        },
+                        error: function (data) {
+                            alert('失败:' + data.responseText);
+                        }
+                    });
+                }
+            });
+
+
+
+            KindEditor.create('textarea[name="REMARK"]', {
+                cssPath: '../Scripts/kindeditor/plugins/code/prettify.css',
+                uploadJson: '../Scripts/kindeditor/asp.net/upload_json.ashx',
+                fileManagerJson: '../Scripts/kindeditor/asp.net/file_manager_json.ashx',
+                allowFileManager: true,
+                resizeType: 1,
+                allowPreviewEmoticons: false,
+                allowImageUpload: true,
+                items: [
+                    'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+                    'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
+                    'insertunorderedlist', '|', 'emoticons', 'image', 'link']
+            });
+        }
+
+
+        function ShowRowBtn(value, row, index) {
+            var tmp = '<a  class="easyui-linkbutton l-btn l-btn-small" href="#" ';
+            tmp += ' onclick="DelFile(' + row.ID + ',' + index + ')">';
+            tmp += ' <span class="l-btn-left"><span class="l-btn-text">删除</span></span></a>  '
+            return tmp;
+        }
+        function DelFile(id, index) {
+            if (window.confirm("确定要删除该文件吗？")) {
+                $.ajax({
+                    url: "../Fun/DelFile?t=" + Math.random(),
+                    data: {
+                        fileID: id
+                    },
+                    success: function (data) {
+                        $('#dg_AllFiles').datagrid('deleteRow', index);
+                        var data = $('#dg_AllFiles').datagrid('getData');
+                        var strJson = JSON.stringify(data.rows);
+                        $("#AllFilesStr").val(strJson)
+                    },
+                    error: function (data) {
+                        alert('失败');
+                    }
+                });
+            }
+        }
+
+
+        function OnchangeFlow(statusName) {
+            if (statusName == "驳回" || statusName == "归档" || statusName == "受理") {
+                $("#tt_div").hide();
+                return;
+            }
+            else {
+                $("#tt_div").show();
+            }
+            if ($("#FLOW_ID").val() == "") {
+                switch (statusName) {
+                    case "转派":
+                        $("#tt_checkUser").show();
+                        break;
+                    case "回复":
+                        $("#tt_div").hide();
+                        break;
+                }
+                return;
+            }
+
+            $.ajax({
+                url: "../Flow/GetNodeFlow?t=" + Math.random(),
+                dataType: 'json',
+                data: {
+                    flowId: $("#FLOW_ID").val(),
+                    fromFlownodeId: $("#NowNodeFlowId").val(),
+                    statusName: statusName
+                },
+                success: function (data) {
+                    $("#ROLE_ID_STR").val(data.AllRoleStr);
+                    BoxListDisplayV('ROLE_ID_STR')
+                    HideAllItem('ROLE_ID_STR')
+                    /*指定人*/
+                    if (data.ASSIGNER == 1) {
+                        $("#tt_checkUser").show();
+
+                    }
+                    else {
+                        $("#tt_checkUser").hide();
+                    }
+
+
+                },
+                error: function (data) {
+                    alert('失败:' + data.responseText);
+                }
+            });
+        }
+
+        function onSubmit() {
+
+            var com = $(".combo-text")
+            if (com.attr('name') == null) {
+                com.attr('name', 'combo_text')
+            }
+
+            $("#UserIdArrStr").val($('#UserIdArrStr').combobox("getValues"));
+            var obj = $('input[type="submit"]');
+            obj[0].click()
+        }
+
+
+        function HideAllItem(name) {
+            var num = [];
+            $("input[name='" + name + "_JSITEM']").each(function () {
+                if ($(this).attr("checked") != 'checked') {
+                    $(this).parent("label").hide();
+                }
+            })
+        }
+
+
+
+        function CheckUser() {
+            DivOpen("~/User/CheckUser?id=" + $('#UserIdArrStr').combobox("getValues") + "&roleIdStr=" + $("#ROLE_ID_STR").val(), "选择用户", 0, 0, SetNowUser);
+        }
+
+        function SetNowUser(userIdStr) {
+            if (userIdStr.length > 0 && userIdStr.substring(userIdStr.length - 1) == ',') {
+                userIdStr = userIdStr.substring(0, userIdStr.length - 1);
+            }
+            $('#UserIdArrStr').combobox({
+                url: '../User/GetBylUserId?userIdStr=' + userIdStr,
+                checkbox: true,
+                valueField: 'id',
+                textField: 'name'
+
+            });
+            $('#UserIdArrStr').combobox("setValues", userIdStr.split(','));
+        }
+
+        function BoxListSetV(name) {
+            var num = [];
+            $("input[name='" + name + "_JSITEM']").each(function () {
+                if ($(this).attr("checked") == 'checked') {
+                    num.push($(this).attr("value"));
+                }
+            })
+            $("#" + name).val(num.join(","));
+
+            if (name == "NowSubmitType") {
+                if ($("#NowSubmitType").val() == "") {
+                    $("#submitTd").hide();
+                }
+                else {
+                    $("#submitTd").show();
+                    OnchangeFlow($("#NowSubmitType").val());
+                }
+            }
+        }
+
+        function OnSuccess() {
+            window.location.reload();
+        }
+
+    </script>
+
+}

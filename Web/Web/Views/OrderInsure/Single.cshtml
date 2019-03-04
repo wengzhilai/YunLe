@@ -1,0 +1,356 @@
+
+@model ProInterface.Models.YlOrderInsure
+@{
+    ViewBag.Title = "编辑投保";
+}
+
+<style>
+    .col-md-6, .col-md-12 {
+        padding: 1px;
+        float: left;
+    }
+
+    .form-control[readonly] {
+        cursor: not-allowed;
+        background-color: #fff;
+    }
+</style>
+<link href="~/Scripts/datetimepicker/jquery.datetimepicker.css" rel="stylesheet" />
+<script type="text/javascript" src="~/Scripts/datetimepicker/jquery.datetimepicker.js"></script>
+<script type="text/javascript" src="~/Scripts/easyui/datagrid-groupview.js"></script>
+<script type="text/javascript" src="~/Scripts/ajaxfileupload.js"></script>
+
+
+<div id="myPnl" style="display:none"></div>
+@using (Ajax.BeginForm("Details", new AjaxOptions
+{
+    UpdateTargetId = "myPnl",
+    Confirm = "确定要提交吗",
+    OnBegin = "OnBegin",
+    OnSuccess = "OnSuccess",
+    OnFailure = "OnFailure",
+    OnComplete = "OnComplete"
+}))
+{
+    @Html.HiddenFor(m => m.ID)
+    <table style="table-layout:fixed;width:100%">
+        <tr>
+            <td>
+                <div class="col-md-6">
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.Car.PLATE_NUMBER)</span>
+                        <div class="form-control">
+                            @Html.DisplayTextFor(m => m.Car.PLATE_NUMBER)
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">客户姓名</span>
+                        <div class="form-control">
+                            @Html.DisplayTextFor(m => m.Client.NAME)
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.ORDER_NO)</span>
+                        <div class="form-control">
+                            @Html.DisplayTextFor(m => m.ORDER_NO)
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.PAY_STATUS)</span>
+                        <div class="form-control">
+                            @Html.DisplayTextFor(m => m.PAY_STATUS)
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.COST)</span>
+                        <div class="form-control">
+                            @Html.DisplayTextFor(m => m.COST)
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="col-md-6">
+
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.Insure.NAME)</span>
+                        <div class="form-control">
+                            @Html.DisplayTextFor(m => m.Insure.NAME)
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.CAR_USERNAME)</span>
+                        <div class="form-control">
+                            @Html.DisplayTextFor(m => m.CAR_USERNAME)
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.ID_NO)</span>
+                        <div class="form-control">
+                            @Html.DisplayTextFor(m => m.ID_NO)
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.CAR_OWNER)</span>
+                        <div class="form-control">
+                            @Html.DisplayTextFor(m => m.CAR_OWNER)
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.INSURED_NAME)</span>
+                        <div class="form-control">
+                            @Html.DisplayTextFor(m => m.INSURED_NAME)
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.PROPOSER_NAME)</span>
+                        <div class="form-control">
+                            @Html.DisplayTextFor(m => m.PROPOSER_NAME)
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-md-6">
+
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.DELIVERY)</span>
+                        <div class="form-control">
+                            @Html.DisplayTextFor(m => m.DELIVERY)
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">车主身份证</span>
+                        <div class="form-control">
+                            @if(Model!=null && !string.IsNullOrEmpty(Model.idNoUrl))
+                            {
+                               <a href="@Url.Content(Model.idNoUrl)" target="_blank">查看正面</a>
+                            }
+                            @if (Model != null && !string.IsNullOrEmpty(Model.idNoUrl1))
+                            {
+                                <a href="@Url.Content(Model.idNoUrl1)" target="_blank">查看背面</a>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">行驶证</span>
+                        <div class="form-control">
+                            @if (Model != null && !string.IsNullOrEmpty(Model.DrivingPicUrl))
+                            {
+                                <a href="@Url.Content(Model.DrivingPicUrl)" target="_blank">查看正面</a>
+                            }
+                            @if (Model != null && !string.IsNullOrEmpty(Model.DrivingPicUrl1))
+                            {
+                                <a href="@Url.Content(Model.DrivingPicUrl1)" target="_blank">查看背面</a>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">投保人证件</span>
+                        <div class="form-control">
+                            @if (Model != null && !string.IsNullOrEmpty(Model.driverPicUrl))
+                            {
+                                <a href="@Url.Content(Model.driverPicUrl)" target="_blank">查看正面</a>
+                            }
+                            @if (Model != null && !string.IsNullOrEmpty(Model.driverPicUrl1))
+                            {
+                                <a href="@Url.Content(Model.driverPicUrl1)" target="_blank">查看背面</a>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">被保人证件</span>
+                        <div class="form-control">
+                            @if (Model != null && !string.IsNullOrEmpty(Model.recognizeePicUrl))
+                            {
+                                <a href="@Url.Content(Model.recognizeePicUrl)" target="_blank">查看正面</a>
+                            }
+                            @if (Model != null && !string.IsNullOrEmpty(Model.recognizeePicUrl1))
+                            {
+                                <a href="@Url.Content(Model.recognizeePicUrl1)" target="_blank">查看背面</a>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.DATE_START)</span>
+                        @Html.TextBoxFor(m => m.DATE_START, new { @class = "form-control form_datetime" })
+                        @Html.ValidationMessageFor(m => m.DATE_START)
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.DATE_END)</span>
+                        @Html.TextBoxFor(m => m.DATE_END, new { @class = "form-control form_datetime" })
+                        @Html.ValidationMessageFor(m => m.DATE_END)
+                    </div>
+
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+
+                @Html.HiddenFor(m=>m.SaveProductIdStr)
+                <table id="CFG_JSON" class="easyui-datagrid" title="产品报价" style="width:100%;height:350px" data-options="singleSelect:true,
+                       rownumbers:true,
+                       fitColumns:false,
+                       data:data,
+                       view:groupview,
+                       onClickRow: onClickRow,
+                       groupField:'InsurerName',
+                        groupFormatter:function(value,rows){
+                            return value;
+                        }
+                       ">
+                    <thead>
+                        <tr>
+                            <th data-options="field:'InsurerName',width:80">保险公司</th>
+                            <th data-options="field:'InsurerProductName',width:100">产品</th>
+                            <th data-options="field:'isCheck',width:100,formatter:function(val){return (val)?'是':'否'}">购买</th>
+                            <th data-options="field:'MAX_PAY',width:80,align:'right',editor:{type:'textbox'}">保险额度</th>
+                            <th data-options="field:'COST',width:80,align:'right',editor:{type:'textbox'}">投保费用</th>
+                        </tr>
+                    </thead>
+                </table>
+            </td>
+        </tr>
+    </table>
+        <div style="text-align:center;padding:10px;">
+            <a class="easyui-linkbutton" data-options="iconCls:'icon-save'" onclick="onSubmit()">保存投保报价</a>
+            <input style="width: 60px; display:none; margin-right: 20px;" type="submit" value="保存" />
+        </div>
+}
+<script type="text/javascript" src="~/Scripts_Page/FunBase.js"></script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $(function () {
+            $('.form_datetime').datetimepicker({
+                timepicker: false,
+                step: 5,
+                format: 'Y/m/d'
+            });
+        })
+
+
+        function onSubmit() {
+            var com = $(".combo-text")
+            if (com.attr('name') == null) {
+                com.attr('name', 'combo_text')
+            }
+
+            com = $(".textbox-text")
+            if (com.attr('name') == null) {
+                com.attr('name', 'textbox_text')
+            }
+            $('#CFG_JSON').datagrid('acceptChanges');
+            var data = $('#CFG_JSON').datagrid('getData');
+            var strJson = JSON.stringify(data.rows);
+            $("#SaveProductIdStr").val(strJson);
+
+            var obj = $('input[type="submit"]');
+            obj[0].click();
+        }
+
+
+
+        var data = @MvcHtmlString.Create(Model.SaveProductIdStr);
+
+        var editIndex = undefined;
+        function onClickRow(index) {
+            if (editIndex != index) {
+                if (endEditing()) {
+                    $('#CFG_JSON').datagrid('selectRow', index).datagrid('beginEdit', index);
+                    editIndex = index;
+                } else {
+                    $('#CFG_JSON').datagrid('selectRow', editIndex);
+                }
+            }
+        }
+        function endEditing() {
+            if (editIndex == undefined) { return true }
+            if ($('#CFG_JSON').datagrid('validateRow', editIndex)) {
+                //$('#CFG_JSON').datagrid('endEdit', editIndex);
+                //$('#CFG_JSON').datagrid('acceptChanges');
+                //editIndex = undefined;
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        function OnSuccess(data) {
+            if (data.IsError != null) {
+                if (data.IsError) {
+                    divalert("失败", data.Message);
+                    return;
+                }
+                else {
+                    alert(data.Message);
+                }
+            }
+            try {
+
+                window.location.reload();
+            }
+            catch (e) { }
+
+        }
+
+
+
+
+
+    </script>
+
+
+}

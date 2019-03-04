@@ -1,0 +1,46 @@
+
+<view class="main user-login">
+    <form catchsubmit="formSubmit" catchreset="formReset">
+        <div class="ion-list">
+            <div class="item-md">
+                <div class="item-inner">
+                    <div class="input-wrapper">
+                        <div class="ion-label label label-md">
+                            <div class="icon ion-icon car ion-md-contact"></div>
+                        </div>
+                        <div class="ion-input"> 
+                            <input class="text-input text-input-md" name="loginName" value="{{loginName}}" placeholder="请输入手机号码" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="item-md">
+                <div class="item-inner">
+                    <div class="input-wrapper">
+                        <div class="ion-label label label-md">
+                            <div class="icon ion-icon car ion-md-unlock"></div>
+                        </div>
+                        <div > 
+                            <input class="text-input" type="password" name="password"  value="{{password}}" placeholder="请输入密码" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="item-md">
+                <div class="item-inner input-wrapper">
+                        <view class="ion-label">
+                            <button type="primary" size="mini">找回密码</button>
+                        </view>
+                        <view class="ion-label" style="text-align: right;"> 
+                           <button type="primary" hover-class="button-hover" size="mini">立即注册</button>
+                        </view>
+                </div>
+            </div>
+
+        </div>
+
+     <view class="btn-area">
+        <button type="primary" formType="submit" >提交</button>
+      </view>
+    </form>
+</view>    

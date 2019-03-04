@@ -1,0 +1,188 @@
+﻿
+@model ProInterface.Models.YlOrder
+@{
+    ViewBag.Title = "编辑救援和保养";
+}
+
+<style>
+    .col-md-6, .col-md-12 {
+        padding: 1px;
+        float: left;
+    }
+
+    .form-control[readonly] {
+        cursor: not-allowed;
+        background-color: #fff;
+    }
+</style>
+<link href="~/Scripts/datetimepicker/jquery.datetimepicker.css" rel="stylesheet" />
+<script type="text/javascript" src="~/Scripts/datetimepicker/jquery.datetimepicker.js"></script>
+<script type="text/javascript" src="~/Scripts/ajaxfileupload.js"></script>
+
+<div id="myPnl" style="display:none"></div>
+@using (Ajax.BeginForm(new AjaxOptions
+{
+    UpdateTargetId = "myPnl",
+    Confirm = "确定要提交吗",
+    OnBegin = "OnBegin",
+    OnSuccess = "OnSuccess",
+    OnFailure = "OnFailure",
+    OnComplete = "OnComplete"
+}))
+{
+    @Html.HiddenFor(m => m.ID)
+    <table style="table-layout:fixed;width:100%">
+        <tr>
+            <td>
+                <div class="col-md-6">
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.Client.NAME)</span>
+                        <div class="form-control">
+                            @Html.DisplayFor(m => m.Client.NAME)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.Client.LOGIN_NAME)</span>
+                        <div class="form-control">
+                            @Html.DisplayFor(m => m.Client.LOGIN_NAME)
+                        </div>
+                    </div>
+                </div>
+                    <div class="col-md-6">
+                        <div class="input-group" style="width: 100%;">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.ORDER_NO)</span>
+                            <div class="form-control">
+                                @Html.DisplayFor(m => m.ORDER_NO)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group" style="width: 100%;">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.PAY_STATUS)</span>
+                            <div class="form-control">
+                                @Html.DisplayFor(m => m.PAY_STATUS)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group" style="width: 100%;">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.Client.ID_NO)</span>
+                            <div class="form-control">
+                                @Html.DisplayFor(m => m.Client.ID_NO)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group" style="width: 100%;">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.COST)</span>
+                            <div class="form-control">
+                                @Html.DisplayFor(m => m.COST)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+
+                        <div class="input-group" style="width: 100%;">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.Car.PLATE_NUMBER)</span>
+                            <div class="form-control">
+                                @Html.DisplayFor(m => m.Car.PLATE_NUMBER)
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div class="input-group" style="width: 100%;">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.Car.CAR_TYPE)</span>
+                            <div class="form-control">
+                                @Html.DisplayFor(m => m.Car.CAR_TYPE)
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div class="input-group" style="width: 100%;">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.Car.BRAND)</span>
+                            <div class="form-control">
+                                @Html.DisplayFor(m => m.Car.BRAND)
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div class="input-group" style="width: 100%;">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.Car.MODEL)</span>
+                            <div class="form-control">
+                                @Html.DisplayFor(m => m.Car.MODEL)
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div class="input-group" style="width: 100%;">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.PAY_STATUS)</span>
+                            <div class="form-control">
+                                @Html.DisplayFor(m => m.PAY_STATUS)
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="input-group" style="width: 100%;">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.PAY_STAUTS_TIME)</span>
+                            <div class="form-control">
+                                @Html.DisplayFor(m => m.PAY_STAUTS_TIME)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="input-group" style="width: 100%;">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.REMARK)</span>
+                            <div class="form-control">
+                                @Html.DisplayFor(m => m.REMARK)
+                            </div>
+                        </div>
+                    </div>
+                @if (Model != null && Model.Car != null)
+                {
+                <div class="col-md-12">
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">相关图片</span>
+                        <div class="form-control">
+                            @if (Model.Car.DRIVING_PIC_ID != null && Model.Car.DRIVING_PIC_ID != 0)
+                            {
+                                <a href="~/Fun/ShowFile?fileId=@(Model.Car.DRIVING_PIC_ID)" target="_blank">@Html.DisplayNameFor(m => m.Car.DRIVING_PIC_ID)</a>
+                            }
+                            @if (Model.Car.DRIVING_PIC_ID1 != null && Model.Car.DRIVING_PIC_ID1 != 0)
+                            {
+                                <a href="~/Fun/ShowFile?fileId=@(Model.Car.DRIVING_PIC_ID1)" target="_blank">@Html.DisplayNameFor(m => m.Car.DRIVING_PIC_ID1)</a>
+                            }
+                            @if (Model.Car.ID_NO_PIC_ID != null && Model.Car.ID_NO_PIC_ID != 0)
+                            {
+                                <a href="~/Fun/ShowFile?fileId=@(Model.Car.ID_NO_PIC_ID)" target="_blank">@Html.DisplayNameFor(m => m.Car.ID_NO_PIC_ID)</a>
+                            }
+                            @if (Model.Car.ID_NO_PIC_ID1 != null && Model.Car.ID_NO_PIC_ID1 != 0)
+                            {
+                                <a href="~/Fun/ShowFile?fileId=@(Model.Car.ID_NO_PIC_ID1)" target="_blank">@Html.DisplayNameFor(m => m.Car.ID_NO_PIC_ID1)</a>
+                            }
+                        </div>
+                    </div>
+                </div>
+                }
+            </td>
+        </tr>
+    </table>
+    
+}
+<script type="text/javascript" src="~/Scripts_Page/FunBase.js"></script>

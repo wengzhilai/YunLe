@@ -1,0 +1,26 @@
+insure-info {
+  ion-card-content{
+    background-color:white
+  }
+  ion-card{
+    padding: 10px;
+  }
+  ion-card img {
+    display: block;
+    width: auto;
+}
+  .isAll{
+    background-color:map-get($colors,car);
+    font-size: 12px;
+    padding: 0px 5px;
+    color: #FFFFFF;
+    text-align: center
+  }
+  .toggle-md.toggle-disabled, .item-md.item-toggle-disabled ion-label {
+    opacity: 1;
+    pointer-events: none;
+  }
+  .item-select  .label {
+    color: #000;
+  }
+}

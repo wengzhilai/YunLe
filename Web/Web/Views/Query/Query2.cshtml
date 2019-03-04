@@ -1,0 +1,355 @@
+﻿@model ProInterface.Models.TQuery
+@{
+    ViewBag.Title = "Query";
+    string pageList = "";
+    for (int i = 1; i <= 5; i++)
+    {
+        pageList += (this.Model.PAGE_SIZE * i) + ",";
+    }
+    pageList = pageList.Substring(0, pageList.Length - 1);
+
+    ProServer.GlobalUser gu = ViewData["Gu"] as ProServer.GlobalUser;
+}
+
+
+<link href="~/Scripts/bootstrap/css/bootstrap.css" rel="stylesheet" />
+<link rel="stylesheet" type="text/css" href="~/Scripts/easyui/themes/default/easyui.css">
+<script type="text/javascript" src="~/Scripts/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="~/Scripts_Page/FunBase.js"></script>
+<script type="text/javascript" src="~/Scripts_Page/Query.js"></script>
+<link href="~/Scripts/datetimepicker/jquery.datetimepicker.css" rel="stylesheet" />
+<script type="text/javascript" src="~/Scripts/datetimepicker/jquery.datetimepicker.js"></script>
+<script type="text/javascript" src="~/Scripts/jquery.cookie.js"></script>
+
+<link href="~/Styles/Query.css" rel="stylesheet" />
+
+
+@using (Html.BeginForm())
+{
+    @Html.HiddenFor(x => x.ID)
+    @Html.HiddenFor(x => x.NAME)
+    @Html.HiddenFor(x => x.REMARK)
+    @Html.HiddenFor(x => x.QUERY_CFG_JSON)
+    @Html.HiddenFor(m => m.NoAuthority);
+    @Html.HiddenFor(x => x.ROWS_BTN)
+    @Html.HiddenFor(x => x.NEW_DATA)
+    <input id="AllPara" type="hidden" name="AllPara" value="@ViewBag.AllPara" />
+    <input id="Code" type="hidden" name="Code" value="@ViewBag.Code" />
+    <input type="hidden" id="cfgwidth" value="@Model.QueryCfg.Sum(k => k.Width)" />
+    
+    <div class="easyui-dialog" title="<span style='font-size:14px'>筛选</span>" data-options="left:0,top:0,closable:true,closed:true" style="width: 100%;" id="div_filte">
+
+            <div style="width:100%">
+        @if (this.Model.QueryCfg != null && this.Model.QueryCfg.Count() > 0)
+        {
+            var allCanSearch = this.Model.QueryCfg.Where(x => x.CanSearch).ToList();
+
+            <input id="searchField" type="hidden" value="@(ProInterface.JSON.DecodeToStr(allCanSearch))" />
+            <input id="GetWhereStr" type="hidden" value="" />
+                foreach (var para in allCanSearch)
+                {
+                    <div class="input-group input-group-sm" style="width: 310px; float: left; margin: 1px">
+                        <span class="input-group-addon" data-size="5">
+                            @para.Alias :
+                        </span>
+                        <div class="form-control">
+                            <input value="=" id="s_@(para.FieldName)_type" type="text" style="width:50px"  />
+                            @if (Request[para.FieldName] != null && para.FieldName.ToLower() != "code" && para.FieldName.ToLower() != "url")
+                            {
+                                <input id="s_@(para.FieldName)_value" type="text" style="width:130px"  value="@Request[para.FieldName]"  />
+                            }
+                            else
+                            {
+                                <input id="s_@(para.FieldName)_value" type="text" style="width:130px" />
+                            }
+                        </div>
+                    </div>
+                }
+            <script type="text/javascript">
+                $(function(){
+                    @for (int i = 0; i < allCanSearch.Count(); i++)
+                    {
+                        var para = allCanSearch[i];
+                        <text>ShowFilterFiled("@para.FieldName");</text>
+                    }
+                   
+                });
+            </script>        
+        }
+
+
+        @if (this.Model != null && this.Model.FILTR_LEVEL == 1)
+        {
+            
+            <div class="input-group input-group-sm" style="width: 310px; float: left; margin: 1px">
+                <span class="input-group-addon" data-size="5">
+                    统计范围 :
+                </span>
+                <div class="form-control">
+                @Html.Hidden("DISTRICT_ID", ViewData["mydis"], new { @class = "filtrClass" })
+                @Html.TextBox("dis", ViewData["mydis"], new
+                   {
+                       @class = "easyui-combotree",
+                       @style = "width:180px",
+                       @data_options = @"
+                                        url:'../District/GetAll',
+                                        panelHeight:300,
+                                        loadFilter: function (rows) {
+                                            return convert(rows);
+                                        },
+                                        onChange: function (newValue, oldValue) {
+                                            $('#DISTRICT_ID').val(newValue);
+                                        },
+                                        editable:false,animate:true"
+                   })
+                </div>
+            </div>
+        }
+
+        @if (this.Model != null && !string.IsNullOrEmpty(this.Model.FILTR_STR))
+        {
+            @MvcHtmlString.Create(this.Model.FILTR_STR)
+        }
+
+            </div>
+        <div style="text-align: center; width: 100%">
+            <div class="btn-group" role="group" style="margin: 0 auto; margin: 3px" aria-label="按钮组">
+                <button type="button" class="btn btn-primary" onclick="$('#div_filte').dialog('close');GoFilter()">查询</button>
+                <button type="button" class="btn btn-danger" onclick="$('#div_filte').dialog('close');ClearFilter();GoFilter()">清除</button>
+            </div>
+        </div>
+    </div> 
+    
+    
+    <div style="background-image:url(@Url.Content("~/UpFiles/"+Web.Fun.UserKey+".jpg"))">
+    <table id="dg"  data-options="
+    pageSize:@this.Model.PAGE_SIZE,
+    pageList:[@pageList],
+    rownumbers: true,
+    fitColumns: @((Model.QueryCfg.Sum(x => x.Width) > 900) ? "false" : "true"),
+    nowrap: false,
+    onLoadSuccess: onLoadSuccess,
+    onBeforeLoad: onBeforeLoad,
+    singleSelect:@((this.Model.SHOW_CHECKBOX == 1) ? "false" : "true"),
+    onHeaderContextMenu: function(e, field){
+                e.preventDefault();
+                if (!cmenu){
+                    createColumnMenu();
+                }
+                cmenu.menu('show', {
+                    left:e.pageX,
+                    top:e.pageY
+                });
+            }
+    ">
+        <thead>
+            <tr>
+                @if (this.Model.QueryCfg != null)
+                {
+                    <th data-options="field:'listprice',align:'left',width:170,formatter:FormatList">详细</th>
+                }
+            </tr>
+        </thead>
+    </table>
+    </div>
+    <div id="toolbar" style="display: none">
+
+        @Html.HiddenFor(m => m.HEARD_BTN)
+        <div id="but" class="btn-group btn-group-sm">
+            @if ((this.Model != null && this.Model.IS_DEBUG == 1) || gu.RoleID.Contains(1))
+            {
+                <button type="button" class="btn btn-default" onclick="ShowDebug()"><span class="glyphicon glyphicon-info-sign"></span>调试</button>
+            }
+            <button type="button" class="btn btn-default" onclick="doDown()"><span class="glyphicon glyphicon-download-alt"></span>导出</button>
+            <button type="button" class="btn btn-default easyui-tooltip" onclick="$('#div_filte').dialog('open')"><span class="glyphicon glyphicon-glass"></span>筛选</button>
+
+        </div>
+    </div> 
+    
+
+    <div style="display: none">
+        <div id="dlg_txt" class="easyui-dialog" data-options="iconCls:'icon-filter',closed:true,width:200">
+            <div class="input-group input-group-sm">
+                <span class="input-group-addon" data-size="3">操作符
+                </span>
+                <div class="form-control" id="div_type">
+                    <select class="easyui-combobox" style="width: 60px" id="s_type">
+                        <option value="=" selected>等于</option>
+                        <option value="like">包含</option>
+                    </select>
+                </div>
+            </div>
+            <div class="input-group input-group-sm">
+                <span class="input-group-addon" data-size="3">值
+                </span>
+                <div class="form-control" id="div_input">
+                    <input type="text" id="s_value" style="width: 100px" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+
+
+        @foreach (var t in ViewData["para"] as IList<ProInterface.Models.QueryPara>)
+        {
+            <Text>@t.ParaName ='@t.Value';</Text>
+        }
+
+        @MvcHtmlString.Create(Model.JS_STR);
+
+        $(function () {
+
+
+            var sumht = $(this).height();
+
+            var bl = true;
+            var cfgwh = $("#cfgwidth").val();
+            var dgwh = $("#dg").parent().parent().width();
+            if (parseFloat(cfgwh) > dgwh) {
+                bl = false;
+            }
+
+            @{
+        var forze = "";
+        if (this.Model.SHOW_CHECKBOX == 1)
+        {
+            forze += ",{field:'ck',checkbox:true}";
+        }
+        if (!string.IsNullOrEmpty(this.Model.ROWS_BTN) && this.Model.ROWS_BTN.Length > 5)
+        {
+            forze += ",{title:'操作',field:'action',formatter:ShowRowBtn,width:" + this.Model.QueryRowBtnList.Sum(x => x.Name.Length) * 20 + "}";
+        }
+
+        var key = this.Model.QueryCfg.Where(x => x.Show).ToList()[0];
+        var filStr = "<span href=\"javascript:void(0)\" id=\"filter_{0}\" onclick=\"ShowFilter(event,this,\\'{0}\\')\" class=\"easyui-linkbutton l-btn l-btn-small l-btn-plain\"  group=\"\"><span class=\"l-btn-left l-btn-icon-left\"><span class=\"l-btn-text l-btn-empty\">&nbsp;</span><span class=\"l-btn-icon icon-filter\">&nbsp;</span></span></span>";
+
+        filStr = string.Format(filStr, key.FieldName);
+        if (!key.CanSearch)
+        {
+            filStr = "";
+        }
+        var alias = string.Format("<span style=\"line-height: 26px; height: 26px;\">{0}</span>", key.Alias);
+        var forzeFormat = "";
+        if (!string.IsNullOrEmpty(key.Format))
+        {
+            forzeFormat = string.Format(",formatter:{0}", key.Format);
+        }
+        forze += string.Format(",{{title:'{0}',field:'{1}',width:80,sortable:true{2}}}", filStr + alias, key.FieldName, forzeFormat);
+        if (forze.Length > 0) { forze = forze.Substring(1); }
+            }
+            $('#dg').datagrid({
+                fitColumns: bl,
+                height: (sumht),
+                frozenColumns:[[
+	                @MvcHtmlString.Create(forze)
+                ]]
+            });
+
+            
+
+            @if (this.Model.AUTO_LOAD == 1)
+            {
+                <Text>
+
+            setTimeout(function(){
+
+                var whereStr = GetWhereStr()
+                $("#GetWhereStr").val(whereStr);
+                SetAllParaStr();
+                $('#dg').datagrid({
+                    @if (Request["simple"] == "1")
+                    {
+                        <text>pagination:true,pageSize:100,pageList:[100], </text>
+                    }
+                    else
+                    {
+                        <text>
+                    pagination:true,
+                    toolbar:"#toolbar",
+                        </text>
+                    }
+                    fitColumns: bl,
+                    url: 'QueryList',
+                    height: (sumht),
+                    frozenColumns:[[
+                                        @MvcHtmlString.Create(forze)
+                    ]],
+                    queryParams: {
+                        AllParaStr: $("#AllPara").val(),
+                        Code: $("#Code").val(),
+                        WhereStr: $("#GetWhereStr").val()
+                    }
+                });
+                        @if (Request["simple"] == "1")
+                        {
+                            <text>SetpagerSimple();</text>
+                        }
+                        else
+                        {
+                            <text>Setpager();</text>
+                        }
+            
+            },500);
+            </text>
+            }
+            else
+            {
+                <text>
+            $('#dg').datagrid({
+                            @if (Request["simple"] == "1")
+                            {
+                            <text>pagination:true,pageSize:100,pageList:[100], </text>
+                            }
+                            else
+                            {
+                            <text>pagination:true,
+                toolbar:"#toolbar",</text>
+                            }
+                fitColumns: bl,
+                height: (sumht),
+                frozenColumns:[[
+                                        @MvcHtmlString.Create(forze)
+                ]],
+                queryParams: {
+                    AllParaStr: $("#AllPara").val(),
+                    Code: $("#Code").val(),
+                    WhereStr: $("#GetWhereStr").val()
+                }
+            });
+            </text>
+            }
+
+@if (Request["simple"] == "1")
+{
+    <text>
+            var pager = $('#dg').datagrid().datagrid('getPager');    // get the pager of datagrid
+            pager.pagination({
+                layout: []
+            });
+            </text>
+}
+
+           
+        });
+
+    </script>
+    <div id="dialog_DD" style='border-width:0px;border-style:none'></div>
+    <div id="dialog_FullWin" title="添加" class="easyui-dialog" style="height: 250px; width: 550px" data-options="closed: true,iconCls:'icon-properties',modal:true,maximizable:true,resizable:true">
+        <iframe scrolling="auto" id='openWindowIframe' name="openWindowIframe" frameborder="0" style="width: 100%; height: 98%; padding: 2px"></iframe>
+    </div>  
+}
+
+<script type="text/javascript">
+    function FormatList(val,row){
+        var str="";
+        @foreach (ProInterface.Models.QueryCfg para in this.Model.QueryCfg.Where(x => x.Show).Skip(1).ToArray())
+        {
+        <text>
+        str+='<div><span style="font-weight:bold">@para.Alias:</span><span>'+row.@para.FieldName+'</span></div>';
+        </text>
+        }
+        str+="";
+        return str;
+    }
+</script>

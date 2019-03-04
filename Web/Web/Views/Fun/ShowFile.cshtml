@@ -1,0 +1,15 @@
+﻿@model ProInterface.Models.FILES
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@Model.NAME</title>
+</head>
+<body>
+<img src="@Url.Content(Model.URL)" />
+</body>
+</html>

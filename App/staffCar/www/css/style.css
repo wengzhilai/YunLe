@@ -1,0 +1,136 @@
+/*首页*/
+.home-slide ion-slide{
+height: 150px;
+    width:100%;
+}
+.home-slide ion-slide img{
+    height: 150px;
+    width:100%;
+}
+.slider-pager{
+    bottom: 8px;
+}
+.slider-pager .slider-pager-page{
+font-size: 5px;
+}
+.home-list{
+    text-align:center;
+}
+.user_button{
+    color:#000;
+    line-height: 20px;
+    font-size: 12px;
+    min-height: 20px;
+}
+.home-col.col{
+    padding: 0px;
+    border: 1px solid #f0f0f0;
+}
+.home-row.row{
+ padding: 0px;
+}
+
+/*登录页*/
+.item {
+    padding: 10px;
+
+}
+.item-icon-left .icon {
+    left: 25px;
+}
+.login-register{
+    float: right;
+
+}
+.login-register.button {
+    font-size: 14px;
+
+}
+/**个人中心**/
+.user-head{
+    min-height: 150px;
+    min-width: 100%;
+    background-image: url(../img/userbg.png);
+    /*background-repeat:no-repeat;*/
+    text-align: center;
+}
+
+.user-div{
+    margin-top: 10px;
+
+   }
+
+/**公共**/
+.bar.bar-carin {
+    border-color:#ff8978;
+    background-color: #ff8900;
+    background-image: linear-gradient(0deg, #e6b500, #e6b500 50%, transparent 50%);
+    color: #fff;
+}
+.input-label{
+    font-size: 14px;
+}
+ion-content{
+    background-color: #f0f0f0;
+}
+.button-div{
+    width: 80%;
+    margin-bottom: 30px;
+    margin-top: 50px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.carIn-button{
+    width: 100%;
+    margin-bottom: 10px;
+    height: 35px;
+    font-size: 16px;
+}
+/**我的订单**/
+
+/**查询车辆**/
+.searchcar-right{
+    color:#ff8978 ;
+    margin-right: 10px;
+    float: right;
+    font-size: 13px;
+}
+.search.item-input {
+    padding: 10px;
+    padding-left: 20px;
+    border-width: 0px;
+
+}
+.col{
+    padding: 0px;
+
+}
+/**客户信息详情**/
+.custInfo{
+    text-align:right;
+    font-size: 14px;
+    color: #9d9d9d;
+    width: 80%;
+    padding-right: 20px;
+}
+/**客户编辑**/
+.editcust{
+    color: #9d9d9d;
+    padding-right: 20px;
+}
+
+/**分享推荐**/
+#mcover {
+    position: fixed;
+   bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100px;
+    background: rgba(0, 0, 0, 0.7);
+    display: none;
+    z-index: 20000;
+    color: white;
+}
+
+
+

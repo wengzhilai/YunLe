@@ -1,0 +1,91 @@
+<ion-header>
+  <ion-toolbar color="car">
+    <ion-title>云乐享车，您的贴身车管家</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div>
+    <ion-slides>
+      <ion-slide>
+        <img src="img/s-1.png"/>
+      </ion-slide>
+      <ion-slide>
+        <img src="img/s-2.jpg"/>
+      </ion-slide>
+      <ion-slide>
+        <img src="img/s-3.jpg"/>
+      </ion-slide>
+    </ion-slides>
+  </div>
+
+  <div style="margin-top: -7px;margin-bottom: 3px">
+    <ion-row> 
+      <ion-col (click)="GoHelpEdit('救援')">
+        <div>
+          <img src="img/home-icon2.gif" />
+          <p>
+            免费救援
+          </p>
+        </div>
+      </ion-col>
+      <ion-col (click)="GoHelpEdit('维修')">
+        <div>
+          <img src="img/home-icon3.gif" />
+          <p>
+            维修保养
+          </p>
+        </div>
+      </ion-col>
+      <ion-col (click)="GoInsureList()">
+        <div class="light-bg">
+          <img src="img/home-icon1.gif" />
+          <p>
+            保单查询
+          </p>
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col (click)="GoOrderList()">
+        <div>
+          <div class="divBack">
+            <ion-icon name="calendar"></ion-icon>
+          </div>
+          <p>
+            订单信息
+          </p>
+        </div>
+      </ion-col>
+
+      <ion-col (click)="hint('期待开放')">
+        <div class="light-bg">
+          <img src="img/home-icon4.gif" />
+          <p>
+            事故车管家
+          </p>
+        </div>
+      </ion-col>
+      <ion-col (click)="GoOrderList('审车')">
+        <div>
+          <img src="img/home-icon6.gif" />
+          <p>
+            免费审车
+          </p>
+        </div>
+      </ion-col>
+
+    </ion-row>
+  </div>
+  <ion-list *ngIf="NowCar.PLATE_NUMBER!=null">
+    <ion-item (click)="GoCarEditPage(NowCar.ID)">
+      <ion-thumbnail item-left>
+        <img src="{{NowCar.DrivingPicUrl|ImgUrl}}">
+      </ion-thumbnail>
+      <h2>品牌 {{NowCar.BRAND}}</h2>
+      <p>车牌 {{NowCar.PLATE_NUMBER}}</p>
+      <p>有无过户 {{NowCar.TRANSFER_DATA}}</p>
+    </ion-item>
+    </ion-list>
+</ion-content>
+

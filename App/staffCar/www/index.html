@@ -1,0 +1,84 @@
+﻿<!DOCTYPE html>
+<html>
+<div id="msg" style="width:100%;height: 100%;position:absolute;background-color: rgba(0,0,0,.4);">
+  <div style="width:350px;height:40px;position:absolute;left:50%;top:50%;margin-top:-20px;margin-left:-175px;background-color: rgba(255,255,255,.9);text-align: center;line-height: 40px">
+    正在努力初始化资源文件，请稍后.......
+    <span id="msgDiv"></span>
+  </div>
+</div>
+<script type="text/javascript">
+  var i=0;
+  function showMsg() {
+    if (i < 33) {
+      if(1<2)
+      {
+        window.document.getElementById("msg").style.display = "none";
+      }
+      else {
+        window.document.getElementById("msg").style.display = "";
+      }
+      i++;
+      window.document.getElementById("msgDiv").innerHTML=(i*3)+"%"
+      setTimeout("showMsg()", 1000)
+    }
+    else {
+      window.document.getElementById("msg").style.display = "none";
+    }
+  }
+  showMsg();
+</script>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+  <title></title>
+
+  <link href="lib/ionic/css/ionic.min.css" rel="stylesheet">
+  <link href="css/style.css" rel="stylesheet">
+  <link rel="stylesheet" href="lib/iconfont/iconfont.css"/>
+  <link href="lib/timepicer/timePicker.css" rel="stylesheet">
+  <!-- IF using Sass (run gulp sass first), then remove the CSS include above
+  <link href="css/ionic.app.css" rel="stylesheet">
+  -->
+
+  <style type="text/css">
+    .scroll {
+      width: 100%;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      -webkit-touch-callout: none;
+      -webkit-text-size-adjust: none;
+      -moz-text-size-adjust: none;
+      text-size-adjust: none;
+      -webkit-transform-origin: left top;
+      transform-origin: left top;
+    }
+  </style>
+</head>
+
+<body ng-app="starter">
+
+<ion-nav-bar class="bar-carin">
+  <ion-nav-back-button>
+  </ion-nav-back-button>
+</ion-nav-bar>
+<ion-nav-view></ion-nav-view>
+</body>
+</html>
+<script type="text/javascript">
+
+  document.write('<scr' + 'ipt type="text/javascript"  src="lib/ionic/js/ionic.bundle.min.js"></scr' + 'ipt>');
+  document.write('<scr' + 'ipt type="text/javascript"  src="lib/timepicer/timePicker.js"></scr' + 'ipt>');
+  document.write('<scr' + 'ipt type="text/javascript"  src="lib/ngCordova/dist/ng-cordova.min.js"></scr' + 'ipt>');
+  document.write('<scr' + 'ipt type="text/javascript"  src="cordova.js"></scr' + 'ipt>');
+  document.write('<scr' + 'ipt type="text/javascript"  src="js/app.js"></scr' + 'ipt>');
+  document.write('<scr' + 'ipt type="text/javascript"  src="js/controllers.js?t='+new Date().getTime()+'"></scr' + 'ipt>');
+  document.write('<scr' + 'ipt type="text/javascript"  src="js/services.js?t='+new Date().getTime()+'"></scr' + 'ipt>');
+  document.write('<scr' + 'ipt type="text/javascript"  src="js/filters.js"></scr' + 'ipt>');
+  document.write('<scr' + 'ipt type="text/javascript"  src="js/config.js"></scr' + 'ipt>');
+  document.write('<scr' + 'ipt type="text/javascript"  src="lib/jQuery/2.2.0.min.js"></scr' + 'ipt>');
+  document.write('<scr' + 'ipt type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=xpiepfbv6zvlVSbLGfMg5sr1"></scr' + 'ipt>');
+  document.write('<scr' + 'ipt type="text/javascript" src="http://developer.baidu.com/map/jsdemo/demo/convertor.js"></scr' + 'ipt>');
+  document.write('<scr' + 'ipt type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></scr' + 'ipt>');
+</script>

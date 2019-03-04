@@ -1,0 +1,40 @@
+<ion-view view-title="客户订单" hide-back-button="true">
+    <ion-nav-buttons side="left">
+        <button class="button button-icon icon ion-ios-arrow-back light" ui-sref="home"></button>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+        <button class="button button-icon icon  ion-ios-search light" ng-click="customerList.doRefresh()"></button>
+
+    </ion-nav-buttons>
+
+    <div class="bar bar-subheader light-bg item-input-inset">
+        <button class="button icon-right ion-ios-arrow-down button-light"  ng-click="showUserPopup($event)">全部客户</button>
+        <label class="item-input-wrapper">
+            <i class="icon ion-ios-search placeholder-icon"></i>
+            <input type="search" id="searchKey" placeholder="搜索">
+        </label>
+
+        <button class="button icon-right ion-ios-arrow-down button-light"  ng-click="showOrderPopup($event)">排序</button>
+
+    </div>
+    <ion-content class="has-header has-subheader" style="background-color: #f0f0f0">
+        <ion-refresher pulling-text="下拉刷新" on-refresh="customerList.doRefresh()"></ion-refresher>
+        <div collection-repeat="o in customerList.lists.data">
+            <div class="list light-bg" style="margin-top: 10px;">
+                <a class="item item-icon-right" style="padding-left: 20px" HREF="#/orderList/{{o.ID}}" >
+
+                    <p style="font-size: 16px" class="iconfont">&#xe60b;&nbsp;{{o.NAME}}</p>
+                    <p style="color:#bbbbbb;font-size: 14px;padding-top: 10px">{{o.ADDRESS}}</p>
+                    <b style="padding-top: 5px;font-size: 15px">{{o.STATUS}}</b>
+                    <i class="icon ion-ios-arrow-right" style="font-size: 16px"></i>
+                </a>
+
+            </div>
+            <div style="background-color: #f0f0f0;height:1px;margin-top: -10px;margin-bottom: -10px"></div>
+        </div>
+        <ion-infinite-scroll ng-if="customerList.hasNextPage()"
+                             on-infinite="customerList.loadMore()"
+                             distance="1%">
+        </ion-infinite-scroll>
+    </ion-content>
+</ion-view>

@@ -1,0 +1,414 @@
+@model ProInterface.Models.FaScript
+@{
+    ViewBag.Title = "任务详细信息";
+}
+
+<div id="myPnl" style="display: none"></div>
+@using (Ajax.BeginForm(new AjaxOptions
+{
+    UpdateTargetId = "myPnl",
+    Confirm = "确定要提交吗",
+    OnBegin = "OnBegin",
+    OnSuccess = "OnSuccess",
+    OnFailure = "OnFailure",
+    OnComplete = "OnComplete"
+}))
+{
+    <script src="~/Scripts_Page/Query.js"></script>
+    @Html.HiddenFor(m => m.ID)
+    <div class="boot-panel boot-panel-default  boot-panel-success">
+        <div class="boot-panel-heading">任务操作</div>
+        <div class="boot-panel-body">
+            <button id="btnenable" onclick="GetEnable()" style="width: 100px; display: none;" type="button" class="btn btn-success btn-sm">
+                <span class="glyphicon glyphicon-forward"></span>&nbsp;&nbsp;启&nbsp;&nbsp;用
+            </button>
+
+            <button id="btnstart" onclick="GetStart()" style="width: 100px; display: none;" type="button" class="btn btn-success btn-sm">
+                <span class="glyphicon glyphicon-forward"></span>&nbsp;&nbsp;开&nbsp;&nbsp;始
+            </button>
+            <button id="btnstop" onclick="GetStop()" style="width: 100px; display: none;" type="button" class="btn btn-success btn-sm">
+                <span class="glyphicon glyphicon-forward"></span>&nbsp;&nbsp;停&nbsp;&nbsp;止
+            </button>
+            <a id="btnedit" style="width:100px;"  href="@Url.Content("~/Script/ScriptDetails?id=" + Model.ID)" type="button" class="btn btn-success btn-sm">
+                <span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;编&nbsp;&nbsp;辑
+            </a>
+            <button id="btndisable" style="width: 100px; display: none;" onclick="GetDisabled()" type="button" class="btn btn-success btn-sm">
+                <span class="glyphicon glyphicon-stop"></span>&nbsp;&nbsp;停&nbsp;&nbsp;用
+            </button>
+            <button id="btnrefresh" style="width: 100px; display: none;" onclick="GetRefresh()" type="button" class="btn btn-success btn-sm">
+                <span class="glyphicon glyphicon-stop"></span>&nbsp;&nbsp;刷&nbsp;&nbsp;新
+            </button>
+            <button id="btndel" style="width: 100px;" onclick="GetDel()" type="button" class="btn btn-success btn-sm">
+                <span class="glyphicon glyphicon-minus"></span>&nbsp;&nbsp;删&nbsp;&nbsp;除
+            </button>
+            <button style="width: 100px;" onclick="parent.CloseWin();" type="button" class="btn btn-success btn-sm">
+                <span class="glyphicon glyphicon-remove"></span>&nbsp;&nbsp;关闭窗体
+            </button>
+
+
+            <div class="input-group input-group-sm" style="padding-top: 10px;">
+                <span class="input-group-addon" data-size="5">@Html.LabelFor(m => m.NAME)</span>
+                <div class="form-control" disabled="disabled">
+                    <table style="border: 0; padding: 0; margin: 0; width: 100%">
+                        <tr>
+                            <td>@Html.DisplayFor(m => m.NAME)</td>
+                            <td style="width: 150px;">
+                                <a href="@Url.Content("~/Query/Query?code=ScriptLog&script_id="+Model.ID)"    style="margin:0;padding:0;" type="button" class="btn btn-link btn-xs">查看日志</a>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="input-group input-group-sm" style="padding-top: 10px;">
+                <span class="input-group-addon" data-size="5">@Html.LabelFor(m => m.CODE)</span>
+                <div class="form-control" disabled="disabled">
+                    @Html.DisplayFor(m => m.CODE)
+                </div>
+            </div>
+            <div class="input-group input-group-sm" style="padding-top: 10px;">
+                <span class="input-group-addon" data-size="5">修改任务时间</span>
+                <div class="form-control" disabled="disabled">
+                    @Html.DisplayFor(m => m.EndLog)
+                </div>
+            </div>
+            <div class="input-group input-group-sm" style="padding-top: 10px;">
+                <span class="input-group-addon" data-size="5">@Html.LabelFor(m => m.DSL_TYPE)</span>
+                <input type="text" disabled="disabled" class="form-control" value="@(Model.CODE == "0" ? "一般口径脚本" : "上传下载脚本")" />
+            </div>
+            <div class="input-group input-group-sm" style="padding-top: 10px;">
+                <span class="input-group-addon" data-size="5">@Html.LabelFor(m => m.RUN_ARGS)</span>
+                <div class="form-control">
+                    run_date=<input type="text" id="Run_Date" style="width: 80px;" />
+                    ,stat_type=<input type="text" id="Stat_Type" style="width: 80px;" />
+                    ,site=<input type="text" id="tbsite" style="width: 80px;" />
+                    @Html.HiddenFor(k => k.RUN_ARGS)
+                </div>
+            </div>
+            <div class="input-group input-group-sm" style="padding-top: 10px;">
+                <span class="input-group-addon" data-size="5">@Html.LabelFor(m => m.RUN_WHEN)</span>
+                <div class="form-control" disabled="disabled">
+                    @Html.DisplayFor(m => m.RUN_WHEN)
+                </div>
+            </div>
+            <div class="input-group input-group-sm" style="padding-top: 10px;">
+                <span class="input-group-addon" data-size="5">@Html.LabelFor(m => m.RUN_STATE)</span>
+                <div class="form-control" disabled="disabled">
+                    @Html.HiddenFor(m => m.RUN_STATE)
+                    @if (Model.RUN_STATE != null)
+                    {
+                        string temp = "";
+                        switch (Model.RUN_STATE)
+                        {
+                            case (int)ProServer.RunState.Canceled:
+                                temp = "取消中";
+                                break;
+                            case (int)ProServer.RunState.Disabled:
+                                temp = "禁用";
+                                break;
+                            case (int)ProServer.RunState.Running:
+                                temp = "运行";
+                                break;
+                            case (int)ProServer.RunState.Stopped:
+                                temp = "停止";
+                                break;
+                            case (int)ProServer.RunState.Waiting:
+                                temp = "等待";
+                                break;
+                            default:
+                                temp = "";
+                                break;
+                        }
+                        <span style="color: red">
+                            @temp
+                        </span>
+                    }
+
+
+                </div>
+            </div>
+            <div class="input-group input-group-sm" style="padding-top: 10px;">
+                <span class="input-group-addon" data-size="5">@Html.LabelFor(m => m.LOG_TYPE)</span>
+                @Html.DropDownListFor(m => m.LOG_TYPE, new List<SelectListItem>{
+           new SelectListItem{ Text="Debug",Value="0"},
+           new SelectListItem{ Text="Information",Value="1"},
+           new SelectListItem{ Text="Warning",Value="2"},
+           new SelectListItem{ Text="Error",Value="3"},
+           }, new { @class = "form-control", @disabled = "disabled" })
+            </div>
+            <div class="input-group input-group-sm" style="padding-top: 10px;">
+                <span class="input-group-addon" data-size="5">@Html.LabelFor(m => m.RETURN_CODE)</span>
+                <div class="form-control" disabled="disabled">
+                    @if (Model.RETURN_CODE == 0)
+                    { 
+                        <span>未知</span>
+                    }
+                    else if (Model.RETURN_CODE == 1)
+                    { 
+                        <span>成功</span>
+                    }
+                    else if (Model.RETURN_CODE == -1)
+                    { 
+                        <span>失败</span>
+                    }
+                    else if (Model.RETURN_CODE == -2)
+                    { 
+                        <span>中断</span>
+                    }
+                    else if (Model.RETURN_CODE == -3)
+                    { 
+                        <span>错误</span>
+                    }
+
+
+                </div>
+            </div>
+            <div class="input-group input-group-sm" style="padding-top: 10px;">
+                <span class="input-group-addon" data-size="5">@Html.LabelFor(m => m.START_TIME)</span>
+                <div class="form-control" disabled="disabled">
+                    @Html.DisplayFor(m => m.START_TIME)
+                </div>
+            </div>
+            <div class="input-group input-group-sm" style="padding-top: 10px;">
+                <span class="input-group-addon" data-size="5">@Html.LabelFor(m => m.END_TIME)</span>
+                <div class="form-control" disabled="disabled">
+                    @Html.DisplayFor(m => m.END_TIME)
+                </div>
+            </div>
+            <div class="input-group input-group-sm" style="padding-top: 10px;">
+                <span class="input-group-addon" data-size="5">@Html.LabelFor(m => m.SERVICE_FLAG)</span>
+                @Html.DropDownListFor(m => m.SERVICE_FLAG, new List<SelectListItem>(){
+    new SelectListItem{ Value="MONTHLY07", Text="MONTHLY07(川北月结)" },
+    new SelectListItem{ Value="MONTHLY06", Text="MONTHLY06(川南月结)" },
+    new SelectListItem{ Value="REALTIME07", Text="REALTIME07(川北实时)" },
+    new SelectListItem{ Value="REALTIME06", Text="REALTIME06(川南实时)" },
+    new SelectListItem{ Value="RCREALTIME07", Text="RCREALTIME07(川北实时重采)" },
+    new SelectListItem{ Value="RCREALTIME06", Text="RCREALTIME06(川南实时重采)" }
+   }, new { @class = "form-control", @disabled = "disabled" })
+                @Html.ValidationMessageFor(m => m.SERVICE_FLAG)
+            </div>
+            <div class="input-group input-group-sm" style="padding-top: 10px;">
+                <span class="input-group-addon" data-size="5">@Html.LabelFor(m => m.BODY_TEXT)</span>
+                <div class="form-control">
+                    @Html.TextAreaFor(m => m.BODY_TEXT, new { @class = "form-control", @placeholder = "任务脚本", @style = "height:300px;",@readonly=true })
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="dialog_FullWin" title="添加" class="easyui-dialog" style="height: 250px; width: 550px" data-options="closed: true,iconCls:'icon-properties',modal:true,maximizable:true,resizable:true">
+        <iframe scrolling="auto" id='openWindowIframe' frameborder="0" style="width: 99%; height: 99%;"></iframe>
+    </div>  
+}
+<script type="text/javascript" src="~/Scripts_Page/FunBase.js"></script>
+
+<script type="text/javascript">
+    $(function () {
+        var t = $("#RUN_ARGS").val();
+        if (t.length > 0) {
+            var stt = t.split(',');
+            $(stt).each(function (index, item) {
+                var p = item.split('=');
+                if (p[0] == "run_date") {
+                    $("#Run_Date").val(p[1]);
+                }
+                else if (p[0] == "stat_type") {
+                    $("#Stat_Type").val(p[1]);
+                }
+                else {
+                    $("#tbsite").val(p[1]);
+                }
+            });
+        }
+        BtnState();
+        var state = $("#RUN_STATE").val();
+        if (state == "1" || state == "2" || state == "3") {
+            setInterval(function () { ReashState }, 4000);
+        }
+    });
+
+    function ReashState() {
+        var oldstate = $("#RUN_STATE").val();
+        var date = new Date();
+        $.ajax({
+            dataType: "text",
+            type: "get",
+            url: "@Url.Content("~/Script/GetScriptDetailsState?id=" + Model.ID)",
+            success: function (data) {
+                if (oldstate != data) {
+                    window.location.reload();
+                }
+            }
+        });
+    }
+
+
+
+    function BtnState() {
+        var state = $("#RUN_STATE").val();
+        if (state == "-1") {
+            $("#btnenable").show();
+            $("#btnrefresh").show();
+        }
+        else if (state == "0") {
+            $("#btnstart").show();
+            $("#btndisable").show();
+        }
+        else if (state == "1") {
+            $("#btnstop").show();
+            $("#btnrefresh").show();
+            $("#btnedit").attr("disabled", "disabled");
+            $("#btndel").attr("disabled", "disabled");
+        }
+        else if (state == "2") {
+            $("#btnstop").show();
+            $("#btnrefresh").show();
+            $("#btnedit").attr("disabled", "disabled");
+            $("#btndel").attr("disabled", "disabled");
+        }
+        else if (state == "3") {
+            $("#btnedit").attr("disabled", "disabled");
+            $("#btnrefresh").show();
+            $("#btndel").attr("disabled", "disabled");
+        }
+        else {
+            $("#btnrefresh").show();
+        }
+    }
+
+
+    //得到参数
+    function GetRunAgrs() {
+        if ($("#Run_Date").val().trim().length == 0 && $("#Stat_Type").val().trim().length == 0) {
+            $("#RUN_ARGS").val("");
+        }
+        else if ($("#Run_Date").val().trim().length == 0 && $("#Stat_Type").val().trim().length != 0) {
+            $("#RUN_ARGS").val("stat_type=" + $("#Stat_Type").val().trim());
+        }
+        else if ($("#Run_Date").val().trim().length != 0 && $("#Stat_Type").val().trim().length == 0) {
+
+            $("#RUN_ARGS").val("run_date=" + $("#Run_Date").val().trim());
+        }
+        else {
+            $("#RUN_ARGS").val("run_date=" + $("#Run_Date").val().trim() + ",stat_type=" + $("#Stat_Type").val().trim());
+        }
+
+        if ($("#tbsite").val().trim().length != 0) {
+            var t = $("#RUN_ARGS").val();
+            var k = t + ",site=" + $("#tbsite").val();
+            $("#RUN_ARGS").val(k);
+        }
+    }
+
+    ///开始
+    function GetStart() {
+        GetRunAgrs();
+        var date = new Date();
+        $.ajax({
+            type: "POST",
+            dataType: "text",
+            url: "@Url.Content("~/Script/GetStart")",
+            data: { "id": $("#ID").val(), "runagrs": "" + $("#RUN_ARGS").val() + "", "date": "" + date + "" },
+            success: function (data) {
+                if (data == "true") {
+                    alert("成功")
+                }
+                else {
+                    alert(data);
+                }
+                window.location.reload();
+            },
+            error: function (msg) {
+                alert(msg.context);
+            }
+        });
+    }
+    //停止
+    function GetStop() {
+        var date = new Date();
+        $.ajax({
+            type: "Get",
+            dataType: "text",
+            url: "@Url.Content("~/Script/GetStop")?id=" + $("#ID").val() + "&date=" + date,
+            success: function (data) {
+                if (data == "true") {
+                    alert("成功")
+                }
+                else {
+                    alert(data);
+                } window.location.reload();
+            },
+            error: function (msg) {
+                alert(msg.context);
+            }
+        });
+    }
+    //删除
+    function GetDel() {
+        var date = new Date();
+        $.ajax({
+            type: "Get",
+            dataType: "text",
+            url: "@Url.Content("~/Script/GetDel")?id=" + $("#ID").val() + "&date=" + date,
+            success: function (data) {
+                if (data == "true") {
+                    alert("成功")
+                }
+                else {
+                    alert(data);
+                }
+                parent.CloseWin();
+            },
+            error: function (msg) {
+                alert(msg.context);
+            }
+        });
+    }
+    //启用
+    function GetEnable() {
+        var date = new Date();
+        $.ajax({
+            type: "Get",
+            dataType: "text",
+            url: "@Url.Content("~/Script/GetEnable")?id=" + $("#ID").val() + "&date=" + date,
+            success: function (data) {
+                if (data == "true") {
+                    alert("成功")
+                }
+                else {
+                    alert(data);
+                } window.location.reload();
+            },
+            error: function (msg) {
+                alert(msg.context);
+            }
+        });
+    }
+    //停用
+    function GetDisabled() {
+        var date = new Date();
+        $.ajax({
+            type: "Get",
+            dataType: "text",
+            url: "@Url.Content("~/Script/GetDisabled")?id=" + $("#ID").val() + "&date=" + date,
+            success: function (data) {
+                if (data == "true") {
+                    alert("成功")
+                }
+                else {
+                    alert(data);
+                } window.location.reload();
+            },
+            error: function (msg) {
+                alert(msg.context);
+            }
+        });
+    }
+
+    function GetRefresh() {
+        window.location.reload();
+    }
+
+</script>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+}

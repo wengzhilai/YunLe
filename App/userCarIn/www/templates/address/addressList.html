@@ -1,0 +1,31 @@
+<ion-view view-title="我的地址" hide-back-button="true" ng-init="addressList.reLoad()">
+    <ion-nav-buttons side="left">
+        <button class="button button-icon icon ion-ios-arrow-back light" ui-sref="user"></button>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+        <button class="button button-icon icon  ion-ios-plus-empty light" ui-sref="addressSave({reload: true,rel:1})"></button>
+    </ion-nav-buttons>
+    <ion-content class="has-header" style="background-color: #f0f0f0" ng-click="addressList.showMsg()">
+        <ion-refresher pulling-text="下拉刷新" on-refresh="addressList.doRefresh()"></ion-refresher>
+        <div collection-repeat="o in addressList.lists.data">
+            <div class="list light-bg" style="margin-top: 10px;" ui-sref="addressSave({id: o.ID, reload: true})">
+                <a class="item item-thumbnail-left">
+                    <div class="carlist-div" >
+                        <div>姓名：{{o.NAME}}</div>
+                        <div>联系电话：{{o.PHONE}}</div>
+                        <div>详细地址：{{o.ADDRESS}}</div>
+                    </div>
+                </a>
+            </div>
+            <div style="background-color: #f0f0f0;height:1px;margin-top: -10px;margin-bottom: -10px"></div>
+        </div>
+        <ion-infinite-scroll ng-if="addressList.hasNextPage()||addressList.bean.currentPage >1"
+                             on-infinite="addressList.loadMore()"
+                             distance="1%">
+        </ion-infinite-scroll>
+    </ion-content>
+    <div class="bar bar-footer bar-balanced">
+        <div class="title">
+            注：长按删除或设置默认地址</div>
+    </div>
+</ion-view>

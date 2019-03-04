@@ -1,0 +1,40 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html style="margin:0px">
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>微信安装</title>
+</head>
+<body style="margin:0px">
+    <div style="padding:20px;background-color:#FDFDFD;color:#676767;text-align:center">
+        <h2>@ViewData["title"]</h2>
+    </div>
+    <HR />
+    <div style="background-color:#D9EDF6;padding:5px;border:1px dashed #987cb9;margin:10px;border-radius: 5px;">
+        <h3 style="color:#336F87">温馨提示</h3> 
+        <h style="color:#555358">请点击微信右上角按钮，然后在弹出的菜单中，点击在浏览器中打开，即可下载</h>
+    </div>
+    <div style="text-align:center">
+        <img style="height:200px;width:200px;" src="Matrix?w=200&type=@Request["type"]" />
+    </div>
+</body>
+</html>
+<script type="text/javascript">
+    //是微信
+    var msg = window.navigator.userAgent.toLowerCase();
+    if (msg.indexOf('micromessenger') > -1)
+    {
+
+    } else if (msg.indexOf('android') > -1 || msg.indexOf('windows') > -1)
+    {
+        window.location = '@ViewData["androidUrl"]';
+    }
+    else if (msg.indexOf('mac') > -1) {
+        window.location = '@ViewData["iosUrl"]';
+    }
+</script>

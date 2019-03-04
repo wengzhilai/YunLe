@@ -1,0 +1,56 @@
+page-home {
+  .title-col{
+    color: white;
+    background-color: transparent;
+    font-size: 16px;
+    ion-icon{
+      font-size: 20px;
+      margin: 0px;
+      width: 40px;
+      height: 30px;
+      line-height: 30px;
+    }
+  }
+  .right{
+      text-align: right;
+    }
+    .left{
+      text-align: left;
+    }
+  .userIco{
+    width: 30px;
+    height: 30px;
+    border-radius:15px;
+    background-color: #F9FAFB;
+    
+  }
+  .col {
+    margin: 1px;
+  }
+
+  ion-col{
+    background-color: #FFFFFF;
+    border-radius: 2px;
+    text-align: -webkit-center;
+  }
+  ion-col div {
+    width:  100px;
+  }
+  ion-col p {
+    color:#006666;
+    margin: 10px 0px ;
+    background-color: #FFFFFF;
+  }
+  ion-col ion-icon{
+    font-size: 50px;
+    width: 60px;
+  }
+  ion-badge{
+    position: absolute;
+    margin-left: 40px;
+    margin-top:10px ;
+    min-width: 10px;
+    font-size: 8px;
+    padding: 2px 5px;
+  }
+}

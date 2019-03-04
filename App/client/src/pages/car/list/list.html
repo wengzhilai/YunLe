@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-toolbar color="car">
+    <ion-buttons left>
+      <button ion-button icon-only (click)="GoBack()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>车辆列表</ion-title>
+    <ion-buttons right>
+      <button ion-button icon-only (click)="GoAdd()">
+        <ion-icon name="add-circle"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content
+      pullingIcon="arrow-dropdown"
+      pullingText="下拉刷新"
+      refreshingSpinner="circles"
+      refreshingText="刷新中...">
+    </ion-refresher-content>
+  </ion-refresher>
+
+  <ion-list>
+    <ion-item *ngFor="let o of lists" (click)="ShowMenu(o)">
+      <ion-thumbnail item-left>
+        <img src="{{o.DrivingPicUrl|ImgUrl}}">
+      </ion-thumbnail>
+      <h2>品牌 {{o.BRAND}}</h2>
+      <p>车牌 {{o.PLATE_NUMBER}}</p>
+      <p>有无过户 {{o.TRANSFER_DATA}}</p>
+    </ion-item>
+  </ion-list>
+  <ion-infinite-scroll (ionInfinite)="$event.waitFor(doInfinite($event))">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>

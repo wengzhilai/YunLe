@@ -1,0 +1,37 @@
+<ion-view view-title="定单处理" hide-back-button="true" ng-init="init()">
+  <ion-nav-buttons side="left">
+    <button class="button button-icon icon ion-ios-arrow-back light" ng-click="$ionicGoBack()"></button>
+  </ion-nav-buttons>
+
+  <ion-content class="padding">
+    <div class="list">
+      <label class="item item-input item-stacked-label" ng-if="taskFlow.bean.stauts.indexOf('定价')>-1">
+        <span class="input-label">费用</span>
+        <input ng-model="taskFlow.bean.cost" type="number">
+      </label>
+      <span class="item item-input item-stacked-label" ng-if="taskFlow.bean.stauts.indexOf('接车')>-1">
+        <span class="input-label">预计到达时间</span>
+        <time-picker title="预计到达时间" yearstart="2016" yearend="2017" time-picker-result="taskFlow.bean.PickTime"
+                     format="yyyy-MM-dd hh:mm"></time-picker>
+      </span>
+      <label class="item item-input item-stacked-label">
+        <span class="input-label">处理说明</span>
+        <textarea ng-model="taskFlow.bean.body" type="text" style="height: 100px;"></textarea>
+      </label>
+      <div class="item item-icon-left">
+        <div class="input-label" style="font-weight:bold;">
+          <button class="button button-small button-calm" on-tap="taskFlow.AddImg()">上传照片</button>
+        </div>
+      </div>
+      <div class="item item-input" style="padding-left: 20px;line-height: 1">
+        <div ng-if="taskFlow.AllFiles.length>0" ng-repeat="o in taskFlow.AllFiles">
+          <img src="{{o.URL|imgUrl}}" height="50px" width="50px" style="margin: 10px"
+               data-id="{{o.ID}}" data-indexNo="{{o.indexNo}}" ng-click="taskFlow.upImg($event)"/>
+        </div>
+      </div>
+      <div class="button-bar bar-positive" style="margin-top: 5px;">
+        <a class="button " ng-click="taskFlow.createFlow()">{{taskFlow.bean.stauts}}</a>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

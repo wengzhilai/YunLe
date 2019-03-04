@@ -1,0 +1,168 @@
+<ion-header>
+  <ion-toolbar color="car">
+    <ion-buttons left>
+      <button ion-button icon-only (click)="GoBack()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>保单详情</ion-title>
+    <ion-buttons right>
+      <button ion-button icon-only (click)="GoEdit()">
+        <ion-icon name="create"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-item-group>
+    <ion-item-divider color="light">
+      车主信息
+    </ion-item-divider>
+    <ion-item>
+      <ion-label>定单编号</ion-label>
+      <p item-right>{{bean.ORDER_NO}}</p>
+    </ion-item>
+    <ion-item>
+      <ion-label>总费用</ion-label>
+      <p item-right>￥{{bean.COST|number:'1.2-2'}}</p>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>车主姓名</ion-label>
+      <p item-right>{{bean.CAR_USERNAME}}</p>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>配送地址</ion-label>
+      <p item-right>{{bean.DELIVERY}}</p>
+    </ion-item>
+    <ion-item>
+      <ion-label>备注</ion-label>
+    </ion-item>
+    <ion-card-content>
+      <p>{{bean.REMARK}}</p>
+    </ion-card-content>
+    <ion-item *ngIf="bean.AllFiles.length>0">
+      <ion-scroll scrollX="true" style="height: 110px;">
+        <img *ngFor="let o of bean.AllFiles" name="allFile_{{o.indexNo}}" src="{{o.URL|ImgUrl}}" height="70px" width="70px" style="margin: 10px"
+          (click)="showBigImage(o.URL)" />
+      </ion-scroll>
+    </ion-item>
+  </ion-item-group>
+  <ion-item-group>
+    <ion-item-divider color="light">
+      车辆信息
+    </ion-item-divider>
+    <ion-item *ngIf="!bean.Car.isNew">
+      <ion-label>车牌号</ion-label>
+      <p item-right>{{bean.Car.PLATE_NUMBER}}</p>
+    </ion-item>
+    <ion-item *ngIf="bean.Car.isNew">
+      <img *ngIf="bean.Car.billUrl!=null" src="{{bean.Car.billUrl|ImgUrl}}" height="70px" width="70px" alt="发票" style="margin: 10px"
+        (click)="showBigImage(bean.Car.billUrl)" />
+      <img *ngIf="bean.Car.certificatePicUrl!=null" src="{{bean.Car.certificatePicUrl|ImgUrl}}" height="70px" width="70px" alt="合格证"
+        style="margin: 10px" (click)="showBigImage(bean.Car.certificatePicUrl)" />
+    </ion-item>
+    <ion-item *ngIf="!bean.Car.isNew">
+      <img *ngIf="bean.Car.DrivingPicUrl!=null" src="{{bean.Car.DrivingPicUrl|ImgUrl}}" height="70px" width="70px" alt="行驶证正面"
+        style="margin: 10px" (click)="showBigImage(bean.Car.DrivingPicUrl)" />
+      <img *ngIf="bean.Car.DrivingPicUrl1!=null" src="{{bean.Car.DrivingPicUrl1|ImgUrl}}" height="70px" width="70px" alt="行驶证附页"
+        style="margin: 10px" (click)="showBigImage(bean.Car.DrivingPicUrl1)" />
+    </ion-item>
+    <ion-item>
+      <img *ngIf="bean.Car.idNoUrl!=null" src="{{bean.Car.idNoUrl|ImgUrl}}" height="70px" width="70px" alt="车主证件正面" style="margin: 10px"
+        (click)="showBigImage(bean.Car.idNoUrl)" />
+      <img *ngIf="bean.Car.idNoUrl1!=null" src="{{bean.Car.idNoUrl1|ImgUrl}}" height="70px" width="70px" alt="车主证件背面" style="margin: 10px"
+        (click)="showBigImage(bean.Car.idNoUrl1)" />
+    </ion-item>
+  </ion-item-group>
+  <ion-item-group>
+    <ion-item-divider color="light">
+      <ion-label style="color: #0000fe">投保信息</ion-label>
+      <ion-label item-right style="text-align: right;font-size: 12px;">不计=不计免赔</ion-label>
+    </ion-item-divider>
+    <ion-item>
+      <ion-label>是否续保</ion-label>
+      <ion-toggle item-right checked="{{bean.PURCHASE_WAY}}" [disabled]="true"></ion-toggle>
+    </ion-item>
+    <ion-item>
+      <ion-label>选择保险公司</ion-label>
+      <ion-select [(ngModel)]="bean.INSURER_ID" [disabled]="true" okText="确定" cancelText="取消">
+        <ion-option *ngFor="let key of bean.AllInsurePrice" value="{{key.ID}}">{{key.NAME}}</ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item-divider color="light">
+      <ion-label style="color: #0000fe">主险</ion-label>
+    </ion-item-divider>
+    <div *ngFor="let x of nowInsurer.AllProductPrice">
+      <ion-item *ngIf="x.IS_MAIN==1 && x.isCheck">
+        <ion-label>{{x.NAME}}</ion-label>
+        <ion-select *ngIf="x.ALL_ITEM!=null && x.isCheck" [disabled]="true" [(ngModel)]="x.maxPay">
+          <ion-option *ngFor="let key of x.ALL_ITEM.split(',')" value="{{key}}">{{key}}</ion-option>
+        </ion-select>
+        <span class="isAll" *ngIf="x.IS_ALL!=null && x.IS_ALL!=0" item-right>不计</span>
+        <span item-right class="price">￥{{x.Price|number:'1.2-2'}}</span>
+      </ion-item>
+      <div *ngFor="let x1 of x.ChildItem">
+        <ion-item *ngIf="x.isCheck && x1.IS_MAIN==1 && x1.isCheck">
+          <ion-label style="margin-left: 10px">{{x1.NAME}}</ion-label>
+          <ion-select *ngIf="x1.ALL_ITEM!=null && x1.isCheck" [(ngModel)]="x1.maxPay" [disabled]="true">
+            <ion-option *ngFor="let key of x1.ALL_ITEM.split(',')" value="{{key}}">{{key}}</ion-option>
+          </ion-select>
+          <span class="isAll" *ngIf="x.IS_ALL!=null && x.IS_ALL!=0" item-right>不计</span>
+          <span item-right class="price">￥{{x1.Price|number:'1.2-2'}}</span>
+        </ion-item>
+      </div>
+    </div>
+    <ion-item-divider color="light">
+      <ion-label style="color: #0000fe">附加险</ion-label>
+    </ion-item-divider>
+    <div *ngFor="let x of nowInsurer.AllProductPrice">
+      <ion-item *ngIf="x.IS_MAIN==0 && x.PARENT_ID==null && x.isCheck">
+        <ion-label>{{x.NAME}}</ion-label>
+        <ion-select *ngIf="x.ALL_ITEM!=null && x.isCheck" [disabled]="true" [(ngModel)]="x.maxPay" okText="确定" cancelText="取消">
+          <ion-option *ngFor="let key of x.ALL_ITEM.split(',')" value="{{key}}">{{key}}</ion-option>
+        </ion-select>
+        <span class="isAll" *ngIf="x.IS_ALL!=null && x.IS_ALL!=0" item-right>不计</span>
+        <span item-right class="price">￥{{x.Price|number:'1.2-2'}}</span>
+      </ion-item>
+      <div *ngFor="let x1 of x.ChildItem">
+        <ion-item *ngIf="x.isCheck && x1.IS_MAIN==0 && x1.isCheck">
+          <ion-label>{{x1.NAME}}</ion-label>
+          <ion-select *ngIf="x1.ALL_ITEM!=null && x1.isCheck" [disabled]="true" [(ngModel)]="x1.maxPay">
+            <ion-option *ngFor="let key of x1.ALL_ITEM.split(',')" value="{{key}}">{{key}}</ion-option>
+          </ion-select>
+          <span class="isAll" *ngIf="x.IS_ALL!=null && x.IS_ALL!=0" item-right>不计</span>
+          <span item-right class="price">￥{{x1.Price|number:'1.2-2'}}</span>
+        </ion-item>
+      </div>
+    </div>
+    <ion-item-group *ngIf="bean.AllFlow.length!=0">
+      <ion-item-divider color="light">
+        流程
+      </ion-item-divider>
+      <ion-card *ngFor="let o of bean.AllFlow">
+        <p *ngIf="o.AllHandleContent!=null">状态：{{o.NAME}}</p>
+        <p *ngIf="o.DealUserName!=null">处理人：{{o.DealUserName}}</p>
+        <p *ngIf="o.COST!=null && o.COST!=''">费用：{{ o.COST|number:'1.2-2' }}{{ (o.OUT_TRADE_NO==null)?"": "(已支付)"}}</p>
+        <p *ngIf="o.DEAL_TIME!=null">日期：{{o.DEAL_TIME|DateToString:"yyyy-MM-dd hh:mm"}}</p>
+        <div>
+          <p *ngIf="o.AllHandleContent!='' " style="font-weight: bold;color: red;word-wrap:break-word; word-break:break-all; ">描述：{{o.AllHandleContent}}</p>
+        </div>
+        <img *ngFor="let o of o.AllHandleFiles" src="{{o.URL|ImgUrl}}" height="70px" width="70px" style="margin: 10px" (click)="showBigImage(o.URL)"
+        />
+      </ion-card>
+    </ion-item-group>
+    <div style="height: 65px;"></div>
+  </ion-item-group>
+
+</ion-content>
+<ion-footer *ngIf="bean.NextButton.length>0">
+  <ion-row style="text-align: center">
+    <ion-col *ngFor="let o of bean.NextButton">
+      <button ion-button block (click)="GoHandle({taskId:bean.TaskId,butName:o,taskFlowId:bean.TaskFlowId,orderId:bean.ID,returnUrl:'HelpInfoPage'})">
+        {{o}}
+      </button>
+    </ion-col>
+  </ion-row>
+</ion-footer>

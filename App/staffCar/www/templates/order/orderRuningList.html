@@ -1,0 +1,37 @@
+<ion-view hide-back-button="true"  ng-init="orderList.init()">
+    <ion-nav-title>待处理订单</ion-nav-title>
+    <ion-nav-buttons side="left">
+        <button class="button button-icon icon ion-ios-arrow-back light" ui-sref="home"></button>
+    </ion-nav-buttons>
+    <ion-content class="has-header " style="background-color: #f0f0f0">
+
+
+      <div class="list" style="margin-top: 10px;" collection-repeat="o in orderList.lists.data">
+        <div>
+          <div class="row light-bg" style="height: 40px;">
+            <div class="col col-30 assertive h4" style="padding-left: 10px;text-align:left;margin: auto;">
+              {{o.LastStatus}}
+            </div>
+          </div>
+
+          <div class="item" data-id="{{o.ID}}" data-type="{{o.ORDER_TYPE}}"
+               ng-click="orderList.toFollowOrder(o.ID,o.ORDER_TYPE)">
+            <p style="font-size: 13px;padding-left: 10px">车牌号： {{o.CarPlateNumber}}</p>
+            <p style="font-size: 13px;padding-left: 10px">客户姓名： {{o.ClientName}}</p>
+            <p style="font-size: 13px;padding-left: 10px">订单金额： {{o.COST| currency:'￥'}}</p>
+            <p style="font-size: 13px;padding-left: 10px">创建时间： {{o.CREATE_TIME|UnixNum|date:"yyyy-MM-dd H:mm"}}</p>
+          </div>
+          <div style="background-color: #f0f0f0;height:10px"></div>
+        </div>
+      </div>
+      <div class="list" ng-if="orderList.lists.data.length==0">
+        <div>
+          <div class="row light-bg" style="height: 40px;">
+            <span>无数据</span>
+          </div>
+        </div>
+      </div>
+
+
+    </ion-content>
+</ion-view>

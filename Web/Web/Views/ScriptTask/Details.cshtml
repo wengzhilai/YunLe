@@ -1,0 +1,173 @@
+
+@model ProInterface.Models.SCRIPT_TASK
+@{
+    ViewBag.Title = "编辑任务";
+}
+
+<div id="myPnl" style="display:none"></div>
+@using (Ajax.BeginForm(new AjaxOptions
+{
+    UpdateTargetId = "myPnl",
+    Confirm = "确定要提交吗",
+    OnBegin = "OnBegin",
+    OnSuccess = "OnSuccess",
+    OnFailure = "OnFailure",
+    OnComplete = "OnComplete"
+}))
+{
+    @Html.HiddenFor(m=>m.ID)
+        <table style="table-layout:fixed;width:100%">
+                <tr>
+                <td>
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.SCRIPT_ID)</span>
+                        @Html.TextBoxFor(m => m.SCRIPT_ID, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.SCRIPT_ID)
+                    </div>
+                </td>
+
+                <td>
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.BODY_TEXT)</span>
+                        @Html.TextBoxFor(m => m.BODY_TEXT, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.BODY_TEXT)
+                    </div>
+                </td>
+
+            </tr>
+            <tr>
+
+                <td>
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.BODY_HASH)</span>
+                        @Html.TextBoxFor(m => m.BODY_HASH, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.BODY_HASH)
+                    </div>
+                </td>
+
+                <td>
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.RUN_STATE)</span>
+                        @Html.TextBoxFor(m => m.RUN_STATE, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.RUN_STATE)
+                    </div>
+                </td>
+
+            </tr>
+            <tr>
+
+                <td>
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.RUN_WHEN)</span>
+                        @Html.TextBoxFor(m => m.RUN_WHEN, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.RUN_WHEN)
+                    </div>
+                </td>
+
+                <td>
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.RUN_ARGS)</span>
+                        @Html.TextBoxFor(m => m.RUN_ARGS, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.RUN_ARGS)
+                    </div>
+                </td>
+
+            </tr>
+            <tr>
+
+                <td>
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.LOG_TYPE)</span>
+                        @Html.TextBoxFor(m => m.LOG_TYPE, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.LOG_TYPE)
+                    </div>
+                </td>
+
+                <td>
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.DSL_TYPE)</span>
+                        @Html.TextBoxFor(m => m.DSL_TYPE, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.DSL_TYPE)
+                    </div>
+                </td>
+
+            </tr>
+            <tr>
+
+                <td>
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.RETURN_CODE)</span>
+                        @Html.TextBoxFor(m => m.RETURN_CODE, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.RETURN_CODE)
+                    </div>
+                </td>
+
+                <td>
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.START_TIME)</span>
+                        @Html.TextBoxFor(m => m.START_TIME, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.START_TIME)
+                    </div>
+                </td>
+
+            </tr>
+            <tr>
+
+                <td>
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.END_TIME)</span>
+                        @Html.TextBoxFor(m => m.END_TIME, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.END_TIME)
+                    </div>
+                </td>
+
+                <td>
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.DISABLE_DATE)</span>
+                        @Html.TextBoxFor(m => m.DISABLE_DATE, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.DISABLE_DATE)
+                    </div>
+                </td>
+
+            </tr>
+            <tr>
+
+                <td>
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.DISABLE_REASON)</span>
+                        @Html.TextBoxFor(m => m.DISABLE_REASON, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.DISABLE_REASON)
+                    </div>
+                </td>
+
+                <td>
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.SERVICE_FLAG)</span>
+                        @Html.TextBoxFor(m => m.SERVICE_FLAG, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.SERVICE_FLAG)
+                    </div>
+                </td>
+
+            </tr>
+            <tr>
+
+                <td>
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.REGION)</span>
+                        @Html.TextBoxFor(m => m.REGION, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.REGION)
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <div style="text-align:center;padding:10px;display:none;">
+            <a class="easyui-linkbutton" data-options="iconCls:'icon-save'" onclick="onSubmit()">保存</a>              
+            <a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" onclick="parent.CloseWin();">取消</a>              
+            <input style="width: 60px; display:none; margin-right: 20px;" type="submit" value="保存" />
+        </div> 
+}
+<script type="text/javascript" src="~/Scripts_Page/FunBase.js"></script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -1,0 +1,191 @@
+﻿@model ProInterface.Models.TLogin
+@{
+    ViewBag.Title = ProInterface.AppSet.SysName;    
+}
+<style type="text/css">
+    .code {
+        background-image: url(code.jpg);
+        font-family: Arial;
+        font-style: italic;
+        color: Red;
+        border: 0;
+        padding: 2px 3px;
+        letter-spacing: 3px;
+        font-weight: bolder;
+    }
+
+    .unchanged {
+        border: 0;
+    }
+
+    .down {
+        position: absolute;
+        top: 350px;
+        left: 25%;
+        z-index: 999;
+    }
+
+    .downBtn {
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        border-radius: 5px;
+        font-size: 16px;
+        color: #FFF;
+        display: inline-block;
+        vertical-align: middle;
+        padding: 10px 20px;
+        cursor: pointer;
+        background-repeat: no-repeat;
+        background: #68b92e;
+        background: -webkit-gradient(linear, left top, left bottom, from(#96ce6c), to(#68b92e));
+        background: -moz-linear-gradient(top, #96ce6c, #68b92e);
+        background: -o-linear-gradient(top, #96ce6c, #68b92e);
+        background: -ms-linear-gradient(top, #96ce6c, #68b92e);
+        background: linear-gradient(to bottom, #96ce6c, #68b92e);
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#96ce6c', endColorstr='#68b92e');
+    }
+
+        .downBtn i {
+            margin-right: 6px;
+        }
+
+        .downBtn:hover {
+            background-repeat: no-repeat;
+            background: #5da926;
+            color: white;
+            background: -webkit-gradient(linear, left top, left bottom, from(#96ce6c), to(#5da926));
+            background: -moz-linear-gradient(top, #96ce6c, #5da926);
+            background: -o-linear-gradient(top, #96ce6c, #5da926);
+            background: -ms-linear-gradient(top, #96ce6c, #5da926);
+            background: linear-gradient(to bottom, #96ce6c, #5da926);
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#96ce6c', endColorstr='#5da926');
+        }
+
+    .icons {
+        background: url(../Content/images/icons.png) no-repeat;
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+        .icons.apple {
+            background-position: 0px 0px;
+            width: 37px;
+            height: 44px;
+        }
+
+        .icons.android {
+            background-position: -37px 0px;
+            width: 37px;
+            height: 44px;
+        }
+</style>
+<script type="text/javascript" src="~/Scripts_Page/FunBase.js"></script>
+<script type="text/javascript" src="~/Scripts_Page/login.js"></script>
+<script src="~/Scripts/jquery.cookie.js"></script>
+<link href="~/Content/Styles/loginnew.css" rel="stylesheet" />
+
+<script src="~/Scripts_Page/MD5.js"></script>
+<script src="~/Scripts_Page/aes.js"></script>
+<script type="text/javascript">  
+
+</script>
+@using (Ajax.BeginForm(new AjaxOptions
+{
+    UpdateTargetId = "myPnl",
+    OnBegin = "OnBegin",
+    OnSuccess = "OnSuccess",
+    OnFailure = "OnFailure",
+    OnComplete = "OnComplete"
+}))
+{ 
+    @Html.HiddenFor(m => m.Md5LoginName)
+    @Html.HiddenFor(m => m.Md5PassWord)
+    @Html.HiddenFor(m => m.AseLoginName) 
+    @Html.HiddenFor(m => m.AsePassWord)
+    <div class="header" style="height:50px">
+        <div class="headerLogo">
+           
+        </div>
+        <div class="headerNav">
+            <a href="javascript:void(0)" title="收藏网址" onclick="SaveUrl('@ProInterface.AppSet.SysName')">收藏网址</a>
+        </div>
+    </div>
+    <div class="banner">
+        <div class="bd">
+            <ul>
+                <li style="background: url(../Content/Images/Login/bg.png) #CCE1F3 center 0 no-repeat;">
+                    <div style="float: left;">
+                        <div class="down">
+                            <a href="#" class="downBtn" style="color: white; text-decoration: none" onclick="DivOpen('Matrix?url=https://www.pgyer.com/layeroffice&w=290', '二维码扫描安装', 330, 340)"><i class="icons apple"></i>iPhone版下载</a>
+                            <a href="#" class="downBtn" style="color: white; text-decoration: none" onclick="DivOpen('Matrix?url=https://www.pgyer.com/layeroffice&w=290', '二维码扫描安装', 330, 340)"><i class="icons android"></i>Android版下载</a>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="login-aside">
+            <div id="o-box-up"></div>
+            <div id="o-box-down" style="table-layout: fixed;">
+                <div class="error-box"></div>
+                <div class="registerform">
+                    <div class="fm-item">
+                        <label for="logonId" class="form-label">登录用户：</label>
+                        @Html.TextBoxFor(m => m.LOGIN_NAME, new { @class = "i-text", @placeholder = "请输入用户名" })
+                        @Html.ValidationMessageFor(m => m.LOGIN_NAME)
+
+                    </div>
+
+                    <div class="fm-item">
+                        <label for="logonId" class="form-label">登录密码：</label>
+                        @Html.PasswordFor(m => m.PASSWORD, new { @class = "i-text", @placeholder = "请输入密码" })
+                        @Html.ValidationMessageFor(m => m.PASSWORD)
+                    </div>
+                    @if (ProInterface.AppSet.VerifyCode)
+                    {
+                        <div class="fm-item pos-r">
+                            <label for="logonId" class="form-label">验证码</label>
+                            @Html.TextBoxFor(m => m.VERIFY_CODE, new { @nullmsg = "请输入右边显示的验证码", @placeholder = "输入验证码", @class = "i-text yzm", @maxlength = "4" })
+                            <a class="send" title="点击切换验证码" href="javascript:;" onclick='$(this).children("img").eq(0).attr("src", "CheckCode?time=" + Math.random());return false;'>
+                                <img src="CheckCode" width="90" height="35" />
+                                <span>刷新</span>
+                            </a>
+                        </div>
+                    }
+                    <div class="fm-item">
+                        <label for="logonId" class="form-label"></label>
+                        <button onclick="OnSubmit(this)" type="submit" class="btn btn-primary btn-lg" id="btn-export" style="background-color: #97E272; border: 1px solid #D5E4DF; width: 120px;">
+                            登 录
+                        </button>
+                        <button onclick="DivOpen('~/Login/Repwd','找回密码',500,300)" class="btn btn-primary btn-lg" style="background-color: #97E272; border: 1px solid #D5E4DF; width: 120px;">
+                            忘记密码
+                        </button>
+                        <div id="txterror" style="font-size: 12px; color: white; text-align: center; padding: 0 0 5px 0; margin-top: 10px;">
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="hd">
+            <ul></ul>
+        </div>
+    </div>
+    <div class="footer" style="font-size: 12px; margin-top: 10px;">
+        <div>
+            技术支持：@ProInterface.AppSet.Support
+            
+            <a href="~/ChromeStandalone.exe" style="color: #3f9ac2">Google浏览器下载</a>
+            <br />
+            @if (!string.IsNullOrEmpty(ProInterface.AppSet.Miitbeian))
+            {
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">@ProInterface.AppSet.Miitbeian &nbsp;&nbsp;</a>
+            }
+        </div>
+    </div>
+
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+

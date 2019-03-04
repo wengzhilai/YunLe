@@ -1,0 +1,72 @@
+<ion-header>
+  <ion-toolbar color="car">
+    <ion-buttons left>
+      <button ion-button icon-only (click)="GoBack()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>客户管理</ion-title>
+    <ion-buttons right>
+      <button ion-button icon-only (click)="ShowMenu()">
+        <ion-icon name="more"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-item-group>
+    <ion-item-divider color="light">
+      个人信息
+    </ion-item-divider>
+    <ion-item>
+      <ion-thumbnail item-right>
+        <img *ngIf="bean.iconURL!=null" src="{{bean.iconURL|ImgUrl}}" (click)="showBigImage(bean.iconURL)">
+      </ion-thumbnail>
+      <h2>客户编号：{{bean.ID}}</h2>
+      <p>客户姓名：{{bean.NAME}}</p>
+      <p>性别：{{bean.SEX}}</p>
+    </ion-item>
+    <ion-item>
+      <ion-label>联系电话</ion-label>
+      <p item-right>{{bean.phone}}</p>
+    </ion-item>
+    <ion-item>
+      <ion-label>客户状态</ion-label>
+      <p item-right>{{bean.STATUS}}</p>
+    </ion-item>
+    <ion-item>
+      <ion-label>客户地址</ion-label>
+      <p item-right>{{bean.ADDRESS}}</p>
+    </ion-item>
+    <ion-item>
+      <ion-label>备注</ion-label>
+      <p item-right>{{bean.REMARK}}</p>
+    </ion-item>
+  </ion-item-group>
+  <ion-item-group>
+    <ion-item-divider color="light">
+      客户证件
+    </ion-item-divider>
+    <ion-item>
+      <img *ngIf="bean.idNoUrl!=null" src="{{bean.idNoUrl|ImgUrl}}" height="70px"
+           width="70px" alt="客户证件正面" style="margin: 10px" (click)="showBigImage(bean.idNoUrl)"/>
+      <img *ngIf="bean.idNoUrl1!=null" src="{{bean.idNoUrl1|ImgUrl}}" height="70px"
+           width="70px" alt="客户证件背面" style="margin: 10px" (click)="showBigImage(bean.idNoUrl1)"/>
+    </ion-item>
+  </ion-item-group>
+  <ion-item-group *ngFor="let o of bean.AllCar">
+    <ion-item-divider color="light">
+      {{o.PLATE_NUMBER}}
+    </ion-item-divider>
+    <ion-item>
+      <img *ngIf="o.DrivingPicUrl!=null" src="{{o.DrivingPicUrl|ImgUrl}}" height="70px"
+           width="70px" alt="车辆行驶证正面" style="margin: 10px" on-tap="showBigImage(o.DrivingPicUrl)"
+      />
+      <img *ngIf="o.DrivingPicUrl1!=null"  src="{{o.DrivingPicUrl1|ImgUrl}}" height="70px"
+           width="70px" alt="车辆行驶证背面" style="margin: 10px" on-tap="showBigImage(o.DrivingPicUrl1)"
+      />
+    </ion-item>
+  </ion-item-group>
+
+</ion-content>
+

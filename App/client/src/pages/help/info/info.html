@@ -1,0 +1,119 @@
+<ion-header>
+  <ion-toolbar color="car">
+    <ion-buttons left>
+      <button ion-button icon-only (click)="GoBack()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>救援详情</ion-title>
+    <ion-buttons right>
+      <button ion-button icon-only (click)="GoEdit()">
+        <ion-icon name="create"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-item-group>
+    <ion-item-divider color="light">
+      定位信息
+    </ion-item-divider>
+    <ion-item *ngIf="bean.ORDER_TYPE!='审车'">
+      <ion-label>选择维修站</ion-label>
+      <p item-right>{{bean.GarageName}}</p>
+    </ion-item>
+    <ion-item>
+      <ion-label>车辆位置</ion-label>
+      <p item-right>{{bean.ADDRESS}}</p>
+    </ion-item>
+  </ion-item-group>
+
+  <ion-item-group>
+    <ion-item-divider color="light">
+      订单详情
+    </ion-item-divider>
+    <ion-item>
+      <ion-label>订单编号</ion-label>
+      <p item-right>{{bean.ORDER_NO}}</p>
+    </ion-item>
+    <ion-item>
+      <ion-label>订单类型</ion-label>
+      <p item-right>{{bean.ORDER_TYPE}}</p>
+    </ion-item>
+    <div *ngIf="bean.ORDER_TYPE!='救援'">
+      <ion-item>
+        <ion-label>送修方式</ion-label>
+        <p item-right>{{bean.REACH_TYPE}}</p>
+      </ion-item>
+      <ion-item *ngIf="bean.REACH_TYPE=='送店'">
+        <ion-label>送到时间</ion-label>
+        <p item-right>{{bean.REACH_TIME|DateToString:"yyyy-MM-dd hh:mm"}}</p>
+      </ion-item>
+      <!--<ion-item *ngIf="bean.REACH_TYPE=='接车'">
+        <ion-label>接车时间</ion-label>
+        <p item-right>{{bean.PICK_TIME|DateToString:"yyyy-MM-dd hh:mm"}}</p>
+      </ion-item>-->
+    </div>
+    <ion-item>
+      <ion-label>故障类型</ion-label>
+      <p item-right>{{bean.HITCH_TYPE}}</p>
+    </ion-item>
+    <ion-item>
+      <ion-label>联系人姓名</ion-label>
+      <p item-right> {{bean.CLIENT_NAME}}</p>
+    </ion-item>
+    <ion-item>
+      <ion-label>联系方式</ion-label>
+      <p item-right> {{bean.CLIENT_PHONE}}</p>
+    </ion-item>
+    <ion-item>
+      <ion-label>其它联系方式</ion-label>
+      <p item-right> {{bean.OTHER_PHONE}}</p>
+    </ion-item>
+    <ion-item>
+      <ion-label>车牌号</ion-label>
+      <p item-right> {{bean.PLATE_NUMBER}}</p>
+    </ion-item>
+    <ion-item>
+      <ion-label>问题描述</ion-label>
+    </ion-item>
+    <ion-card-content>
+      <p>{{bean.REMARK}}</p>
+    </ion-card-content>
+    <ion-item *ngIf="bean.AllFiles.length>0">
+      <ion-scroll scrollX="true" style="height: 110px;">
+        <img *ngFor="let o of bean.AllFiles" name="allFile_{{o.indexNo}}" src="{{o.URL|ImgUrl}}" height="70px" width="70px" style="margin: 10px"
+          (click)="showBigImage(o.URL)" />
+      </ion-scroll>
+    </ion-item>
+    <ion-item-group *ngIf="bean.AllFlow.length!=0">
+      <ion-item-divider color="light">
+        流程
+      </ion-item-divider>
+      <ion-card *ngFor="let o of bean.AllFlow">
+        <p *ngIf="o.AllHandleContent!=null">状态：{{o.NAME}}</p>
+        <p *ngIf="o.DealUserName!=null">处理人：{{o.DealUserName}}</p>
+        <p *ngIf="o.COST!=null && o.COST!=''">费用：{{ o.COST|number:'1.2-2' }}{{ (o.OUT_TRADE_NO==null)?"": "(已支付)"}}</p>
+        <p *ngIf="o.DEAL_TIME!=null">日期：{{o.DEAL_TIME|DateToString:"yyyy-MM-dd hh:mm"}}</p>
+        <div>
+          <p *ngIf="o.AllHandleContent!='' " style="font-weight: bold;color: red;word-wrap:break-word; word-break:break-all; ">描述：{{o.AllHandleContent}}</p>
+        </div>
+        <div>
+          <img *ngFor="let o of o.AllHandleFiles" src="{{o.URL|ImgUrl}}" height="70px" width="70px" style="margin: 10px" (click)="showBigImage(o.URL)"
+          />
+        </div>
+      </ion-card>
+    </ion-item-group>
+    <div style="height: 65px;"></div>
+  </ion-item-group>
+
+</ion-content>
+<ion-footer *ngIf="bean.NextButton.length>0">
+  <ion-row style="text-align: center">
+    <ion-col *ngFor="let o of bean.NextButton">
+      <button ion-button block (click)="GoHandle({taskId:bean.TaskId,butName:o,taskFlowId:bean.TaskFlowId,orderId:bean.ID,returnUrl:'HelpInfoPage'})">
+        {{o}}
+      </button>
+    </ion-col>
+  </ion-row>
+</ion-footer>

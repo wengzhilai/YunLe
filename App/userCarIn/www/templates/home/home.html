@@ -1,0 +1,121 @@
+<ion-view view-title="云乐享车，您的贴身车管家" hide-back-button="true" ng-init="home.init()">
+  <!--<ion-nav-buttons side="right">-->
+    <!--<button class="button button-icon icon ion-loop light" onclick="location.reload()"></button>-->
+  <!--</ion-nav-buttons>-->
+  <ion-content class="has-header" style="margin-bottom: 50px">
+    <div class="home-slide">
+      <ion-slide-box does-continue="true" auto-play="true" slide-interval="3000">
+        <ion-slide>
+          <img src="img/s-1.png"/>
+        </ion-slide>
+
+      </ion-slide-box>
+    </div>
+    <div class="home-icon">
+      <div class="row">
+        <div class="col col-center">
+          <div class="list" style="text-align: center">
+            <div class="item icon-center">
+              <img src="img/home-icon2.gif" ui-sref="editHelpOrder({'user':user,orderType:'救援'})"/>
+              <p>免费救援</p>
+            </div>
+          </div>
+        </div>
+        <div class="col col-center">
+          <div class="list" style="text-align: center">
+            <div class="item icon-center">
+              <img src="img/home-icon3.gif" ui-sref="maintainMap({reload: true})"/>
+              <p>维修保养</p>
+            </div>
+          </div>
+        </div>
+        <div class="col col-center">
+          <div class="list" style="text-align: center">
+            <div class="item icon-center">
+              <img src="img/home-icon1.gif" ui-sref="insureList({'clientId':user.ID,orderType:'保单'})"/>
+
+              <p>保单查询</p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+      <div class="row">
+        <div class="col col-center">
+          <div class="list" style="text-align: center" ui-sref="orderList({reload: true})">
+            <div class="item icon-center" style="padding-bottom: 5px;">
+              <div
+                style="border-radius: 50%;font-size: 25px; margin-left: auto;margin-right: auto;color:white;background-color: red;height: 45px;width: 45px">
+                <li class="ion-calendar  icon-center" data-pack="default" style="display: inline-block;margin-top: 10px"
+                    ui-sref="orderList({reload: true})"></li>
+              </div>
+            </div>
+            <button class="button-clear user_button" style="color:#006666" ui-sref="orderList({reload: true})">
+              订单信息
+            </button>
+            <!--<div class="item icon-center">-->
+            <!--<img src="img/home-icon5.png" ui-sref="queryVeh"/>-->
+            <!--<p>违章查询</p>-->
+            <!--</div>-->
+          </div>
+        </div>
+
+        <div class="col col-center">
+          <div class="list" style="text-align: center">
+            <div class="item icon-center">
+              <img src="img/home-icon4.gif" ng-click="alert('期待开放!')"/>
+
+              <p>事故车管家</p>
+            </div>
+
+          </div>
+        </div>
+        <div class="col col-center">
+          <div class="list" style="text-align: center">
+            <div class="item icon-center">
+              <img src="img/home-icon6.gif" ui-sref="orderList({orderType:'审车',reload: true})"/>
+
+              <p>免费审车</p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+    <div class="home-car">
+      <div class="list light-bg" style="margin-top: 10px;">
+        <a class="item item-thumbnail-left" ui-sref="editCar({'id':NowCar.ID})">
+          <img src="{{NowCar.DrivingPicUrl|imgUrl}}">
+
+          <div class="carlist-div">
+            <div>品牌 {{NowCar.BRAND}}</div>
+            <div>车牌 {{NowCar.PLATE_NUMBER}}</div>
+            <div>有无过户 {{NowCar.TRANSFER_DATA|toBool:2}}</div>
+          </div>
+        </a>
+
+
+      </div>
+    </div>
+
+  </ion-content>
+
+  <ion-tabs class="tabs-striped tabs-icon-top  tabs-stable tabs-color-active-energized">
+    <ion-tab title="首页" ng-Click="select(0)" icon-on="ion-ios-home" icon-off="ion-ios-home-outline" ui-sref="home">
+      首页
+    </ion-tab>
+    <ion-tab title="消息" ng-Click="select(1)" icon-on="ion-android-notifications"
+             icon-off="ion-android-notifications-none">消息
+    </ion-tab>
+    <ion-tab title="爱车" ng-Click="select(2)" icon-on="ion-model-s" icon-off="ion-android-car"
+             ui-sref="myCarList({reload: true})">爱车
+    </ion-tab>
+    <ion-tab title="我的" ng-Click="select(3)" icon-on="ion-android-contact" icon-off="ion-android-person"
+             ui-sref="user"/>
+    </ion-tab>
+
+  </ion-tabs>
+
+</ion-view>

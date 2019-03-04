@@ -1,0 +1,16 @@
+<ion-header>
+  <ion-toolbar color="car">
+    <ion-buttons left>
+      <button ion-button icon-only (click)="GoBack()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>免费救援</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <div #allmap style="width:100%;height:100%"></div>
+  <div style="position: absolute; right: 2px; top: 2px; background-color: white">
+    <button type="button" class="button button-icon icon ion-loop " (click)="getNewMark()">刷新</button>
+  </div>
+</ion-content>

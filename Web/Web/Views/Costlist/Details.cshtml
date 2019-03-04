@@ -1,0 +1,121 @@
+
+@model ProInterface.Models.YF_COSTLIST
+@{
+    ViewBag.Title = "编辑费用明细";
+}
+
+<style>
+    .col-md-6, .col-md-12 {
+        padding: 1px;
+        float: left;
+    }
+    .form-control[readonly] {
+        cursor: not-allowed;
+        background-color: #fff;
+    }
+</style>
+<link href="~/Scripts/datetimepicker/jquery.datetimepicker.css" rel="stylesheet" />
+<script type="text/javascript" src="~/Scripts/datetimepicker/jquery.datetimepicker.js"></script>
+
+<div id="myPnl" style="display:none"></div>
+@using (Ajax.BeginForm(new AjaxOptions
+{
+    UpdateTargetId = "myPnl",
+    Confirm = "确定要提交吗",
+    OnBegin = "OnBegin",
+    OnSuccess = "OnSuccess",
+    OnFailure = "OnFailure",
+    OnComplete = "OnComplete"
+}))
+{
+    @Html.HiddenFor(m=>m.ID)
+        <table style="table-layout:fixed;width:100%">
+            <tr>
+                <td>
+
+                <div class="col-md-6">
+                    
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.LAWYER_ID)</span>
+                        @Html.MyDropDownListFor(m => m.LAWYER_ID, ViewData["LAWYER_ID"] as IList<SelectListItem>, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.LAWYER_ID)
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+                    
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.LAWCASE_ID)</span>
+                        @Html.MyDropDownListFor(m => m.LAWCASE_ID, ViewData["LAWCASE_ID"] as IList<SelectListItem>, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.LAWCASE_ID)
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+                    
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.COST)</span>
+                        <div class = "form-control">
+                            @Html.TextBoxFor(m => m.COST, new { @class = "easyui-numberbox",precision="2" })
+                            @Html.ValidationMessageFor(m => m.COST)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.STATUS)</span>
+                        @Html.MyDropDownListFor(m => m.STATUS, new[] {
+                       new SelectListItem { Value = "正常", Text = "正常" },
+                       new SelectListItem { Value = "已提现", Text = "已提现" },
+                       new SelectListItem { Value = "提现中", Text = "提现中" } }, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.STATUS)
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+                    
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.TYPE)</span>
+                        @Html.MyDropDownListFor(m => m.TYPE, new[] {
+                       new SelectListItem { Value = "案件", Text = "案件" },
+                       new SelectListItem { Value = "充值", Text = "充值" },
+                       new SelectListItem { Value = "扣款", Text = "扣款" } }, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.TYPE)
+                    </div>
+
+                </div>
+                    <div class="col-md-12">
+                        <div class="input-group" style="width: 100%;">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.REMARK)</span>
+                            @Html.TextAreaFor(m => m.REMARK, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.REMARK)
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <div style="text-align:center;padding:10px;display:none;">
+            <a class="easyui-linkbutton" data-options="iconCls:'icon-save'" onclick="onSubmit()">保存</a>              
+            <a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" onclick="parent.CloseWin();">取消</a>              
+            <input style="width: 60px; display:none; margin-right: 20px;" type="submit" value="保存" />
+        </div> 
+}
+<script type="text/javascript" src="~/Scripts_Page/FunBase.js"></script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $(function () {
+            $('.form_datetime').datetimepicker({
+                timepicker: false,
+                step: 5,
+                format: 'Y/m/d'
+            });
+        })
+    </script>
+}

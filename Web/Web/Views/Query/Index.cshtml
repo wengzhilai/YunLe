@@ -1,0 +1,30 @@
+﻿@model ProInterface.Models.TQuery
+@{
+    ViewBag.Title = "Index";
+}
+<link href="~/Styles/PublicStyle.css" rel="stylesheet" />
+
+@*@Html.Partial("_PublicPosition",Model)*@
+<table id="dg" class="easyui-datagrid" style=""  
+            url="AjaxList"  
+            toolbar="#toolbar" idField="ID" pagination="true"  
+            rownumbers="true" fitColumns="true" singleSelect="true">  
+        <thead>  
+            <tr>  
+                 <th data-options="field:'ck',checkbox:true"></th>
+                <th data-options="field:'ID',width:10,sortable:true">@Html.LabelFor(m=>m.ID)</th>  
+                <th field="NAME" width="10%" sortable="true">@Html.LabelFor(m=>m.NAME)</th>  
+                <th field="CODE" width="10%" sortable="true">@Html.LabelFor(m=>m.CODE)</th>  
+                <th field="AUTO_LOAD" width="10%" sortable="true">@Html.LabelFor(m=>m.AUTO_LOAD)</th>  
+                <th field="PAGE_SIZE" width="10%" sortable="true">@Html.LabelFor(m=>m.PAGE_SIZE)</th>  
+                <th field="SHOW_CHECKBOX" width="10%" sortable="true">@Html.LabelFor(m=>m.SHOW_CHECKBOX)</th>  
+            </tr>  
+        </thead>  
+    </table>  
+    <div id="toolbar">  
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newUser()">添加</a>  
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editUser()">修改</a>  
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroyUser()">删除</a>  
+    </div>  
+<script type="text/javascript" src="~/Scripts_Page/Query_index.js"></script>
+<div id="dialog_DD"></div>  

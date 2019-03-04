@@ -1,0 +1,32 @@
+<ion-view view-title="定位我的位置" hide-back-button="true" ng-init="Lat.reLoad()">
+  <ion-nav-buttons side="left">
+    <button class="button button-icon icon ion-ios-arrow-back light" ng-click="Lat.toEditHelp()"></button>
+  </ion-nav-buttons>
+  <ion-nav-buttons side="right">
+    <button class="button button-icon icon ion-checkmark-round light" on-tap="Lat.selectMark()"></button>
+  </ion-nav-buttons>
+  <ion-content>
+
+    <div id="maplocatin" style="width: 100%;">
+    </div>
+    <div style="position: absolute; top: 0px; background-color: white;width: 100%">
+      <div class="bar bar-header item-input-inset">
+        <label class="item-input-wrapper">
+          <i class="icon ion-ios-search placeholder-icon"></i>
+          <input type="search" ng-model="Lat.searchKey" ng-click="Lat.ShowName()" placeholder="搜索">
+        </label>
+        <button class="button button-balanced" ng-click="Lat.SearchName()">
+          搜索
+        </button>
+      </div>
+      <div>
+        <ul class="list" ng-show="Lat.ShowList">
+          <li class="item" collection-repeat="o in Lat.allPlace">
+            <span ng-click="Lat.ShowName(o)">{{o.title}}</span>
+          </li>
+        </ul>
+
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

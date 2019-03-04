@@ -1,0 +1,46 @@
+
+@model ProInterface.Models.FILES
+@{
+    ViewBag.Title = "编辑文件表";
+}
+
+<div id="myPnl" style="display:none"></div>
+@using (Ajax.BeginForm(new AjaxOptions
+{
+    UpdateTargetId = "myPnl",
+    Confirm = "确定要提交吗",
+    OnBegin = "OnBegin",
+    OnSuccess = "OnSuccess",
+    OnFailure = "OnFailure",
+    OnComplete = "OnComplete"
+}))
+{
+    @Html.HiddenFor(m=>m.ID)
+        <div style="padding-left:11px;padding-bottom:5px;">
+            <table style="table-layout:fixed;">
+                <tr>
+                    <td class="td_text">@Html.LabelFor(m => m.NAME)</td>
+                    <td class="td_value">    
+                        @Html.TextBoxFor(m => m.NAME)
+                        @Html.ValidationMessageFor(m => m.NAME)
+                    </td>
+
+                    <td class="td_text">@Html.LabelFor(m => m.PATH)</td>
+                    <td class="td_value">    
+                        @Html.TextBoxFor(m => m.PATH)
+                        @Html.ValidationMessageFor(m => m.PATH)
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div style="text-align:center;padding:10px;">
+            <a class="easyui-linkbutton" data-options="iconCls:'icon-save'" onclick="onSubmit()">保存</a>              
+            <a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" onclick="parent.CloseWin();">取消</a>              
+            <input style="width: 60px; display:none; margin-right: 20px;" type="submit" value="保存" />
+        </div> 
+}
+<script type="text/javascript" src="~/Scripts_Page/FunBase.js"></script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

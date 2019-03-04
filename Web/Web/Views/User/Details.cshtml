@@ -1,0 +1,172 @@
+﻿@model ProInterface.Models.TUser
+@{
+    ViewBag.Title = "Create";
+}
+<script type="text/javascript" src="~/Scripts_Page/FunBase.js"></script>
+<div id="myPnl" style="display: none">
+</div>
+@using (Ajax.BeginForm(new AjaxOptions
+{
+    UpdateTargetId = "myPnl",
+    Confirm = "确定要提交吗",
+    OnBegin = "OnBegin",
+    OnSuccess = "OnSuccess",
+    OnFailure = "OnFailure",
+    OnComplete = "OnComplete"
+}))
+{  
+    @Html.HiddenFor(m => m.ID)
+    <div class="panel panel-info">
+        <div class="panel-body">
+            <table class="boot-tablong">
+                <tr>
+                    <td>
+                        <div class="input-group">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.NAME)</span>
+                            @Html.TextBoxFor(m => m.NAME, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.NAME)
+                        </div>
+                    </td>
+                    <td>
+                        <div class="input-group">
+                            <span class="input-group-addon" data-size="4">用户归属</span>
+                            <div class="form-control">
+                                @Html.TextBoxFor(m => m.DISTRICT_ID,new
+                      {
+                          @class = "easyui-combotree",
+                          @data_options = @"
+                            url:'../District/GetAll',
+                            loadFilter: function (rows) {
+                                return convert(rows);
+                            },
+                            editable:false"
+                      })
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="input-group">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.LOGIN_NAME)</span>
+                            @Html.TextBoxFor(m => m.LOGIN_NAME, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.LOGIN_NAME)
+                        </div>
+                    </td>
+                    <td>
+                        <div class="input-group">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.PHONE_NO)</span>
+                            @Html.TextBoxFor(m => m.PHONE_NO, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.PHONE_NO)
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="input-group">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.IS_LOCKED)</span>
+                            @Html.DropDownListFor(m => m.IS_LOCKED, new[] { 
+                    new SelectListItem { Value="0", Text="正常" },
+                    new SelectListItem { Value="1", Text="锁定" }
+                }, new { @class = "form-control" })
+                        </div>
+                    </td>
+                    <td>
+                        <div class="input-group">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.LOCKED_REASON)</span>
+                            @Html.TextBoxFor(m => m.LOCKED_REASON, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.LOCKED_REASON)
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <div class="input-group" style="width: 100%">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.UserDistrict)</span>
+                            <div class="form-control">
+                                @Html.HiddenFor(m => m.UserDistrict)
+                                @Html.TextBox("TreeUserDistrict","",new
+                                {
+                                    @class = "easyui-combotree",
+                                    @style="width:90%",
+                                    @data_options = @"
+                                    url:'../District/GetAll',
+                                    multiple:true,
+                                    loadFilter: function (rows) {
+                                        return convert(rows);
+                                    },
+                                    editable:false"
+                                })
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <div class="input-group" style="width: 100%">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.REMARK)</span>
+                            @Html.TextAreaFor(m => m.REMARK, new { @class = "form-control", @style = "height:100px;" })
+                            @Html.ValidationMessageFor(m => m.REMARK)
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <div class="input-group" style="width: 100%">
+                            <span class="input-group-addon" data-size="4">用户角色 </span>
+                            <div class="form-control">
+                                @Html.HiddenFor(m => m.RoleAllName)
+                                @Html.CheckBoxListFor(m => m.RoleAllID, ViewData["list"] as IList<SelectListItem>)
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+   
+
+ 
+    <div style="text-align: center; padding: 10px;display:none">
+        <button type="button" class="btn btn-success btn-sm" onclick="onSubmit()">
+            <span class="glyphicon glyphicon-floppy-disk"></span>
+            &nbsp; &nbsp;保 &nbsp; &nbsp;存 &nbsp; &nbsp;</button>
+        <button type="button" class="btn btn-success btn-sm" onclick="CloseWin();">
+            <span class="glyphicon glyphicon-remove"></span>
+            &nbsp; &nbsp;取 &nbsp; &nbsp;消 &nbsp; &nbsp;</button>
+        <input style="width: 60px; display: none; margin-right: 20px;" type="submit" value="保存" />
+    </div> 
+    
+}
+<script type="text/javascript">
+    $(function () {
+        $('#TreeUserDistrict').combotree('setValues',$("#UserDistrict").val().split(','))
+        @if (Request["ID"] != null)
+        {
+            <text>
+        $("#LOGIN_NAME").attr("readonly", "readonly");
+        </text>
+        }
+
+    });
+
+    function onSubmit() {
+        var com = $(".combo-text")
+        if (com.attr('name') == null) {
+            com.attr('name', 'combo_text')
+        }
+
+        com = $(".textbox-text")
+        if (com.attr('name') == null) {
+            com.attr('name', 'textbox_text')
+        }
+
+        $("#UserDistrict").val($('#TreeUserDistrict').combotree('getValues'))
+        var obj = $('input[type="submit"]');
+        obj[0].click();
+    }
+
+</script>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

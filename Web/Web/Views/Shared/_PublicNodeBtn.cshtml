@@ -1,0 +1,233 @@
+﻿@model ProInterface.Models.TNode
+
+
+<style>
+    .col-md-6,.col-md-12 {
+        padding: 1px;
+    }
+
+    .form-control[readonly] {
+        cursor: not-allowed;
+        background-color: #fff;
+    }
+</style>
+
+<table style="width: 100%">
+    @if (this.Model.AllStatus != null && this.Model.AllStatus.Count > 0)
+    {
+        <tr>
+            <td>
+                <div class="container-fluid">
+                    <div class="col-md-6">
+                        <div class="input-group" style="width: 100%;">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.Remark)</span>
+                            <div class = "form-control">
+                                @Html.TextAreaFor(m => m.Remark, new { @style = "height:200px;width:100%" })
+                                @Html.ValidationMessageFor(m => m.Remark)
+                            </div>
+                        </div>
+                    </div>
+
+@if (Request.UserAgent.ToLower().IndexOf("iphone") ==-1 && Request.UserAgent.ToLower().IndexOf("android") ==-1)
+{
+                    <div class="col-md-6">
+                        <div class="input-group" style="width: 100%;">
+                            <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.AllFilesStr)</span>
+                            <div class="form-control">
+                                <input type="file" name="uploadify" id="uploadify" />
+                                @Html.HiddenFor(m => m.AllFilesIdStr)
+                                @Html.HiddenFor(m => m.AllFilesStr)
+                                <table id="dg_AllFiles" class="easyui-datagrid" style="width: 98%" data-options="rownumbers:true,fitColumns:true">
+                                    <thead>
+                                        <tr>
+                                            <th data-options="field:'NAME',width:80">文件名称</th>
+                                            <th data-options="field:'LENGTH',width:80">大小</th>
+                                            <th data-options="field:'UPLOAD_TIME',width:80">添加时间</th>
+                                            <th data-options="field:'action',width:80,formatter:ShowRowBtn">操作</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+}
+                    @if(Model.Assigner==1)
+                    {
+                    <div class="col-md-6" id="tt_div">
+                            <div class="input-group" style="width: 100%;">
+                                <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.UserIdArrStr)</span>
+                                <div class="form-control">
+                                    @Html.CheckBoxListFor(m => m.RoleIdStr, ViewData["AllRole"] as IList<SelectListItem>)
+                                    <div id="tt_checkUser">
+                                    <button onclick="CheckUser()">选择人</button>
+                                    @Html.TextBoxFor(m => m.UserIdArrStr, new { @class="easyui-combobox",@data_options = "multiple:true,multiline:true,editable:false,panelHeight:100", @style = "width:90%;height:50px" })
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align: center;">
+                @Html.HiddenFor(m => m.NowStatus)
+                @Html.HiddenFor(m=>m.IsStage)
+                @foreach (var t in this.Model.AllStatus)
+                {
+                    <button type="button" class="btn btn-success btn-sm"   onclick="$('#IsStage').val('0');$('#NowStatus').val('@t.Value');onSubmit()">
+                        <span class="glyphicon glyphicon-ok"></span>
+                        &nbsp; &nbsp;@t.Text &nbsp; &nbsp;</button>
+                }
+
+                <button type="button" class="btn btn-success btn-sm"   onclick="$('#IsStage').val('1');$('#NowStatus').val('回复');onSubmit()">
+                        <span class="glyphicon glyphicon-ok"></span>
+                        &nbsp; &nbsp;阶段回复 &nbsp; &nbsp;</button>
+                <button type="button" class="btn btn-success btn-sm" onclick="CloseWin()">
+                    <span class="glyphicon glyphicon-remove"></span>
+                    &nbsp; &nbsp;取 &nbsp; &nbsp;消 &nbsp; &nbsp;</button>
+                <input style="width: 60px; display: none; margin-right: 20px;" type="submit" value="保存" />
+
+            </td>
+        </tr>
+    }
+</table>
+<link rel="stylesheet" href="~/Scripts/uploadify/uploadify.css">
+<script src="~/Scripts/uploadify/jquery.uploadify.js"></script>
+    <script type="text/javascript">
+        $(function () {
+
+@if (Request.UserAgent.ToLower().IndexOf("iphone") ==-1 && Request.UserAgent.ToLower().IndexOf("android") ==-1)
+{
+<text>IsNoApp();</text>
+}
+
+
+            var strJson = $("#AllFilesStr").val();
+            if (strJson.length > 5) {
+                $('#dg_AllFiles').datagrid('loadData', JSON.parse(strJson));
+            }
+
+        });
+
+        function IsNoApp() {
+            $("#uploadify").uploadify({
+                swf: bootPATH + '/Scripts/uploadify/uploadify.swf',
+                uploader: bootPATH + '/Scripts/uploadify/UploadHandler.ashx',
+                buttonText: "　",
+                formData: {
+                    'folder': '~/UpFiles/Task/',
+                    'customname': Date.now().toString()
+                },
+                onUploadSuccess: function (a, b, c, d, e) {
+                    var fileName = a.name;
+                    var bArr = b.split(',');
+                    if (bArr[0] == "0") //上传文件出错
+                    {
+                        alert(bArr[1]);
+                        return;
+                    }
+                    if (bArr.length > 1) {
+                        fileName = bArr[1];
+                    }
+                    $.ajax({
+                        url: "../Fun/AddFile?t=" + Math.random(),
+                        dateType: "JSON",
+                        data: {
+                            name: a.name,
+                            size: a.size,
+                            savePath: '~/UpFiles/Task/' + fileName
+                        },
+                        success: function (data) {
+
+                            $('#dg_AllFiles').datagrid('appendRow', data);
+                            var data = $('#dg_AllFiles').datagrid('getData');
+                            var strJson = JSON.stringify(data.rows);
+                            $("#AllFilesStr").val(strJson)
+                        },
+                        error: function (data) {
+                            alert('失败:' + data.responseText);
+                        }
+                    });
+                }
+            });
+
+
+
+            KindEditor.create('textarea[name="REMARK"]', {
+                cssPath: '../Scripts/kindeditor/plugins/code/prettify.css',
+                uploadJson: '../Scripts/kindeditor/asp.net/upload_json.ashx',
+                fileManagerJson: '../Scripts/kindeditor/asp.net/file_manager_json.ashx',
+                allowFileManager: true,
+                resizeType: 1,
+                allowPreviewEmoticons: false,
+                allowImageUpload: true,
+                items: [
+                    'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+                    'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
+                    'insertunorderedlist', '|', 'emoticons', 'image', 'link']
+            });
+        }
+
+
+        function ShowRowBtn(value, row, index) {
+            var tmp = '<a  class="easyui-linkbutton l-btn l-btn-small" href="#" ';
+            tmp += ' onclick="DelFile(' + row.ID + ',' + index + ')">';
+            tmp += ' <span class="l-btn-left"><span class="l-btn-text">删除</span></span></a>  '
+            return tmp;
+        }
+        function DelFile(id, index) {
+            if (window.confirm("确定要删除该文件吗？")) {
+                $.ajax({
+                    url: "../Fun/DelFile?t=" + Math.random(),
+                    data: {
+                        fileID: id
+                    },
+                    success: function (data) {
+                        $('#dg_AllFiles').datagrid('deleteRow', index);
+                        var data = $('#dg_AllFiles').datagrid('getData');
+                        var strJson = JSON.stringify(data.rows);
+                        $("#AllFilesStr").val(strJson)
+                    },
+                    error: function (data) {
+                        alert('失败');
+                    }
+                });
+            }
+        }
+
+
+        function BoxListSetV(name) {
+            var num = [];
+            $("input[name='" + name + "_JSITEM']").each(function () {
+                if ($(this).attr("checked") == 'checked') {
+                    num.push($(this).attr("value"));
+                }
+            })
+            $("#" + name).val(num.join(","));
+            if (name == "RoleIdStr") {
+                OnchangeUserType();
+            }
+        }
+
+        function HideAllItem(name) {
+            var num = [];
+            $("input[name='" + name + "_JSITEM']").each(function () {
+                if ($(this).attr("checked") != 'checked') {
+                    $(this).parent("label").hide();
+                }
+            })
+        }
+
+
+        function OnchangeUserType() {
+            $('#UserIdArrStr').combobox({
+                url: '../User/AjaxAllBylRole?roleIdStr=' + $("#RoleIdStr").val(),
+                checkbox: true,
+                valueField: 'id',
+                textField: 'name'
+            });
+        }
+
+
+    </script>

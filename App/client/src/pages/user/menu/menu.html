@@ -1,0 +1,99 @@
+<ion-header>
+
+  <ion-toolbar color="car">
+    <ion-buttons left>
+      <button ion-button icon-only (click)="goHome()">
+        <ion-icon name="home"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>我的</ion-title>
+    <ion-buttons right style="width: 30px">
+
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+    <div class="user-head" (click)="goEdit()">
+    <ion-icon name="settings" class="settingIco"></ion-icon>
+    <img src="{{user.iconURL|ImgUrl}}" class="userIco" />
+    <div style="color: white">{{user.NAME}}</div>
+  </div>
+    <ion-row class="titleNav">
+      <ion-col (click)="goOrderList('线上支付')">
+          <ion-icon name="card"></ion-icon>
+          <div>
+            待付款
+          </div>
+      </ion-col>
+      <ion-col (click)="goOrderList('维修中')">
+          <ion-icon name="build" ></ion-icon>
+          <div>
+            维修中
+          </div>
+      </ion-col>
+      <ion-col (click)="goOrderList()">
+          <ion-icon name="list-box" ></ion-icon>
+          <div>
+            全部定单
+          </div>
+      </ion-col>
+      <ion-col>
+          <ion-icon name="ribbon" (click)="goOrderList('完成')"></ion-icon>
+          <div>
+            已完定单
+          </div>
+      </ion-col>
+    </ion-row>
+  <div>
+    <ion-list>
+      <ion-item (click)="goEdit()">
+        <button ion-button clear default>
+          <ion-icon><img src="img/car3.png"></ion-icon>
+          <span style="line-height: 30px">个人信息</span>
+        </button>
+      </ion-item>
+      <!--<ion-item>-->
+        <!--<button ion-button clear default>-->
+          <!--<ion-icon><img src="img/car1.png"></ion-icon>-->
+          <!--<span style="line-height: 30px">我的爱车</span>-->
+        <!--</button>-->
+      <!--</ion-item>-->
+      <!--<ion-item>-->
+        <!--<button ion-button clear default>-->
+          <!--<ion-icon><img src="img/car2.png"></ion-icon>-->
+          <!--<span style="line-height: 30px">我的钱包</span>-->
+        <!--</button>-->
+      <!--</ion-item>-->
+      <!--<ion-item>-->
+        <!--<button ion-button clear default>-->
+          <!--<ion-icon name="home" class="onleIco"></ion-icon>-->
+          <!--<span style="line-height: 30px">我的地址</span>-->
+        <!--</button>-->
+      <!--</ion-item>-->
+      <!--<ion-item (click)="showAlert('后续开放.....')">
+        <button ion-button clear default>
+          <ion-icon><img src="img/car4.png"></ion-icon>
+          <span style="line-height: 30px">客服中心</span>
+        </button>
+      </ion-item>
+      <ion-item (click)="showAlert('后续开放.....')">
+        <button ion-button clear default>
+          <ion-icon><img src="img/car5.png"></ion-icon>
+          <span style="line-height: 30px">用户反馈</span>
+        </button>
+      </ion-item>-->
+      <ion-item (click)="toShare()">
+        <button ion-button clear default>
+          <ion-icon name="share" class="onleIco"></ion-icon>
+          <span style="line-height: 30px">分享注册</span>
+        </button>
+      </ion-item>
+      <ion-item (click)="outLogin()">
+        <button ion-button clear default>
+          <ion-icon name="exit" class="onleIco"></ion-icon>
+          <span style="line-height: 30px">退出登录</span>
+        </button>
+      </ion-item>
+    </ion-list>
+  </div>
+</ion-content>

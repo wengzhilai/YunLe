@@ -1,0 +1,76 @@
+@model ProInterface.Models.DISTRICT
+@{
+    ViewBag.Title = "编辑组织结构";
+}
+
+<script type="text/javascript" src="~/Scripts_Page/FunBase.js"></script>
+<div id="myPnl" style="display: none"></div>
+@using (Ajax.BeginForm(new AjaxOptions
+{
+    UpdateTargetId = "myPnl",
+    Confirm = "确定要提交吗",
+    OnBegin = "OnBegin",
+    OnSuccess = "OnSuccess",
+    OnFailure = "OnFailure",
+    OnComplete = "OnComplete"
+}))
+{
+    @Html.HiddenFor(m => m.ID)
+    <table style="table-layout: fixed; width: 100%">
+        <tr>
+            <td>
+                <div class="input-group" style="width: 100%;">
+                    <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.PARENT_ID)</span>
+                    <div class="form-control">
+                        @Html.TextBoxFor(m => m.PARENT_ID, new
+                      {
+                          @class = "easyui-combotree",
+                          @style = "width:200px",
+                          @data_options = @"
+                            url:'../District/GetAll',
+                            loadFilter: function (rows) {
+                                return convert(rows);
+                            },
+                            editable:false"
+                      })
+                    </div>
+                    @Html.ValidationMessageFor(m => m.PARENT_ID)
+                </div>
+            </td>
+
+            <td>
+                <div class="input-group" style="width: 100%;">
+                    <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.NAME)</span>
+                    @Html.TextBoxFor(m => m.NAME, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.NAME)
+                </div>
+            </td>
+
+        </tr>
+        <tr>
+
+            <td colspan="2">
+                <div class="input-group" style="width: 100%;">
+                    <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.IN_USE)</span>
+                    <div class="form-control">
+                        @Html.RadioBoxListFor(m => m.IN_USE, new[]{
+                       new SelectListItem(){ Text="是", Value="1", Selected=true},
+                       new SelectListItem(){ Text="否", Value="0"}
+                   })
+                        @Html.ValidationMessageFor(m => m.IN_USE)
+                    </div>
+                </div>
+            </td>
+
+        </tr>
+    </table>
+    <div style="text-align: center; padding: 10px; display: none;">
+        <a class="easyui-linkbutton" data-options="iconCls:'icon-save'" onclick="onSubmit()">保存</a>
+        <a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" onclick="parent.CloseWin();">取消</a>
+        <input style="width: 60px; display: none; margin-right: 20px;" type="submit" value="保存" />
+    </div> 
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -1,0 +1,145 @@
+<ion-view view-title="投保订单" hide-back-button="true">
+    <ion-nav-buttons side="left">
+        <button class="button button-icon icon ion-ios-arrow-back light" ui-sref="home"></button>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+
+        <button class="button button-icon icon ion-navicon light" ui-sref="insureList({reload: true})"></button>
+    </ion-nav-buttons>
+    <ion-content class="has-header">
+        <div class="list" style="margin-bottom: 10px;">
+            <label class="item item-input item-select" style="padding-left: 20px;line-height: 1">
+                <span class="input-label" style="width:20%;font-weight:bold">车辆选择</span>
+                <select
+                        ng-change="insure.showCarInfo()"
+                        ng-model="insure.bean.CAR_ID"
+                        ng-options="value.ID as value.PLATE_NUMBER for value in insure.carsOptions">
+                    <option value="">-- 请选择 --</option>
+                </select>
+            </label>
+
+            <div class="item item-icon-left" ng-show="insure.bean.CAR_ID!=0&&insure.bean.CAR_ID!=null">
+                <i class="icon ion-grid" style="font-size:20px;margin-left: -15px;max-width: 15px;"
+                   ng-click="insure.hideOrShowCarInfo()"></i>
+                <div class="input-label" style="margin-left: 20px;font-weight:bold;">车辆信息</div>
+            </div>
+            <div id="carInfoDiv" ng-show="insure.bean.CAR_ID!=0&&insure.bean.CAR_ID!=null">
+                <label class="item item-input" style="padding-left: 20px;line-height: 1">
+
+                    <span class="input-label" style="width:20%;font-weight:bold">车辆ID</span>
+                    {{insure.carInfo.ID}}
+
+                </label>
+
+                <label class="item item-input" style="padding-left: 20px;line-height: 1">
+                    <span class="input-label" style="width:20%;font-weight:bold">车牌号</span>
+                    {{insure.carInfo.PLATE_NUMBER}}
+                </label>
+                <label class="item item-input" style="padding-left: 20px;line-height: 1">
+                    <span class="input-label" style="width:20%;font-weight:bold">车辆类型</span>
+                    {{insure.carInfo.CAR_TYPE}}
+                </label>
+                <label class="item item-input" style="padding-left: 20px;line-height: 1">
+                    <span class="input-label" style="width:20%;font-weight:bold">品牌</span>
+                    {{insure.carInfo.BRAND}}
+                </label>
+                <label class="item item-input" style="padding-left: 20px;line-height: 1">
+                    <span class="input-label" style="width:20%;font-weight:bold">型号</span>
+                    {{insure.carInfo.MODEL}}
+                </label>
+                <label class="item item-input" style="padding-left: 20px;line-height: 1">
+                    <span class="input-label" style="width:20%;font-weight:bold">价格(万)</span>
+                    {{insure.carInfo.PRICE}}
+                </label>
+
+
+            </div>
+        </div>
+
+        <div class="list" style="margin-bottom: 10px;" ng-show="insure.bean.CAR_ID!=0&&insure.bean.CAR_ID!=null">
+            <label class="item item-input item-select" style="padding-left: 20px;line-height: 1">
+                <span class="input-label" style="width:20%;font-weight:bold">选择保险公司</span>
+                <select
+                        ng-change="insure.showInsurerInfo()"
+                        ng-model="insure.bean.INSURER_ID"
+                        ng-options="value.ID as value.NAME for value in insure.insurerOptions">
+                    <option value="">-- 请选择 --</option>
+                </select>
+            </label>
+
+            <div class="list" style="margin-bottom: 10px;" ng-show="insure.bean.INSURER_ID!=0&&insure.bean.INSURER_ID!=null">
+                <label class="item" style="padding-left: 20px;line-height: 1">
+                    <span class="input-label" style="width:20%;font-weight:bold">选择保险产品</span>
+                </label>
+                <div ng-repeat="insureProduct in insure.insurerInfo.AllProductPrice">
+                    <label class="item item-checkbox" style="padding-left: 60px;">
+                        <button class="button-icon ion-ios-minus-outline" ng-show="insureProduct.IS_MUST!=1" ng-click="insure.removeProduct(insureProduct.ID)">
+                        </button>
+                        {{insureProduct.NAME}}
+                        <label class="item item-input item-select" style="padding-left: 20px;line-height: 1" ng-if="insureProduct.ID==4">
+                            <span class="input-label" style="width:20%;font-weight:bold">选择投保额度</span>
+                            <select ng-model="insure.maxMoney">
+                                <option value="100000">10万</option>
+                                <option value="200000">20万</option>
+                                <option value="300000" selected="true">30万</option>
+                                <option value="500000">50万</option>
+                                <option value="1000000">100万</option>
+                            </select>
+                        </label>
+                    </label>
+                </div>
+
+
+            </div>
+
+            <div class="list" style="margin-bottom: 10px;" ng-show="insure.bean.INSURER_ID!=0&&insure.bean.INSURER_ID!=null">
+
+                <label class="item item-input" style="padding-left: 20px;line-height: 1">
+                    <span class="input-label" style="width:20%;font-weight:bold">车主姓名</span>
+                    {{insure.bean.CAR_USERNAME}}
+                    <!--<input type="text" ng-model="insure.bean.CAR_USERNAME" placeholder="车主姓名"/>-->
+                </label>
+                <label class="item item-input" style="padding-left: 20px;line-height: 1">
+                    <span class="input-label" style="width:20%;font-weight:bold">身份证号</span>
+                    {{insure.bean.ID_NO}}
+                    <!--<input type="text" ng-model="insure.bean.ID_NO" placeholder="身份证号"/>-->
+                </label>
+                <label class="item item-input" style="padding-left: 20px;line-height: 1">
+                    <span class="input-label" style="width:20%;font-weight:bold">车主联系电话</span>
+                    {{insure.bean.phone}}
+                    <!--<input type="text" ng-model="insure.bean.phone" placeholder="车主联系电话"/>-->
+                </label>
+                <label class="item item-input" style="padding-left: 20px;line-height: 1">
+                    <span class="input-label" style="width:20%;font-weight:bold">配送地址</span>
+                    <input type="text" ng-model="insure.bean.DELIVERY" placeholder="配送地址"/>
+                </label>
+                <div class="item item-input" style="padding-left: 20px;">
+                    <ul>
+                        <li><img name="idNoImg" src="{{insure.userInfo.idNoUrl|imgUrl}}" data-id="{{insure.bean.ID_NO_PIC_ID}}" height="50px"
+                                 width="50px" alt="身份证照片" style="margin: 10px" ng-click="insure.showBigImage('{{insure.userInfo.idNoUrl|imgUrl}}')"
+                                /><img name="DrivingPicImg" src="{{insure.carInfo.DrivingPicUrl|imgUrl}}" data-id="{{insure.bean.DRIVING_PIC_ID}}" height="50px"
+                                       width="50px" alt="行驶证照片" ng-click="insure.upImg($event)" style="margin: 10px"/>
+                          <img name="driverPicImg" src="{{insure.userInfo.driverPicUrl|imgUrl}}"
+                                                                                                                            data-id="{{insure.bean.DRIVER_PIC_ID}}"
+                                                                                                                            height="50px" ng-click="insure.upImg($event)"
+                                                                                                                            width="50px" alt="驾驶证照片" style="margin: 10px"/>
+                        </li>
+                        <li><span style="padding-left: 10px">身份证</span> <span style="padding-left: 15px">行驶证</span> <span
+                                style="padding-left: 15px">驾驶证</span>
+                        </li>
+                    </ul>
+
+
+                </div>
+            </div>
+        </div>
+        </div>
+
+
+        <div class="button-div" style="margin-top: 30px">
+            <button class="button button-energized carIn-button" on-tap="insure.save($event)">
+                保存
+            </button>
+        </div>
+    </ion-content>
+</ion-view>

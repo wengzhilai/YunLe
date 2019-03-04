@@ -1,0 +1,71 @@
+﻿@model IList<ProServer.GlobalUser>
+@{
+    ViewBag.Title = "AllOnlineUser";
+}
+
+<table id="dg" class="easyui-datagrid"  data-options="
+    pageSize:100,
+    rownumbers: true,
+    singleSelect:'true'">
+            <thead>
+                <tr>
+                    <th data-options="field:'UserId',formatter:formatPrice">操作</th>
+                    <th data-options="field:'Guid'">用户Key</th>
+                    <th data-options="field:'UserName'">用户姓名</th>
+                    <th data-options="field:'LoginName'">用户登录名</th>
+                    <th data-options="field:'LastOpTime'">最后操作时间</th>
+                    <th data-options="field:'LoginIP'">登录IP</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var t in this.Model)
+                {
+                <tr>
+                    <td>@t.UserId</td>
+                    <td>@t.Guid</td>
+                    <td>@t.UserName</td>
+                    <td>@t.LoginName</td>
+                    <td>@t.LastOpTime</td>
+                    <td>@t.LoginIP</td>
+                </tr>
+                }
+            </tbody>
+        </table>
+
+<script>
+    function formatPrice(val,row){
+        return '<span onclick="DelUser(\'' + row.Guid + '\',\''+row.UserName+'\')" style="color:red;">注销</span>';
+    }
+    function DelUser(userKey,userName)
+    {
+        if (confirm("确定要注销【" + userName + "】用户？")) {
+            $.ajax({
+                url: "DeleteOnlineUser?t=" + Math.random(),
+                data: {
+                    userKey: userKey
+                },
+                success: function (data) {
+                    if (data.Message == null) data.Message = "";
+                    data.Message = data.Message.replace('\r\n', '<br />')
+                    data.Message = data.Message.replace('\\r\\n', '<br />')
+                    if (data.IsError != null) {
+                        if (data.IsError) {
+                            divalert("失败", data.Message);
+                            return;
+                        }
+                        else {
+                            divalert("成功", data.Message);
+                            window.location = window.location;
+                        }
+                    }
+                    else {
+                        divalert(data);
+                    }
+                },
+                error: function (data) {
+                    alert('失败:' + data.responseText);
+                }
+            });
+        }
+    }
+</script>

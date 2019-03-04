@@ -1,0 +1,46 @@
+﻿@model ProInterface.Models.TTaskFlow
+@{
+    ViewBag.Title = "SupHandleNode";
+}
+<style type="text/css">
+    #tt .tabs li {
+        margin: 0px 0px 0 2px;
+    }
+
+        #tt .tabs li a.tabs-inner {
+            -webkit-border-radius: 0;
+            -moz-border-radius: 0;
+            border-radius: 0;
+        }
+</style>
+<div id="tt" style="overflow: inherit; height: 100%">
+    <div title="@this.Model.NAME">
+        <iframe id="ifr_handle" scrolling="auto" frameborder="0" style="height: 99%; width: 100%;"></iframe>
+    </div>
+    <div title="采购信息">
+        <iframe id="ifr_purchase" scrolling="auto" frameborder="0" style="height: 99%; width: 100%;"></iframe>
+    </div>
+    <div title="日志记录" data-options="closable:false" style="overflow: inherit; height: 100%">
+        <iframe id="ifr_log" scrolling="auto" frameborder="0" style="height: 99%; width: 100%;"></iframe>
+    </div>
+</div>
+<script type="text/javascript">
+    function CloseWin() {
+        parent.CloseWin();
+    }
+
+    $(function () {
+        $('#tt').tabs({
+            border: true,
+            fit: true,
+            plain: true
+        });
+
+        @*$("#ifr_handle").attr("src", "@MvcHtmlString.Create(Url.Content(Model.HANDLE_URL))");*@
+        $("#ifr_handle").attr("src", "SupHandle?id=@this.Model.ID");
+        $("#ifr_log").attr("src", "Find?id=@this.Model.TASK_ID");
+        $("#ifr_purchase").attr("src", "../Purchase/PublicSingle?id=@this.Model.TASK_ID");
+    })
+
+</script>
+

@@ -1,0 +1,92 @@
+﻿@model ProInterface.Models.MESSAGE
+@{
+    ViewBag.Title = "编辑提醒内容";
+}
+
+<div id="myPnl" style="display: none"></div>
+@using (Ajax.BeginForm(new AjaxOptions
+{
+    UpdateTargetId = "myPnl",
+    Confirm = "确定要提交吗",
+    OnBegin = "OnBegin",
+    OnSuccess = "OnSuccess",
+    OnFailure = "OnFailure",
+    OnComplete = "OnComplete"
+}))
+{
+    @Html.HiddenFor(m => m.ID)
+    <table style="table-layout: fixed; width: 100%">
+        <tr>
+            <td>
+                <div class="input-group" style="width: 100%;">
+                    <span class="input-group-addon" data-size="4">选择角色：</span>
+                    <div class="form-control">
+                        @Html.CheckBoxListFor(m=>m.ALL_ROLE_ID, ViewData["AllRole"] as IList<SelectListItem>)
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="input-group" style="width: 100%;">
+                    <span class="input-group-addon" data-size="4">选择区域</span>
+                    <div class="form-control">
+                        @Html.TextBoxFor(m=>m.DISTRICT_ID, new
+                      {
+                          @class = "easyui-combotree",
+                          @data_options = @"
+                            url:'../District/GetAll',
+                            loadFilter: function (rows) {
+                                return convert(rows);
+                            },
+                            editable:false"
+                      })
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="input-group" style="width: 100%;">
+                    <span class="input-group-addon" data-size="4" for="PUSH_TYPE">@Html.LabelFor(m => m.PUSH_TYPE)</span>
+                    @Html.MyDropDownListFor(m => m.PUSH_TYPE, new[]{
+                       new SelectListItem(){ Text="短信推送", Value="短信推送"},
+                       new SelectListItem(){ Text="智能推送", Value="智能推送"},
+                       new SelectListItem(){ Text="WEB推送", Value="WEB推送"},
+                       new SelectListItem(){ Text="APP推送", Value="APP推送"}
+                   }, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.PUSH_TYPE)
+                </div>
+            </td>
+        </tr>
+        <tr style="display:none">
+            <td>
+                <div class="input-group" style="width: 100%;">
+                    <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.TITLE)</span>
+                    @Html.TextBoxFor(m => m.TITLE, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.TITLE)
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="input-group" style="width: 100%;">
+                    <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.CONTENT)</span>
+                    @Html.TextBoxFor(m => m.CONTENT, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.CONTENT)
+                </div>
+            </td>
+
+        </tr>
+    </table>
+    <div style="text-align: center; padding: 10px; display: none;">
+        <a class="easyui-linkbutton" data-options="iconCls:'icon-save'" onclick="onSubmit()">保存</a>
+        <a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" onclick="parent.CloseWin();">取消</a>
+        <input style="width: 60px; display: none; margin-right: 20px;" type="submit" value="保存" />
+    </div> 
+}
+<script type="text/javascript" src="~/Scripts_Page/FunBase.js"></script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

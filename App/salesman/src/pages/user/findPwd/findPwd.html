@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-toolbar color="car">
+    <ion-buttons left>
+      <button ion-button icon-only (click)="GoBack()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>找回密码</ion-title>
+    <ion-buttons right style="width: 30px">
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-list [formGroup]="userForm">
+    <ion-item>
+      <ion-icon name="call" item-left></ion-icon>
+      <ion-input type="text" formControlName="LoginName" placeholder="请输入手机号码"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-icon name="wifi" item-left></ion-icon>
+      <ion-input type="text" formControlName="VerifyCode" placeholder="短信验证码"></ion-input>
+      <button item-right ion-button small color="secondary" [disabled]="sendCodeDisabled" (click)="SendCode($event)" #sendCode>{{sendCodeText}}</button>
+    </ion-item>
+    <ion-item>
+      <ion-icon name="lock" item-left></ion-icon>
+      <ion-input type="text" formControlName="NewPwd" placeholder="密码由6-20位数字字母构成"></ion-input>
+    </ion-item>
+  </ion-list>
+  <div padding>
+    <button ion-button color="car" block (click)="submit()">提交</button>
+  </div>
+</ion-content>

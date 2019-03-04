@@ -1,0 +1,63 @@
+
+<!--index.wxml-->
+<view class="container">
+  <div class="slide-zoom">
+    <image src="../../assets/img/s-1.png"></image>
+  </div>
+  <div style="margin-top: -7px;margin-bottom: 3px">
+    <ion-row>
+      <ion-col bindtap="GoHelpEdit" data-tt="救援">
+        <div>
+          <image src="../../assets/img/home-icon2.gif"></image>
+          <view class="button-clear">
+            免费救援
+          </view>
+        </div>
+      </ion-col>
+      <ion-col>
+        <div>
+          <image src="../../assets/img/home-icon3.gif"></image>
+          <view class="button-clear">
+            维修保养
+          </view>
+        </div>
+      </ion-col>
+      <ion-col>
+        <div class="light-bg">
+          <image src="../../assets/img/home-icon1.gif"></image>
+          <view class="button-clear user_button">
+            保单查询
+          </view>
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <div>
+          <view class="divBack">
+            <ion-icon name="calendar" role="img" class="icon icon-md ion-md-calendar" aria-label="calendar"></ion-icon>
+          </view>
+          <view class="button-clear">
+            订单信息
+          </view>
+        </div>
+      </ion-col>
+      <ion-col>
+        <div class="light-bg">
+          <image src="../../assets/img/home-icon4.gif"></image>
+          <view class="button-clear">
+            事故车管家
+          </view>
+        </div>
+      </ion-col>
+      <ion-col>
+        <div>
+          <image src="../../assets/img/home-icon6.gif"></image>
+          <view class="button-clear">
+            免费审车
+          </view>
+        </div>
+      </ion-col>
+    </ion-row>
+  </div>
+</view>

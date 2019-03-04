@@ -1,0 +1,39 @@
+﻿<script src="~/Scripts/easyui/jquery.easyui.min.js"></script>
+<link href="~/Scripts/bootstrap/css/bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts_Page/FunBase.js"></script>
+<style type="text/css">
+    td {
+        width: 25%;
+        color: #666;
+        text-align: center;
+        ruby-align: center;
+    }
+</style>
+@{if (ViewData["allReList"] != null && (ViewData["allReList"] as IList<ProInterface.Models.TUserMessage>).Count != 0)
+  {
+          
+    <table class="table table-striped table-bordered">
+        <tr>
+            <td>编号</td>
+            <td>内容</td>
+            <td>时间</td>
+        </tr>
+        @foreach (var item in (ViewData["allReList"] as IList<ProInterface.Models.TUserMessage>).ToList())
+        {
+            <tr>
+                <td>@item.ID</td>
+                <td>@item.CONTENT</td>
+                <td>@item.CREATE_TIME</td>
+            </tr>
+        }
+
+    </table>
+
+  }
+  else
+  {
+    <script type="text/javascript">
+        divalert("提示", "当前没有消息");
+    </script>
+  }
+}

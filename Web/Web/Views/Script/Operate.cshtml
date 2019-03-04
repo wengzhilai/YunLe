@@ -1,0 +1,225 @@
+﻿@model ProInterface.Models.SCRIPT
+@{
+    ViewBag.Title = "编辑任务";
+}
+
+<script type="text/javascript" src="~/Scripts_Page/FunBase.js"></script>
+<div id="myPnl" style="display: none"></div>
+@using (Ajax.BeginForm("Details", "Script", new AjaxOptions
+{
+    UpdateTargetId = "myPnl",
+    Confirm = "确定要提交吗",
+    OnBegin = "OnBegin",
+    OnSuccess = "OnSuccess",
+    OnFailure = "OnFailure",
+    OnComplete = "OnComplete"
+}))
+{
+    @Html.HiddenFor(m => m.ID)
+ 
+<ul class="nav nav-pills" style="margin:5px">
+  <li class="active" style="cursor:pointer" onclick="Test()">
+    <a>检测语法</a>
+  </li>
+  <li class="active" style="cursor:pointer" onclick="Run()">
+    <a>执行</a>
+  </li>
+    <li class="active" style="cursor:pointer" onclick="Cancel()">
+    <a>终止</a>
+  </li>
+  <li class="active" style="cursor:pointer" onclick="LookLog()">
+    <a>查看执行日志</a>
+  </li>
+</ul>
+    
+    <table style="table-layout: fixed; width: 100%">
+        <tr>
+            <td>
+                <div class="input-group" style="width: 100%;">
+                    <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.CODE)</span>
+                    @Html.TextBoxFor(m => m.CODE, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.CODE)
+                </div>
+            </td>
+
+            <td>
+                <div class="input-group" style="width: 100%;">
+                    <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.NAME)</span>
+                    @Html.TextBoxFor(m => m.NAME, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.NAME)
+                </div>
+            </td>
+
+        </tr>
+        <tr>
+            
+            <td>
+                <div class="input-group" style="width: 100%;">
+                    <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.RUN_WHEN)</span>
+                    <div class="form-control">
+                        @Html.TextBoxFor(m => m.RUN_WHEN)
+                        @Html.ValidationMessageFor(m => m.RUN_WHEN)
+
+                        @Html.DropDownList("DrListRunWhen", new[]{
+                       new SelectListItem(){ Text="常用执行时间表达式", Value="", Selected=true},
+                       new SelectListItem(){ Text="每5秒执行一次", Value="0/5 * * * * ?"},
+                       new SelectListItem(){ Text="每10秒执行一次", Value="0/10 * * * * ?"},
+                       new SelectListItem(){ Text="每天下午三点执行", Value="0 0 15 * * ?"},
+                       new SelectListItem(){ Text="每周一下午三点执行", Value="0 0 15 ? * MON"},
+                       new SelectListItem(){ Text="每月30号31号下午3点执行一次", Value="0 0 15 30,31 1-12 ?"},
+                       new SelectListItem(){ Text="在半点每15秒执行一次", Value="0/15 0/30 * * * ?"}
+
+                   }, new { onchange = "$('#RUN_WHEN').val($(this).val())", style = "width:150px;" })
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="input-group" style="width: 100%;">
+                    <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.SERVICE_FLAG)</span>
+                    @Html.DropDownListFor(m => m.SERVICE_FLAG,ViewData["db"] as IList<SelectListItem>, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.SERVICE_FLAG)
+                </div>
+            </td>
+
+        </tr>
+        <tr>
+            <td>
+                <div class="input-group" style="width: 100%;">
+                    <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.STATUS)</span>
+                    <div class="form-control">
+                    @Html.MyDropDownListFor(m => m.STATUS, new[]{
+                       new SelectListItem(){ Text="正常", Value="正常", Selected=true},
+                       new SelectListItem(){ Text="禁用", Value="禁用"}
+
+                   }, new {})
+                    @Html.ValidationMessageFor(m => m.SERVICE_FLAG)
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="input-group" style="width: 100%;">
+                    <span class="input-group-addon" data-size="4" for="RUN_DATA">@Html.LabelFor(m => m.RUN_DATA)</span>
+                    @Html.TextBoxFor(m => m.RUN_DATA, new {@class="form-control" })
+                    @Html.ValidationMessageFor(m => m.SERVICE_FLAG)
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <div class="input-group" style="width: 100%;">
+                    <span class="input-group-addon" data-size="4">
+                        <span for="BODY_TEXT" class="easyui-linkbutton" data-options="iconCls:'icon-help',size:'small',plain:true"></span>
+                     @Html.LabelFor(m => m.BODY_TEXT)</span>
+                    @Html.TextAreaFor(m => m.BODY_TEXT, new { @class = "form-control", @style = "height:300px" })
+                    @Html.HiddenFor(m => m.BODY_HASH)
+                    @Html.ValidationMessageFor(m => m.BODY_TEXT)
+                </div>
+            </td>
+        </tr>
+    </table>
+    <div style="text-align: center; padding: 10px; display: none;">
+        <a class="easyui-linkbutton" data-options="iconCls:'icon-save'" onclick="onSubmit()">保存</a>
+        <a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" onclick="parent.CloseWin();">取消</a>
+        <input style="width: 60px; display: none; margin-right: 20px;" type="submit" value="保存" />
+    </div> 
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+<script type="text/javascript">
+
+    function OnSuccess(data) {
+        if (data.IsError != null) {
+            if (data.IsError) {
+                divalert("失败", data.Message);
+                return;
+            }
+            else {
+                alert(data.Message);
+            }
+        }
+    }
+
+    function Test()
+    {
+        $.ajax({
+            url: "ScriptTest?t=" + Math.random(),
+            type:"post",
+            data: {
+                code: $("#BODY_TEXT").val()
+            },
+            success: function (data) {
+                divalert("语法检测", data);
+            },
+            error: function (data) {
+                alert('失败:' + data.responseText);
+            }
+        });
+    }
+
+    function Run() {
+
+        $.ajax({
+            url: "ScriptTest?t=" + Math.random(),
+            type: "post",
+            data: {
+                code: $("#BODY_TEXT").val()
+            },
+            success: function (data) {
+                $.ajax({
+                    url: "ScriptStart?t=" + Math.random(),
+                    type: "post",
+                    data: {
+                        id: $("#ID").val(),
+                        database: $("#SERVICE_FLAG").val(),
+                    },
+                    success: function (data) {
+                        if (data.IsError) {
+                            divalert("失败", data.Message);
+                            return;
+                        }
+                        else {
+                            divalert("成功", data.Message);
+                        }
+                    },
+                    error: function (data) {
+                        alert('失败:' + data.responseText);
+                    }
+                });
+            },
+            error: function (data) {
+                alert('失败:' + data.responseText);
+            }
+        });
+    }
+
+
+    function Cancel() {
+        $.ajax({
+            url: "ScriptCancel?t=" + Math.random(),
+            data: {
+                id: $("#ID").val()
+            },
+            success: function (data) {
+                if (data.IsError) {
+                    divalert("失败", data.Message);
+                    return;
+                }
+                else {
+                    divalert("成功", data.Message);
+                }
+            },
+            error: function (data) {
+                alert('失败:' + data.responseText);
+            }
+        });
+    }
+
+    function LookLog() {
+        DivOpen("LookLog?scriptId="+$("#ID").val(), "查看脚本最后日志", 600, 400);
+    }
+
+
+
+</script>
+}

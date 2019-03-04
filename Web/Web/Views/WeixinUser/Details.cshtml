@@ -1,0 +1,174 @@
+
+@model ProInterface.Models.YL_WEIXIN_USER
+@{
+    ViewBag.Title = "编辑微信粉丝";
+}
+
+<style>
+    .col-md-6, .col-md-12 {
+        padding: 1px;
+        float: left;
+    }
+    .form-control[readonly] {
+        cursor: not-allowed;
+        background-color: #fff;
+    }
+</style>
+<link href="~/Scripts/datetimepicker/jquery.datetimepicker.css" rel="stylesheet" />
+<script type="text/javascript" src="~/Scripts/datetimepicker/jquery.datetimepicker.js"></script>
+
+<div id="myPnl" style="display:none"></div>
+@using (Ajax.BeginForm(new AjaxOptions
+{
+    UpdateTargetId = "myPnl",
+    Confirm = "确定要提交吗",
+    OnBegin = "OnBegin",
+    OnSuccess = "OnSuccess",
+    OnFailure = "OnFailure",
+    OnComplete = "OnComplete"
+}))
+{
+    @Html.HiddenFor(m=>m.ID)
+        <table style="table-layout:fixed;width:100%">
+            <tr>
+                <td>
+
+                <div class="col-md-6">
+                    
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.USER_ID)</span>
+                        <div class = "form-control">
+                            @Html.TextBoxFor(m => m.USER_ID, new { @class = "easyui-numberbox",precision="2" })
+                            @Html.ValidationMessageFor(m => m.USER_ID)
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+                    
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.NICKNAME)</span>
+                        @Html.TextBoxFor(m => m.NICKNAME, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.NICKNAME)
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+                    
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.SUBSCRIBE)</span>
+                        <div class = "form-control">
+                            @Html.TextBoxFor(m => m.SUBSCRIBE, new { @class = "easyui-numberbox",precision="2" })
+                            @Html.ValidationMessageFor(m => m.SUBSCRIBE)
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+                    
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.SEX)</span>
+                        <div class = "form-control">
+                            @Html.TextBoxFor(m => m.SEX, new { @class = "easyui-numberbox",precision="2" })
+                            @Html.ValidationMessageFor(m => m.SEX)
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+                    
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.CITY)</span>
+                        @Html.TextBoxFor(m => m.CITY, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.CITY)
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+                    
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.COUNTRY)</span>
+                        @Html.TextBoxFor(m => m.COUNTRY, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.COUNTRY)
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+                    
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.PROVINCE)</span>
+                        @Html.TextBoxFor(m => m.PROVINCE, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.PROVINCE)
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+                    
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.LANGUAGE)</span>
+                        @Html.TextBoxFor(m => m.LANGUAGE, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.LANGUAGE)
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+                    
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.HEADIMGURL)</span>
+                        @Html.TextBoxFor(m => m.HEADIMGURL, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.HEADIMGURL)
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+                    
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.TAKE_TIME)</span>
+                        @Html.TextBoxFor(m => m.TAKE_TIME, new { @class = "form-control form_datetime" })
+                        @Html.ValidationMessageFor(m => m.TAKE_TIME)
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+                    
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.EXIT_TIME)</span>
+                        @Html.TextBoxFor(m => m.EXIT_TIME, new { @class = "form-control form_datetime" })
+                        @Html.ValidationMessageFor(m => m.EXIT_TIME)
+                    </div>
+
+                </div>
+
+                </td>
+            </tr>
+        </table>
+        <div style="text-align:center;padding:10px;display:none;">
+            <a class="easyui-linkbutton" data-options="iconCls:'icon-save'" onclick="onSubmit()">保存</a>              
+            <a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" onclick="parent.CloseWin();">取消</a>              
+            <input style="width: 60px; display:none; margin-right: 20px;" type="submit" value="保存" />
+        </div> 
+}
+<script type="text/javascript" src="~/Scripts_Page/FunBase.js"></script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $(function () {
+            $('.form_datetime').datetimepicker({
+                timepicker: false,
+                step: 5,
+                format: 'Y/m/d'
+            });
+        })
+    </script>
+}

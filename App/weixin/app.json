@@ -1,0 +1,14 @@
+{
+  "pages":[
+    "pages/index/index",
+    "pages/help/edit/edit",
+    "pages/user/login/login",
+    "pages/logs/logs"
+  ],
+  "window":{
+    "backgroundTextStyle":"light",
+    "navigationBarBackgroundColor": "#ff8900",
+    "navigationBarTitleText": "云乐享车-用户端",
+    "navigationBarTextStyle":"light"
+  }
+}

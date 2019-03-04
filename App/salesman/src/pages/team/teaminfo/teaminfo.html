@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-toolbar color="car">
+    <ion-buttons left >
+      <button ion-button icon-only (click)="GoBack()" large>
+        <ion-icon name="arrow-back"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>集团信息</ion-title>
+    <ion-buttons right style="width: 30px">
+
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+
+<ion-item-group *ngFor="let o of lists">
+  <ion-item-divider color="light">
+    基本信息
+  </ion-item-divider>
+  <ion-item>
+    <ion-thumbnail item-right>
+      <img *ngIf="o.qrcode.split('|')[1]!=null" src="{{o.qrcode.split('|')[1]|ImgUrl}}" (click)="showBigImage(o.qrcode.split('|')[1])">
+    </ion-thumbnail>
+    <h2>推荐码：{{o.REQUEST_CODE}}</h2>
+    <p>名  称：{{o.NAME}}</p>
+    <p>备  注：{{o.REMARK}}</p>
+  </ion-item>
+  <ion-item>
+    <ion-label>定单总数</ion-label>
+    <p item-right>{{o.orderNum}}</p>
+  </ion-item>
+  <ion-item>
+    <ion-label>已完成数</ion-label>
+    <p item-right>{{o.orderNumSucc}}</p>
+  </ion-item>
+</ion-item-group>
+  </ion-content>

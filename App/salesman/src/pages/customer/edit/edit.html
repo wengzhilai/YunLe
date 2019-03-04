@@ -1,0 +1,154 @@
+<ion-header>
+  <ion-toolbar color="car">
+    <ion-buttons left>
+      <button ion-button icon-only (click)="GoBack()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>个人资料</ion-title>
+    <ion-buttons right>
+      <button ion-button icon-only (click)="save()">
+        <ion-icon name="checkmark-circle"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-list [formGroup]="userForm">
+    <ion-item>
+      <ion-label floating>姓名</ion-label>
+      <ion-input type="text" formControlName="NAME"></ion-input>
+    </ion-item>
+    <ion-item *ngIf="formErrors.NAME">
+      <div class="error-msg">
+        {{ formErrors.NAME }}
+      </div>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>性别</ion-label>
+      <ion-select formControlName="SEX" okText="确定" cancelText="取消">
+        <ion-option value="男">先生</ion-option>
+        <ion-option value="女">女士</ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>电话</ion-label>
+      <ion-input type="tel" formControlName="LOGIN_NAME"></ion-input>
+    </ion-item>
+    <ion-item *ngIf="formErrors.LOGIN_NAME">
+      <div class="error-msg">
+        {{ formErrors.LOGIN_NAME }}
+      </div>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>身份证号</ion-label>
+      <ion-input type="text" formControlName="ID_NO"></ion-input>
+    </ion-item>
+    <ion-item *ngIf="formErrors.ID_NO">
+      <div class="error-msg">
+        {{ formErrors.ID_NO }}
+      </div>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>联系地址</ion-label>
+      <ion-input type="text" formControlName="ADDRESS"></ion-input>
+    </ion-item>
+    <ion-item *ngIf="formErrors.ADDRESS">
+      <div class="error-msg">
+        {{ formErrors.ADDRESS }}
+      </div>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>备注</ion-label>
+      <ion-input type="text" formControlName="REMARK"></ion-input>
+    </ion-item>
+    <ion-item *ngIf="formErrors.REMARK">
+      <div class="error-msg">
+        {{ formErrors.REMARK }}
+      </div>
+    </ion-item>
+    <ion-item>
+      <ion-label>头像照片</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-row>
+        <ion-col *ngIf="bean.iconURL!=null">
+          <img src="{{bean.iconURL|ImgUrl}}" height="70px" width="70px" alt="头像照片" style="margin: 10px" (click)="upImg('iconURL')"
+          />
+          <p>头像照片</p>
+        </ion-col>
+        <ion-col *ngIf="bean.iconURL==null">
+          <button ion-button icon-right ion-button (click)="upImg('iconURL')">
+              <ion-icon name="cloud-upload">&nbsp;</ion-icon>
+              头像照片
+            </button>
+        </ion-col>
+      </ion-row>
+    </ion-item>
+    <ion-item>
+      <ion-label>证件照片</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-row>
+        <ion-col *ngIf="bean.idNoUrl!=null">
+          <img src="{{bean.idNoUrl|ImgUrl}}" height="70px" width="70px" alt="证件照片" style="margin: 10px" (click)="upImg('idNoUrl')"
+          />
+          <p>证件照片</p>
+        </ion-col>
+        <ion-col *ngIf="bean.idNoUrl==null">
+          <button ion-button icon-right ion-button (click)="upImg('idNoUrl')">
+              <ion-icon name="cloud-upload">&nbsp;</ion-icon>
+              证件照片
+            </button>
+        </ion-col>
+      </ion-row>
+    </ion-item>
+
+
+  </ion-list>
+  <ion-card *ngFor="let o of bean.AllCar">
+    <ion-item>
+      <ion-label floating>车牌</ion-label>
+      <ion-input type="text" [(ngModel)]="o.PLATE_NUMBER"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-row>
+        <ion-col *ngIf="o.DrivingPicUrl!=null">
+          <img src="{{o.DrivingPicUrl|ImgUrl}}" height="70px" width="70px" alt="行驶证正页" style="margin: 10px" (click)="upImg(o.PLATE_NUMBER+'_0')"
+          />
+          <p>
+            行驶证正页
+          </p>
+        </ion-col>
+        <ion-col *ngIf="o.DrivingPicUrl==null">
+          <button ion-button icon-right *ngIf="o.DrivingPicUrl==null" ion-button (click)="upImg(o.PLATE_NUMBER+'_0')">
+              <ion-icon name="cloud-upload">&nbsp;</ion-icon>
+              行驶证正页
+            </button>
+        </ion-col>
+        <ion-col *ngIf="o.DrivingPicUrl1!=null">
+          <img src="{{o.DrivingPicUrl1|ImgUrl}}" height="70px" width="70px" alt="行驶证副页" style="margin: 10px" (click)="upImg(o.PLATE_NUMBER+'_1')"
+          />
+          <p>
+            行驶证副页
+          </p>
+        </ion-col>
+        <ion-col *ngIf="o.DrivingPicUrl1==null">
+          <button ion-button icon-right *ngIf="o.DrivingPicUrl1==null" ion-button (click)="upImg(o.PLATE_NUMBER+'_1')">
+          <ion-icon name="cloud-upload">&nbsp;</ion-icon>
+          行驶证副页
+        </button>
+        </ion-col>
+      </ion-row>
+    </ion-item>
+  </ion-card>
+
+  <ion-card>
+    <button ion-button>
+        <ion-icon name="add" (click)="AddCar()">&nbsp;添加车辆</ion-icon>
+      </button>
+  </ion-card>
+  <div padding>
+    <button ion-button color="car" block (click)="save()">保存</button>
+  </div>
+</ion-content>

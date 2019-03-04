@@ -1,0 +1,22 @@
+<ion-view hide-back-button="true">
+    <ion-nav-title>免费救援</ion-nav-title>
+    <ion-nav-buttons side="left">
+        <button class="button button-icon icon ion-ios-arrow-back light" ng-click="$ionicGoBack()"></button>
+    </ion-nav-buttons>
+
+    <ion-content class="has-header" style="background-color: #f0f0f0">
+
+        <ion-refresher pulling-text="下拉刷新" on-refresh="helpList.doRefresh()"></ion-refresher>
+
+        <ul class="list" style="margin-top: 10px">
+            <li class="item">
+               <table width="100%"><tr><td>9:13</td><td>李女士</td><td>新华公园附近爆胎</td><td width="20%"><button ng-click="helpList.toHelp(12)">救援</button><button ng-click="helpList.toFollow(12)">跟踪</button></td></tr></table>
+            </li>
+        </ul>
+        <ion-infinite-scroll ng-if="helpList.hasNextPage()"
+                             on-infinite="helpList.loadMore()"
+                             distance="1%">
+        </ion-infinite-scroll>
+
+    </ion-content>
+</ion-view>

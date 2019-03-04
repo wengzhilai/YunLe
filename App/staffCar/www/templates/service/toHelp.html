@@ -1,0 +1,17 @@
+<ion-view view-title="发起救援" hide-back-button="true">
+    <ion-nav-buttons side="left">
+        <button class="button button-icon icon ion-ios-arrow-back light" ng-click="$ionicGoBack()"></button>
+    </ion-nav-buttons>
+
+    <ion-content class="has-header">
+        <div class="list list-inset" style="position:absolute;width:95%">
+            <label class="item item-input" style="padding: 0;min-height: 44px;">
+                <input type="text" placeholder="输入您需要救援的地址（定义客户的位置）" style="padding-left:10px;padding-right: 10px;" ng-model="help.search">
+               <button class="button button-clear" on-tap="help.onSearch()"> <i ng-click="help.onSearch()" class="icon ion-log-in placeholder-icon" style="padding-left: 10px;font-size: 20px;border-left: 1px #bbb solid;"></i></button>
+            </label>
+         </div>
+
+        <div id="allmap" style="width: 100%;overflow: hidden;margin:0;position:relative;" ></div>
+
+     </ion-content>
+    </ion-view>

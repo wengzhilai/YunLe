@@ -1,0 +1,160 @@
+﻿@model ProInterface.Models.LOGIN
+@{
+    ViewBag.Title = "自贡业务支撑系统统一登录平台";    
+}
+<style type="text/css">
+    .code {
+        background-image: url(code.jpg);
+        font-family: Arial;
+        font-style: italic;
+        color: Red;
+        border: 0;
+        padding: 2px 3px;
+        letter-spacing: 3px;
+        font-weight: bolder;
+    }
+
+    .unchanged {
+        border: 0;
+    }
+</style>
+<script type="text/javascript" src="~/Scripts_Page/FunBase.js"></script>
+<script type="text/javascript" src="~/Scripts_Page/login.js"></script>
+<script src="~/Scripts/jquery.cookie.js"></script>
+<link href="~/Styles/loginnew.css" rel="stylesheet" />
+<script type="text/javascript">  
+
+</script>
+@using (Ajax.BeginForm(new AjaxOptions
+{
+    UpdateTargetId = "myPnl",
+    OnSuccess = "OnSuccess",
+    OnFailure = "OnFailure",
+    OnComplete = "OnComplete"
+}))
+{ 
+    <div class="header">
+        <div class="headerLogo">
+            <a title="自贡业务支撑系统统一登录平台" target="_blank" href="http://www.#.com/">
+                <img alt="logo" src="~/Styles/Images/logo.png" style="margin-top: 15px;"></a>
+        </div>
+        <div class="headerNav">
+            <a target="_blank" href="http://www.easyman.com.cn/">联宇官网</a>
+            <a href="javascript:void(0)" title="收藏网址" onclick="SaveUrl('@ProInterface.AppSet.SysName')">收藏网址</a>
+        </div>
+    </div>
+    <div class="banner">
+        <div class="bd">
+            <ul>
+
+                <li style="background: url(../Styles/Images/theme-pic1.png) #CCE1F3 center 0 no-repeat;">
+                    @if (ProInterface.AppSet.CityId == 852)
+                    {
+                        <div style="height: 40px"><a href="http://jubao.china.cn:13225/reportform.do" target="_blank">
+                            <img src="../Styles/Images/Login/fankong.png" /></a></div>
+                    }
+                    else
+                    {
+                        <br />
+                        <br />
+                    }
+                    <span style="color: white; font-family: 'Microsoft YaHei'; font-size: 35px; font-weight: 400; margin-left: 200px;">自贡业务支撑系统统一登录平台</span>
+                </li>
+            </ul>
+        </div>
+        <div class="login-aside">
+            <div id="o-box-up"></div>
+            <div id="o-box-down" style="table-layout: fixed;">
+                <div class="error-box"></div>
+
+                <div class="registerform">
+                    <div class="fm-item">
+                        <label for="logonId" class="form-label">登录用户：</label>
+                        @Html.TextBoxFor(m => m.LOGIN_NAME, new { @class = "i-text", @placeholder = "请输入用户名" })
+                        @Html.ValidationMessageFor(m => m.LOGIN_NAME)
+
+                    </div>
+
+                    <div class="fm-item">
+                        <label for="logonId" class="form-label">登录密码：</label>
+                        @Html.PasswordFor(m => m.PASSWORD, new { @class = "i-text", @placeholder = "请输入密码" })
+                        @Html.ValidationMessageFor(m => m.PASSWORD)
+                    </div>
+                    @if (ProInterface.AppSet.VerifyCode)
+                    {
+                        <div class="fm-item pos-r">
+                            <label for="logonId" class="form-label">验证码</label>
+                            @Html.TextBoxFor(m => m.VERIFY_CODE, new { @nullmsg = "请输入右边显示的验证码", @placeholder = "输入验证码", @class = "i-text yzm", @maxlength = "4" })
+                            <a class="send" title="点击切换验证码" href="javascript:;" onclick='$(this).children("img").eq(0).attr("src", "CheckCode?time=" + Math.random());return false;'>
+                                <img src="CheckCode" width="100" height="35" />
+                            </a>
+                        </div>
+                    }
+                    <div class="fm-item">
+                        <label for="logonId" class="form-label"></label>
+                        <button onclick="OnSubmit(this)" type="submit" class="btn btn-primary btn-lg" id="btn-export" style="background-color: #97E272; border: 1px solid #D5E4DF; width: 120px;" data-loading-text="登 录 中......">
+                            登 录
+                        </button>
+                        <button onclick="DivOpen('~/Login/Repwd','找回密码',500,300)"  class="btn btn-primary btn-lg"  style="background-color: #97E272; border: 1px solid #D5E4DF; width: 120px;" >
+                            忘记密码
+                        </button>
+                        <div id="txterror" style="font-size: 12px; color: white; text-align: center; padding: 0 0 5px 0; margin-top: 10px;">
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        
+        <div class="hd">
+            <ul></ul>
+        </div>
+    </div>
+    <div class="footer" style="font-size: 12px; margin-top: 10px;">
+        <p>技术支持：成都联宇创新科技有限公司 <a href="~/ChromeStandalone.exe" style="color: #3f9ac2">Google浏览器下载</a></p>
+
+    </div>
+
+}
+<form id="oauth" action="tt" method="post">
+    <input type="hidden" id="state" name="state" value="" />
+    <input type="hidden" id="openId" name="openId" value="" />
+    <input type="hidden" id="access_token" name="access_token"  value="" />
+    <input  type="submit" id="btn_oauth" style="display:none" />
+</form>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+<script>
+
+    function OnSuccess(data) {
+        if (data.IsError != null) {
+            if (data.IsError) {
+                divalert("失败", data.Message);
+                return;
+            }
+            else {
+                alert(data.Message);
+            }
+        }
+        else {
+            OnBegin();
+            if (data.length > 0) {
+                AutoLogin(data[0]);
+            }
+            else {
+                alert(data.length);
+            }
+        }
+    }
+    function AutoLogin(obj)
+    {
+        $("#oauth").attr("action", obj.LOGIN_URL);
+        $("#openId").val(obj.openId);
+        $("#state").val(obj.state);
+        $("#access_token").val(obj.access_token);
+        $("#oauth").submit();
+        
+    }
+</script>
+}
+

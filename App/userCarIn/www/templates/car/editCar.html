@@ -1,0 +1,158 @@
+<ion-view view-title="添加车辆" hide-back-button="true">
+    <ion-nav-buttons side="left">
+        <button class="button button-icon icon ion-ios-arrow-back light" ng-click="$ionicGoBack()"></button>
+    </ion-nav-buttons>
+  <ion-nav-buttons side="right">
+    <button class="button button-icon icon ion-checkmark light" on-tap="car.save($event)"></button>
+  </ion-nav-buttons>
+    <ion-content class="has-header">
+        <div class="list" style="margin-top: 10px;">
+          <ion-toggle style="height: 50px;padding-left: 20px;font-weight: bold" ng-model="car.bean.isNew">新车
+          </ion-toggle>
+            <label class="item item-input" style="padding: 0;line-height: 1" ng-if="!car.bean.isNew">
+                <div class="home-row row" style="padding: 0px;">
+                    <div class="col col-25 ">
+                        <label class="search item item-input">
+                     <span class="input-label" style="width:20%;font-weight:bold">车牌
+                  <select style="padding:0;border: none;cursor: pointer;" ng-model="tmpNo.no1">
+                      <option value="京">京</option>
+                      <option value="沪">沪</option>
+                      <option value="津">津</option>
+                      <option value="渝">渝</option>
+                      <option value="黑">黑</option>
+                      <option value="吉">吉</option>
+                      <option value="辽">辽</option>
+                      <option value="蒙">蒙</option>
+                      <option value="冀">冀</option>
+                      <option value="新">新</option>
+                      <option value="甘">甘</option>
+                      <option value="青">青</option>
+                      <option value="陕">陕</option>
+                      <option value="宁">宁</option>
+                      <option value="豫">豫</option>
+                      <option value="鲁">鲁</option>
+                      <option value="晋">晋</option>
+                      <option value="皖">皖</option>
+                      <option value="鄂">鄂</option>
+                      <option value="湘">湘</option>
+                      <option value="苏">苏</option>
+                      <option value="川">川</option>
+                      <option value="黔">黔</option>
+                      <option value="滇">滇</option>
+                      <option value="桂">桂</option>
+                      <option value="藏">藏</option>
+                      <option value="浙">浙</option>
+                      <option value="赣">赣</option>
+                      <option value="粤">粤</option>
+                      <option value="闽">闽</option>
+                      <option value="台">台</option>
+                      <option value="琼">琼</option>
+                      <option value="港">港</option>
+                      <option value="澳">澳</option>
+                  </select>
+                     </span>
+
+                        </label>
+                    </div>
+                    <div class="col">
+                        <label class="search item item-input">
+                            <input type="text" ng-model="tmpNo.no2" capitalize  placeholder="车牌后6位"/>
+                        </label>
+                    </div>
+
+                </div>
+
+            </label>
+
+
+            <label class="item item-input" style="padding-left: 20px;line-height: 1">
+                <span class="input-label" style="width:20%;font-weight:bold">发动机号</span>
+                <input type="text" ng-model="car.bean.ENGINE_NUMBER" capitalize placeholder="发动机号（选填）"/>
+
+            </label>
+            <label class="item item-input" style="padding-left: 20px;line-height: 1">
+                <span class="input-label" style="width:20%;font-weight:bold">车架号</span>
+                <input type="text" ng-model="car.bean.FRAME_NUMBER" capitalize  placeholder="车架号后6位"/>
+
+            </label>
+            <label class="item item-input" style="padding-left: 20px;line-height: 1">
+                <span class="input-label" style="width:20%;font-weight:bold">车辆类型</span>
+                <input type="text" ng-model="car.bean.CAR_TYPE" placeholder="请根据行驶证填写"/>
+            </label>
+            <label class="item item-input" style="padding-left: 20px;line-height: 1">
+                <span class="input-label" style="width:20%;font-weight:bold">价格(￥)</span>
+                <input type="text" ng-model="car.bean.PRICE" placeholder="请据实填写"/>
+            </label>
+            <label class="item item-input" style="padding-left: 20px;line-height: 1">
+                <span class="input-label" style="width:20%;font-weight:bold">品牌型号</span>
+                <input type="text" ng-model="car.bean.BRAND" placeholder="请根据行驶证填写"/>
+            </label>
+            <span class="item item-input" style="padding-left: 20px;line-height: 1">
+                <span class="input-label" style="width:20%;font-weight:bold">注册日期</span>
+              <time-picker title="请根据行驶证填写" time-picker-result="car.bean.REG_DATA"
+                           format="yyyy-MM-dd hh:mm"></time-picker>
+            </span>
+        </div>
+
+      <div class="row" ng-if="car.bean.isNew">
+        <div class="item item-body col" style="text-align: center">
+          <img name="billUrl" src="{{car.bean.billUrl|imgUrl}}"
+               data-id="{{car.bean.BILL_PIC_ID}}" height="110px"
+               width="110px" alt="发票" ng-click="car.upImg($event,car.bean.BILL_PIC_ID)"/>
+          <p >
+            发票
+          </p>
+        </div>
+        <div class="item item-body col" style="text-align: center">
+          <img name="certificatePicUrl" src="{{car.bean.certificatePicUrl|imgUrl}}"
+               data-id="{{car.bean.CERTIFICATE_PIC_ID}}" height="110px"
+               width="110px" alt="合格证" ng-click="car.upImg($event,car.bean.CERTIFICATE_PIC_ID)"/>
+          <p>
+            合格证
+          </p>
+        </div>
+      </div>
+      <div class="row" ng-if="!car.bean.isNew">
+        <div class="item item-body col" style="text-align: center">
+          <img name="drivingPicImg" src="{{car.bean.DrivingPicUrl|imgUrl}}"
+               data-id="{{car.bean.DRIVING_PIC_ID}}" height="110px"
+               width="110px" alt="行驶证正面" ng-click="car.upImg($event,car.bean.DRIVING_PIC_ID)"/>
+          <p>
+            行驶证正面
+          </p>
+        </div>
+        <div class="item item-body col" style="text-align: center">
+          <img name="drivingPicImg1" src="{{car.bean.DrivingPicUrl1|imgUrl}}"
+               data-id="{{car.bean.DRIVING_PIC_ID1}}" height="110px"
+               width="110px" alt="行驶证附页" ng-click="car.upImg($event,car.bean.DRIVING_PIC_ID1)"/>
+          <p>
+            行驶证附页
+          </p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="item item-body col" style="text-align: center">
+          <img name="idNoImg" src="{{car.bean.idNoUrl|imgUrl}}"
+               data-id="{{car.bean.ID_NO_PIC_ID}}" height="110px"
+               width="110px" alt="车主证件正面" ng-click="car.upImg($event,car.bean.ID_NO_PIC_ID)"/>
+          <p >
+            车主证件正面
+          </p>
+        </div>
+        <div class="item item-body col" style="text-align: center">
+          <img name="idNoImg1" src="{{car.bean.idNoUrl1|imgUrl}}"
+               data-id="{{car.bean.ID_NO_PIC_ID1}}" height="110px"
+               width="110px" alt="车主证件背面" ng-click="car.upImg($event,car.bean.ID_NO_PIC_ID1)"/>
+          <p>
+            车主证件背面
+          </p>
+        </div>
+      </div>
+
+        <div class="button-div" style="margin-top: 30px">
+            <button class="button button-energized carIn-button" on-tap="car.save($event)">
+                保存
+            </button>
+        </div>
+    </ion-content>
+</ion-view>

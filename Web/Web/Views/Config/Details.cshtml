@@ -1,0 +1,52 @@
+
+@model ProInterface.Models.CONFIG
+@{
+    ViewBag.Title = "编辑系统配置";
+}
+
+<div id="myPnl" style="display:none"></div>
+@using (Ajax.BeginForm(new AjaxOptions
+{
+    UpdateTargetId = "myPnl",
+    Confirm = "确定要提交吗",
+    OnBegin = "OnBegin",
+    OnSuccess = "OnSuccess",
+    OnFailure = "OnFailure",
+    OnComplete = "OnComplete"
+}))
+{
+    @Html.HiddenFor(m=>m.ID)
+    @Html.HiddenFor(m=>m.TYPE)
+        <table class="boot-tablong">
+                <tr>
+                <td>
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.CODE)</span>
+                        @Html.DropDownListFor(m => m.CODE,null, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.CODE)
+                    </div>
+                </td>
+
+            </tr>
+            <tr>
+                <td>
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.VALUE)</span>
+                        @Html.TextBoxFor(m => m.VALUE, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.VALUE)
+                    </div>
+                </td>
+            </tr>
+
+        </table>
+        <div style="text-align:center;padding:10px;display:none;">
+            <a class="easyui-linkbutton" data-options="iconCls:'icon-save'" onclick="onSubmit()">保存</a>              
+            <a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" onclick="parent.CloseWin();">取消</a>              
+            <input style="width: 60px; display:none; margin-right: 20px;" type="submit" value="保存" />
+        </div> 
+}
+<script type="text/javascript" src="~/Scripts_Page/FunBase.js"></script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

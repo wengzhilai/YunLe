@@ -1,0 +1,54 @@
+<ion-view hide-back-button="true">
+    <ion-nav-title>我的</ion-nav-title>
+    <ion-nav-buttons side="left">
+        <button class="button button-icon icon ion-ios-arrow-back light" ui-sref="home"></button>
+    </ion-nav-buttons>
+    <!--<ion-nav-buttons side="right">
+        <button class="button button-icon icon ion-gear-a light" ng-click="outLogin()"></button>
+    </ion-nav-buttons>-->
+    <ion-content class="has-header">
+        <div class="user-head">
+             <img src="{{user.bean.iconURL|imgUrl}}" height="60" width="60" style='margin-top: 15px' ui-sref="editUser"/>
+                 <div class="light">{{user.bean.NAME}}</div>
+        </div>
+
+        <div class="user-div">
+            <div class="list">
+
+                <a class="item item-thumbnail-left"  style="min-height: 50px;"  ui-sref="orderList">
+                    <img style="height: 30px;width: 30px;margin-left: 20px;" src="img/car2.png">
+                    <button class="button-clear user_button" style="padding-left: 60px;color:#000">客户订单</button>
+                </a>
+                <a class="item item-thumbnail-left" ng-click="" style="min-height: 50px;"  ui-sref="customerList">
+                    <img style="height: 30px;width: 30px;margin-left: 20px;" src="img/car3.png">
+                    <button class="button-clear user_button" style="padding-left: 60px;color:#000">我的客户</button>
+                </a>
+
+            </div>
+        </div>
+        <div class="user-div">
+            <div class="list">
+                <a class="item item-thumbnail-left" ng-click="user.watting()" style="min-height: 50px;">
+                    <img style="height: 30px;width: 30px;margin-left: 20px;" src="img/car4.png">
+                    <button class="button-clear user_button" style="padding-left: 60px;color:#000">客服中心</button>
+                </a>
+                 <a class="item item-thumbnail-left" ui-sref="bbsList" style="min-height: 50px;">
+                    <img style="height: 30px;width: 30px;margin-left: 20px;" src="img/car5.png">
+                    <button class="button-clear user_button" style="padding-left: 60px;color:#000">用户反馈</button>
+                </a>
+                <a class="item item-thumbnail-left" ng-click="user.toShare()" style="min-height: 50px;">
+                    <img style="height: 30px;width: 30px;margin-left: 20px;" src="img/car3.png">
+                    <button class="button-clear user_button" style="padding-left: 60px;color:#000">分享注册</button>
+                </a>
+                <a class="item item-thumbnail-left" ng-click="outLogin()" style="min-height: 50px;">
+                    <img style="height: 30px;width: 30px;margin-left: 20px;" src="img/car5.png">
+                    <button class="button-clear user_button" style="padding-left: 60px;color:#000">退出登录</button>
+                </a>
+            </div>
+        </div>
+
+
+        </div>
+
+    </ion-content>
+</ion-view>

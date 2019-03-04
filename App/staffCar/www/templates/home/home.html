@@ -1,0 +1,136 @@
+<ion-view hide-back-button="true" ng-init="home.init()">
+    <ion-nav-title>
+        <button class="button button-clear" style="color: #fff;cursor: hand;" ui-sref="user"> 您好，{{user.NAME}}</button>
+    </ion-nav-title>
+  <!--<ion-nav-buttons side="right">-->
+    <!--<button class="button button-icon icon ion-loop light" onclick="location.reload()"></button>-->
+  <!--</ion-nav-buttons>-->
+    <ion-content class="has-header">
+        <div class="home-slide">
+            <ion-slide-box does-continue="true" auto-play="true" slide-interval="3000">
+                <ion-slide>
+                    <img src="img/s-1.png"/>
+                </ion-slide>
+
+                <ion-slide>
+                    <img src="img/s-2.jpg"/>
+                </ion-slide>
+                <ion-slide>
+                    <img src="img/s-3.jpg"/>
+                </ion-slide>
+
+            </ion-slide-box>
+        </div>
+        <div class="home-list">
+            <div class="home-row row" >
+                <div class="home-col col">
+                    <div class="light-bg" style="height: 120px;" >
+                        <div style="padding-top:30px;font-size: 40px;color:#cc0000" >
+                            <li class="ion-person-stalker" data-pack="default" data-tags="" style="display: inline-block;" ui-sref="customerList({reload: true})"></li>
+                        </div>
+                        <button class="button-clear user_button" style="color:#006666" ui-sref="customerList({reload: true})">
+                            客户管理
+                        </button>
+                    </div>
+                </div>
+                <div class="home-col col ">
+                    <div class="light-bg" style="height: 120px;text-align:center;">
+                        <div style="padding-top:30px;font-size: 40px;">
+                            <li class="ion-android-list" data-pack="default" data-tags="" style="display: inline-block;" ui-sref="orderList"></li>
+                        </div>
+                        <button class="button-clear user_button" style="color:#006666" ui-sref="orderList">
+                            客户订单
+                        </button>
+                    </div>
+                </div>
+              <div class="home-col col">
+                <div class="light-bg" style="height: 120px;">
+                  <div style="padding-top:30px;font-size: 40px;color:#cc0000">
+                    <span class="badge badge-assertive" style="position: absolute;margin-left: 20px;min-width: 10px; font-size: 8px;padding: 2px 5px;">{{user.allOrder.length}}</span>
+                    <li class="ion-calendar" data-pack="default" data-tags="" style="display: inline-block;" ui-sref="orderRuningList({reload: true})"></li>
+                  </div>
+                  <button class="button-clear user_button" style="color:#006666" ui-sref="orderRuningList({reload: true})">
+                    待处理订单
+                  </button>
+                </div>
+              </div>
+            </div>
+          <div class="home-row row">
+            <div class="home-col col">
+              <div class="light-bg" style="height: 120px;" ui-sref="insureList({reload: true})">
+                <div style="padding-top:30px;font-size: 40px;color:#cc0000">
+                  <li class="ion-ios-bookmarks" data-pack="default" data-tags="" style="display: inline-block;" ui-sref="insureList({reload: true})"></li>
+                </div>
+                <button class="button-clear user_button" style="color:#006666" ui-sref="insureList({reload: true})">
+                  投保定单
+                </button>
+              </div>
+            </div>
+
+            <div class="home-col col ">
+              <div class="light-bg" style="height: 120px;">
+                <div style="padding-top:30px">
+                  <span class="badge badge-assertive" style="position: absolute;margin-left: 20px;min-width: 10px; font-size: 8px;padding: 2px 5px;">{{user.expireInsureList.length}}</span>
+                  <img src="img/a3.png"  height="40px" width="40px" ui-sref="expireInsure({expireInsureList:user.expireInsureList})" />
+                </div>
+                <button class="button-clear user_button" style="color:#006666" ui-sref="expireInsure({expireInsureList:user.expireInsureList})">
+                  到期保单
+                </button>
+              </div>
+
+            </div>
+            <div class="home-col col ">
+              <div class="light-bg" style="height: 120px;text-align:center;" ng-if="user.RoleAllID.split(',').indexOf('4')>-1">
+                <div style="padding-top:30px;font-size: 40px;color:#cc0000">
+                  <li class="ion-help-buoy" data-pack="default" data-tags="" style="display: inline-block;" ui-sref="teamDetail({reload: true})"></li>
+                </div>
+                <button class="button-clear user_button" style="color:#006666" ui-sref="teamDetail({reload: true})">
+                  我的团队
+                </button>
+              </div>
+              <div class="light-bg" style="height: 120px;text-align:center;" ng-if="user.RoleAllID.split(',').indexOf('4')==-1">
+                <div style="padding-top:30px">
+                  <img src="img/a4.png" height="40px" width="40px" ng-click="home.toTeam()" />
+                </div>
+                <button class="button-clear user_button" style="color:#006666" ng-click="home.toTeam()">
+                  加入团队
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="home-row row" ng-if="user.garage!=null">
+                <div class="home-col col">
+                    <div class="light-bg" style="height: 120px;text-align:center;">
+                        <div style="padding-top:30px;font-size: 40px;color:blue">
+                            <li class="ion-clock" data-pack="default" data-tags="" style="display: inline-block;" ui-sref="orderGrabList"></li>
+                        </div>
+                        <button class="button-clear user_button" style="color:#006666" ui-sref="orderGrabList">
+                            接单
+                        </button>
+                    </div>
+                </div>
+            <div class="home-col col">
+              <div class="light-bg" style="height: 120px;text-align:center;" ng-click="alert('开发中...')">
+                <div style="padding-top:30px;font-size: 40px;color:blue">
+                  <li class="ion-ios-cart" data-pack="default" data-tags="" style="display: inline-block;"></li>
+                </div>
+                <button class="button-clear user_button" style="color:#006666">
+                  专属商城
+                </button>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+
+    </ion-content>
+
+    <div style="position: fixed;bottom: 0;width: 100%;">
+<span style="cursor:pointer;" ui-sref="user">
+        <img src="img/a5.png" width="100%" style="left:33%;position: fixed;width:33%;bottom: 0;"/>
+</span>
+    </div>
+
+</ion-view>

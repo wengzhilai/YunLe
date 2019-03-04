@@ -1,0 +1,112 @@
+﻿@model ProInterface.Models.LOGIN
+<style type="text/css">
+    * {
+        color: #747070;
+        font-weight: normal;
+    }
+
+    #dialog {
+        padding: 30px 0 0 90px;
+    }
+
+    td {
+        height: 32px;
+        text-align: center;
+    }
+
+        td input {
+            height: 32px;
+        }
+
+    #step div {
+        float: left;
+        margin-right: 4px;
+    }
+
+    #step {
+        margin: 10px 0 0 80px;
+    }
+
+    .SG1, .SG2 {
+        background-color: #cfc9c9;
+        float: left;
+        width: 50px;
+        margin-top: 10px;
+        height: 3px;
+    }
+</style>
+<link href="~/Scripts/bootstrap/css/bootstrap.css" rel="stylesheet" />
+<link href="~/Scripts/easyui/themes/default/easyui.css" rel="stylesheet" />
+<script type="text/javascript" src="~/Scripts_Page/repwd.js"></script>
+<script type="text/javascript" src="~/Scripts_Page/FunBase.js"></script>
+<script src="~/Scripts_Page/MD5.js"></script>
+<script src="~/Scripts_Page/aes.js"></script>
+<div style="width: 450px; height: 220px; margin: 20px 0 0 20px">
+    <div id="step">
+        <div id="step1">验证身份</div>
+        <div class="SG1"></div>
+        <div id="step2">输入验证码</div>
+        <div class="SG2"></div>
+        <div id="step3">重置登录密码</div>
+    </div>
+    <div id="dialog" style="width: 450px; height: 200px">
+        <br />
+        <table>
+            <tr class="pre">
+                <td>用户名：</td>
+                <td>
+                    <input type="text" id="userName" name="userName" class="textbox" /></td>
+               
+            </tr>
+             <tr class="pre">
+                <td>手机号：</td>
+                <td>
+                    <input type="text" id="phone" name="phone" class="textbox" /></td>
+            </tr>
+            <tr class="pre">
+                <td>&nbsp;</td>
+                <td>
+                    <input type="submit" style="width: 100%; outline-style: none" id="btn1" class="btn btn-default" value="下一步" /></td>
+            </tr>
+            <!--tr class="next">
+                <td>手机号：</td>
+                <td>
+                    <label id="phone"></label>
+                </td>
+            </tr-->
+            <tr class="next">
+                <td>验证码：</td>
+                <td>
+                    <input type="text" id="Code" name="Code" class="textbox" /></td>
+                <td>
+                    <input type="submit" value="点击获取验证码" style="outline-style: none" class="btn btn-default" id="SendCode" />
+            </tr>
+            <tr class="next">
+                <td style="width: 58px">&nbsp;</td>
+                <td>
+                    <input type="submit" style="width: 158px" id="btn2" name="userName" class="btn btn-default" value="下一步" /></td>
+            </tr>
+            <tr class="next1">
+                <td>新&nbsp;&nbsp;&nbsp;&nbsp;密&nbsp;&nbsp;&nbsp;码：</td>
+                <td>
+                    <input type="password" id="newPwd" name="newPwd" class="textbox" /></td>
+            </tr>
+            <tr class="next1">
+                <td>确认新密码：</td>
+                <td style="text-align: right">
+                    <input type="password" id="renewPwd" name="renewPwd" class="textbox" /></td>
+            </tr>
+            <tr class="next1">
+                <td style="width: 86px">&nbsp;</td>
+                <td>
+                    <div id="btn3" style="width: 158px; outline-style: none" class="btn btn-default">确认修改</div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+

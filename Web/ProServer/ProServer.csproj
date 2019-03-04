@@ -1,0 +1,484 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{0919FB36-4FBA-4F02-B778-77AE11A93C69}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ProServer</RootNamespace>
+    <AssemblyName>ProServer</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="C5">
+      <HintPath>..\packages\Quartz2.0\C5.dll</HintPath>
+    </Reference>
+    <Reference Include="Common.Logging">
+      <HintPath>..\packages\Quartz2.0\Common.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Common.Logging.Log4Net">
+      <HintPath>..\packages\Quartz2.0\Common.Logging.Log4Net.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib">
+      <HintPath>..\packages\NPOI\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\packages\Quartz2.0\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="MySql.Data, Version=6.9.7.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\MySql\MySql.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI">
+      <HintPath>..\packages\NPOI\NPOI.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OOXML">
+      <HintPath>..\packages\NPOI\NPOI.OOXML.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OpenXml4Net">
+      <HintPath>..\packages\NPOI\NPOI.OpenXml4Net.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OpenXmlFormats">
+      <HintPath>..\packages\NPOI\NPOI.OpenXmlFormats.dll</HintPath>
+    </Reference>
+    <Reference Include="Oracle.ManagedDataAccess, Version=4.121.2.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL" />
+    <Reference Include="Quartz">
+      <HintPath>..\packages\Quartz2.0\Quartz.dll</HintPath>
+    </Reference>
+    <Reference Include="Senparc.Weixin, Version=4.8.0.471, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Senparc.Weixin.MP.BuildOutPut\Senparc.Weixin.dll</HintPath>
+    </Reference>
+    <Reference Include="Senparc.Weixin.MP">
+      <HintPath>..\packages\Senparc.Weixin.MP.BuildOutPut\Senparc.Weixin.MP.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Alipay\AlipayConfig.cs" />
+    <Compile Include="Alipay\AlipayCore.cs" />
+    <Compile Include="Alipay\AlipayNotify.cs" />
+    <Compile Include="Alipay\RSA.cs" />
+    <Compile Include="Api.cs" />
+    <Compile Include="Default\Z_InsurerProduct.cs" />
+    <Compile Include="Default\Z_WeixinUser.cs" />
+    <Compile Include="Garage.cs" />
+    <Compile Include="Client.cs" />
+    <Compile Include="OrderFlow.cs" />
+    <Compile Include="OrderInsure.cs" />
+    <Compile Include="Salesman.cs" />
+    <Compile Include="Order.cs" />
+    <Compile Include="OrderRescue.cs" />
+    <Compile Include="Team.cs" />
+    <Compile Include="Car.cs" />
+    <Compile Include="Costlist.cs" />
+    <Compile Include="DB.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DB.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DB.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Default\Z_Car.cs" />
+    <Compile Include="Default\Z_Client.cs" />
+    <Compile Include="Default\Z_Costlist.cs" />
+    <Compile Include="Default\Z_Garage.cs" />
+    <Compile Include="Default\Z_Insurer.cs" />
+    <Compile Include="Default\Z_Order.cs" />
+    <Compile Include="Default\Z_OrderFlow.cs" />
+    <Compile Include="Default\Z_OrderInsure.cs" />
+    <Compile Include="Default\Z_OrderRescue.cs" />
+    <Compile Include="Default\Z_Salesman.cs" />
+    <Compile Include="Default\Z_Team.cs" />
+    <Compile Include="Default\Z_UserAddress.cs" />
+    <Compile Include="Default\Z_UserCard.cs" />
+    <Compile Include="Default\Z_UserWallet.cs" />
+    <Compile Include="Default\Z_UserWithdraw.cs" />
+    <Compile Include="Framework\Bulletin.cs" />
+    <Compile Include="Framework\BulletinReview.cs" />
+    <Compile Include="Framework\CFG.cs" />
+    <Compile Include="Framework\Chart.cs" />
+    <Compile Include="Framework\Config.cs" />
+    <Compile Include="Framework\DataDownQuartz.cs" />
+    <Compile Include="Framework\DbHelper\DB2Helper.cs" />
+    <Compile Include="Framework\DbHelper\DB2Helper_Ext.cs" />
+    <Compile Include="Framework\DbHelper\MasHelper.cs" />
+    <Compile Include="Framework\DbHelper\OracleHelper.cs" />
+    <Compile Include="Framework\DbHelper\OracleHelper_Ext.cs" />
+    <Compile Include="Framework\DbHelper\SqlHelper.cs" />
+    <Compile Include="Framework\DbServer.cs" />
+    <Compile Include="Framework\Default\Z_Bulletin.cs" />
+    <Compile Include="Framework\Default\Z_BulletinReview.cs" />
+    <Compile Include="Framework\Default\Z_BulletinType.cs" />
+    <Compile Include="Framework\Default\Z_Config.cs" />
+    <Compile Include="Framework\Default\Z_DbServer.cs" />
+    <Compile Include="Framework\Default\Z_DbServerType.cs" />
+    <Compile Include="Framework\Default\Z_District.cs" />
+    <Compile Include="Framework\Default\Z_Files.cs" />
+    <Compile Include="Framework\Default\Z_Login.cs" />
+    <Compile Include="Framework\Default\Z_Message.cs" />
+    <Compile Include="Framework\Default\Z_Module.cs" />
+    <Compile Include="Framework\Default\Z_Query.cs" />
+    <Compile Include="Framework\Default\Z_Role.cs" />
+    <Compile Include="Framework\Default\Z_Script.cs" />
+    <Compile Include="Framework\Default\Z_ScriptTask.cs" />
+    <Compile Include="Framework\Default\Z_ScriptTaskLog.cs" />
+    <Compile Include="Framework\Default\Z_SmsSend.cs" />
+    <Compile Include="Framework\Default\Z_User.cs" />
+    <Compile Include="Framework\District.cs" />
+    <Compile Include="Framework\Execute.cs" />
+    <Compile Include="Framework\Execute_Oracle.cs" />
+    <Compile Include="Framework\Extensions\ActionDefines.cs" />
+    <Compile Include="Framework\Extensions\DataRowExtensions.cs" />
+    <Compile Include="Framework\Extensions\IListExtensions.cs" />
+    <Compile Include="Framework\Extensions\NumberExtensions.cs" />
+    <Compile Include="Framework\Extensions\StringBuilderExtensions.cs" />
+    <Compile Include="Framework\Extensions\StringExtensions.cs" />
+    <Compile Include="Framework\Files.cs" />
+    <Compile Include="Framework\Flow.cs" />
+    <Compile Include="Framework\Fun\DbFun.cs" />
+    <Compile Include="Framework\Fun\ExcelHelper.cs" />
+    <Compile Include="Framework\Fun\Fun.cs" />
+    <Compile Include="Framework\Fun\FunSqlToClass.cs" />
+    <Compile Include="Framework\Fun\FunTask.cs" />
+    <Compile Include="Framework\Fun\PicFun.cs" />
+    <Compile Include="Framework\Fun\StringFieldNameSortingSupport.cs" />
+    <Compile Include="Framework\Global.cs" />
+    <Compile Include="Framework\Helper\DownloadHelper.cs" />
+    <Compile Include="Framework\Helper\EnumHelper.cs" />
+    <Compile Include="Framework\Helper\PaintHelper.cs" />
+    <Compile Include="Framework\Helper\RarHelper.cs" />
+    <Compile Include="Framework\Helper\StreamHelper.cs" />
+    <Compile Include="Framework\Helper\StringHelper.cs" />
+    <Compile Include="Framework\Helper\XmlHelper.cs" />
+    <Compile Include="Framework\Helper\ZipHelper.cs" />
+    <Compile Include="Framework\Home.cs" />
+    <Compile Include="Framework\Login.cs" />
+    <Compile Include="Framework\Module.cs" />
+    <Compile Include="Framework\Query.cs" />
+    <Compile Include="Framework\Role.cs" />
+    <Compile Include="Framework\Script.cs" />
+    <Compile Include="Framework\ScriptExt.cs" />
+    <Compile Include="Framework\ScriptQuartz.cs" />
+    <Compile Include="Framework\ScriptTask.cs" />
+    <Compile Include="Framework\Service.cs" />
+    <Compile Include="Framework\SmsSend.cs" />
+    <Compile Include="Framework\SmsSendQuartz.cs" />
+    <Compile Include="Framework\StringToLambda\Common.cs" />
+    <Compile Include="Framework\StringToLambda\ExpressionParser\ExpressionParserCore.cs" />
+    <Compile Include="Framework\StringToLambda\ExpressionParser\ParserSyntaxErrorException.cs" />
+    <Compile Include="Framework\StringToLambda\ExpressionParser\PriorityManager.cs" />
+    <Compile Include="Framework\StringToLambda\ExpressionParser\ReadResult.cs" />
+    <Compile Include="Framework\StringToLambda\ExpressionParser\TypeVariable.cs" />
+    <Compile Include="Framework\StringToLambda\LambdaParser.cs" />
+    <Compile Include="Framework\StringToLambda\StringParser\ParseException.cs" />
+    <Compile Include="Framework\StringToLambda\StringParser\SymbolParser.cs" />
+    <Compile Include="Framework\StringToLambda\StringParser\SymbolParseResult.cs" />
+    <Compile Include="Framework\StringToLambda\StringParser\Token.cs" />
+    <Compile Include="Framework\StringToLambda\StringParser\TokenId.cs" />
+    <Compile Include="Framework\StringToLambda\TypeParser\ParseUnfindTypeException.cs" />
+    <Compile Include="Framework\StringToLambda\TypeParser\TypeParser.cs" />
+    <Compile Include="Framework\StringToLambda\Utilities\EqualComparer.cs" />
+    <Compile Include="Framework\Task.cs" />
+    <Compile Include="Framework\TaskFlow.cs" />
+    <Compile Include="Framework\User.cs" />
+    <Compile Include="Framework\UserMessage.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="YL_APP_VERSION.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="YL_BBS.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="YL_BULLETIN.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="YL_BULLETIN_LOG.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="YL_BULLETIN_REVIEW.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="YL_BULLETIN_TYPE.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="YL_CAR.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="YL_CLIENT.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="YL_CONFIG.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="YL_COSTLIST.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="YL_DATASOURCE.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="YL_DATASOURCE_FILED.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="YL_DATASOURCE_IMPORT.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="YL_DATASOURCE_WHERE.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="YL_DATAUP.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="YL_DATAUP_FILED.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="YL_DB_SERVER.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="YL_DB_SERVER_TYPE.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="YL_DISTRICT.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="YL_DISTRICT_REGION.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="YL_EXPORT_LOG.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="YL_FILES.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="YL_FLOW.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="YL_FLOW_FLOWNODE.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="YL_FLOW_FLOWNODE_FLOW.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="YL_FUNCTION.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="YL_GARAGE.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="YL_INSURER.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="YL_INSURER_PRODUCT.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="YL_LOG.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="YL_LOGIN.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="YL_LOGIN_HISTORY.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="YL_MESSAGE.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="YL_MESSAGE_TYPE.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="YL_MODULE.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="YL_OAUTH.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="YL_ORDER.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="YL_ORDER_FLOW.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="YL_ORDER_INSURE.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="YL_ORDER_INSURE_PRODUCT.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="YL_ORDER_RESCUE.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="YL_ORDER_RESCUE_SEND.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="YL_QUERY.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="YL_QUESTION.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="YL_QUESTION_TYPE.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="YL_ROLE.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="YL_ROLE_CONFIG.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="YL_ROLE_QUERY_AUTHORITY.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="YL_SALESMAN.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="YL_SCRIPT.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="YL_SCRIPT_GROUP_LIST.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="YL_SCRIPT_TASK.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="YL_SCRIPT_TASK_LOG.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="YL_SMS_SEND.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="YL_TASK.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="YL_TASK_FLOW.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="YL_TASK_FLOW_HANDLE.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="YL_TASK_FLOW_HANDLE_USER.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="YL_TEAM.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="YL_USER.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="YL_USER_ADDRESS.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="YL_USER_CARD.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="YL_USER_MESSAGE.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="YL_USER_WALLET.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="YL_USER_WITHDRAW.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="YL_WEIXIN_USER.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EntityDeploy Include="DB.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>DB.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.Config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="DB.edmx.diagram">
+      <DependentUpon>DB.edmx</DependentUpon>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="DB.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>DB.edmx</DependentUpon>
+      <LastGenOutput>DB.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="DB.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>DB.edmx</DependentUpon>
+      <LastGenOutput>DB.cs</LastGenOutput>
+    </Content>
+    <Content Include="DB\load.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ProInterface\ProInterface.csproj">
+      <Project>{ac3765a4-1911-4b10-ac2a-94f13e515e0c}</Project>
+      <Name>ProInterface</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

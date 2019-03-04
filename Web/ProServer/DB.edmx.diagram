@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="8f5c050d187a492984d042d0684a5489" Name="Diagram1" ZoomLevel="72">
+        <EntityTypeShape EntityType="DBModel.YL_APP_VERSION" Width="1.5" PointX="0.75" PointY="11.75" />
+        <EntityTypeShape EntityType="DBModel.YL_BBS" Width="1.5" PointX="13.5" PointY="27.375" />
+        <EntityTypeShape EntityType="DBModel.YL_BULLETIN" Width="1.5" PointX="0.75" PointY="32.375" />
+        <EntityTypeShape EntityType="DBModel.YL_BULLETIN_LOG" Width="1.5" PointX="3" PointY="42.75" />
+        <EntityTypeShape EntityType="DBModel.YL_BULLETIN_REVIEW" Width="1.5" PointX="3" PointY="35.375" />
+        <EntityTypeShape EntityType="DBModel.YL_BULLETIN_TYPE" Width="1.5" PointX="2.75" PointY="11.75" />
+        <EntityTypeShape EntityType="DBModel.YL_CAR" Width="1.5" PointX="16.5" PointY="18.875" />
+        <EntityTypeShape EntityType="DBModel.YL_CLIENT" Width="1.5" PointX="18.75" PointY="27.625" />
+        <EntityTypeShape EntityType="DBModel.YL_CONFIG" Width="1.5" PointX="7.75" PointY="12.75" />
+        <EntityTypeShape EntityType="DBModel.YL_COSTLIST" Width="1.5" PointX="13.5" PointY="49" />
+        <EntityTypeShape EntityType="DBModel.YL_DATASOURCE" Width="1.5" PointX="0.75" PointY="2.5" />
+        <EntityTypeShape EntityType="DBModel.YL_DATASOURCE_FILED" Width="1.5" PointX="3" PointY="4.25" />
+        <EntityTypeShape EntityType="DBModel.YL_DATASOURCE_IMPORT" Width="1.5" PointX="3" PointY="1.25" />
+        <EntityTypeShape EntityType="DBModel.YL_DATASOURCE_WHERE" Width="1.5" PointX="5.25" PointY="3.375" />
+        <EntityTypeShape EntityType="DBModel.YL_DATAUP" Width="1.5" PointX="12.75" PointY="1.125" />
+        <EntityTypeShape EntityType="DBModel.YL_DATAUP_FILED" Width="1.5" PointX="15" PointY="0.875" />
+        <EntityTypeShape EntityType="DBModel.YL_DB_SERVER" Width="1.5" PointX="13" PointY="9" />
+        <EntityTypeShape EntityType="DBModel.YL_DB_SERVER_TYPE" Width="1.5" PointX="10.75" PointY="9.875" />
+        <EntityTypeShape EntityType="DBModel.YL_DISTRICT" Width="1.5" PointX="11.25" PointY="16.625" />
+        <EntityTypeShape EntityType="DBModel.YL_DISTRICT_REGION" Width="1.5" PointX="13.5" PointY="16.375" />
+        <EntityTypeShape EntityType="DBModel.YL_EXPORT_LOG" Width="1.5" PointX="9.75" PointY="12.75" />
+        <EntityTypeShape EntityType="DBModel.YL_FILES" Width="1.5" PointX="3" PointY="31" />
+        <EntityTypeShape EntityType="DBModel.YL_FLOW" Width="1.5" PointX="1.5" PointY="21.25" />
+        <EntityTypeShape EntityType="DBModel.YL_FLOW_FLOWNODE" Width="1.5" PointX="6" PointY="37.5" />
+        <EntityTypeShape EntityType="DBModel.YL_FLOW_FLOWNODE_FLOW" Width="1.5" PointX="8.25" PointY="33" />
+        <EntityTypeShape EntityType="DBModel.YL_FUNCTION" Width="1.5" PointX="3.75" PointY="39.25" />
+        <EntityTypeShape EntityType="DBModel.YL_GARAGE" Width="1.5" PointX="9" PointY="28.75" />
+        <EntityTypeShape EntityType="DBModel.YL_INSURER" Width="1.5" PointX="24" PointY="24.5" />
+        <EntityTypeShape EntityType="DBModel.YL_INSURER_PRODUCT" Width="1.5" PointX="26.25" PointY="21" />
+        <EntityTypeShape EntityType="DBModel.YL_LOG" Width="1.5" PointX="4.75" PointY="13.75" />
+        <EntityTypeShape EntityType="DBModel.YL_LOGIN" Width="1.5" PointX="5.75" PointY="9" />
+        <EntityTypeShape EntityType="DBModel.YL_LOGIN_HISTORY" Width="1.5" PointX="0.75" PointY="14.75" />
+        <EntityTypeShape EntityType="DBModel.YL_MESSAGE" Width="1.5" PointX="14.25" PointY="18.75" />
+        <EntityTypeShape EntityType="DBModel.YL_MESSAGE_TYPE" Width="1.5" PointX="11.25" PointY="20.75" />
+        <EntityTypeShape EntityType="DBModel.YL_MODULE" Width="1.5" PointX="9" PointY="24.125" />
+        <EntityTypeShape EntityType="DBModel.YL_OAUTH" Width="1.5" PointX="8" PointY="9.625" />
+        <EntityTypeShape EntityType="DBModel.YL_ORDER" Width="1.5" PointX="21" PointY="27.125" />
+        <EntityTypeShape EntityType="DBModel.YL_ORDER_FLOW" Width="1.5" PointX="23.25" PointY="42.125" />
+        <EntityTypeShape EntityType="DBModel.YL_ORDER_INSURE" Width="1.5" PointX="26.25" PointY="25.25" />
+        <EntityTypeShape EntityType="DBModel.YL_ORDER_INSURE_PRODUCT" Width="1.5" PointX="28.5" PointY="28.25" />
+        <EntityTypeShape EntityType="DBModel.YL_ORDER_RESCUE" Width="1.5" PointX="23.25" PointY="27.25" />
+        <EntityTypeShape EntityType="DBModel.YL_ORDER_RESCUE_SEND" Width="1.5" PointX="28.5" PointY="24.25" />
+        <EntityTypeShape EntityType="DBModel.YL_QUERY" Width="1.5" PointX="9" PointY="37.125" />
+        <EntityTypeShape EntityType="DBModel.YL_QUESTION" Width="1.5" PointX="3" PointY="8" />
+        <EntityTypeShape EntityType="DBModel.YL_QUESTION_TYPE" Width="1.5" PointX="0.75" PointY="8.5" />
+        <EntityTypeShape EntityType="DBModel.YL_ROLE" Width="1.5" PointX="6" PointY="33" />
+        <EntityTypeShape EntityType="DBModel.YL_ROLE_CONFIG" Width="1.5" PointX="8.25" PointY="52.125" />
+        <EntityTypeShape EntityType="DBModel.YL_ROLE_QUERY_AUTHORITY" Width="1.5" PointX="11.25" PointY="33.5" />
+        <EntityTypeShape EntityType="DBModel.YL_SALESMAN" Width="1.5" PointX="16.5" PointY="27.875" />
+        <EntityTypeShape EntityType="DBModel.YL_SCRIPT" Width="1.5" PointX="7.75" PointY="2.75" />
+        <EntityTypeShape EntityType="DBModel.YL_SCRIPT_GROUP_LIST" Width="1.5" PointX="10" PointY="1.125" />
+        <EntityTypeShape EntityType="DBModel.YL_SCRIPT_TASK" Width="1.5" PointX="10" PointY="3.5" />
+        <EntityTypeShape EntityType="DBModel.YL_SCRIPT_TASK_LOG" Width="1.5" PointX="12.25" PointY="4.625" />
+        <EntityTypeShape EntityType="DBModel.YL_SMS_SEND" Width="1.5" PointX="14.75" PointY="4.75" />
+        <EntityTypeShape EntityType="DBModel.YL_TASK" Width="1.5" PointX="0.75" PointY="25.5" />
+        <EntityTypeShape EntityType="DBModel.YL_TASK_FLOW" Width="1.5" PointX="3" PointY="25.125" />
+        <EntityTypeShape EntityType="DBModel.YL_TASK_FLOW_HANDLE" Width="1.5" PointX="5.25" PointY="29.25" />
+        <EntityTypeShape EntityType="DBModel.YL_TASK_FLOW_HANDLE_USER" Width="1.5" PointX="5.25" PointY="26.75" />
+        <EntityTypeShape EntityType="DBModel.YL_TEAM" Width="1.5" PointX="14.25" PointY="32.25" />
+        <EntityTypeShape EntityType="DBModel.YL_USER" Width="1.5" PointX="11.25" PointY="26.625" />
+        <EntityTypeShape EntityType="DBModel.YL_USER_ADDRESS" Width="1.5" PointX="13.5" PointY="39" />
+        <EntityTypeShape EntityType="DBModel.YL_USER_CARD" Width="1.5" PointX="13.5" PointY="45.75" />
+        <EntityTypeShape EntityType="DBModel.YL_USER_MESSAGE" Width="1.5" PointX="16.5" PointY="24.25" />
+        <EntityTypeShape EntityType="DBModel.YL_USER_WALLET" Width="1.5" PointX="13.5" PointY="23.625" />
+        <EntityTypeShape EntityType="DBModel.YL_USER_WITHDRAW" Width="1.5" PointX="15.75" PointY="36.125" />
+        <EntityTypeShape EntityType="DBModel.YL_WEIXIN_USER" Width="1.5" PointX="15.75" PointY="8.75" />
+        <AssociationConnector Association="DBModel.FK_BBS_REF_DISTRICT" />
+        <AssociationConnector Association="DBModel.FK_YL_BBS_REF_BBS" />
+        <AssociationConnector Association="DBModel.FK_YL_BBS_REF_USER" />
+        <AssociationConnector Association="DBModel.FK_YL_BBS_REFERENCE_YL_MESSA" />
+        <AssociationConnector Association="DBModel.FK_BULLETIN_LOG_REF_BULLETIN" />
+        <AssociationConnector Association="DBModel.FK_YL_BULLETIN_REVIEW_REF_BULL" />
+        <AssociationConnector Association="DBModel.FK_YL_BULLETIN_RE_REF_REVIEW" />
+        <AssociationConnector Association="DBModel.FK_ORDER_REFE_CAR" />
+        <AssociationConnector Association="DBModel.FK_CLIENT_REF_SALESMAN" />
+        <AssociationConnector Association="DBModel.FK_CLIENT_REF_USER" />
+        <AssociationConnector Association="DBModel.FK_ORDER_REF_CLIENT" />
+        <AssociationConnector Association="DBModel.FK_COSTLIST_REF_USER" />
+        <AssociationConnector Association="DBModel.FK_YL_DATASOU_FILED_REF_SOURCE" />
+        <AssociationConnector Association="DBModel.FK_YL_DATASOU_WHERE_REF_DATA" />
+        <AssociationConnector Association="DBModel.FK_YL_DATASOUR_IMPORT_REF_DATA" />
+        <AssociationConnector Association="DBModel.FK_YL_DATASO_WHERE_REF_FILED" />
+        <AssociationConnector Association="DBModel.FK_YL_DATAUP_FILED_REF_DATAUP" />
+        <AssociationConnector Association="DBModel.FK_YL_DB_SERVER_REF_TYPE" />
+        <AssociationConnector Association="DBModel.FK_YL_DISTRICT_REF_DISTRICT" />
+        <AssociationConnector Association="DBModel.FK_YL_REGION_REF_DISTRICT" />
+        <AssociationConnector Association="DBModel.FK_YL_USER_REF_DISTRICT" />
+        <AssociationConnector Association="DBModel.FK_YL_FLOW_TASK_REF_FLOW" />
+        <AssociationConnector Association="DBModel.FK_YL_FLOWNODE_FLOW_REF_FLOW" />
+        <AssociationConnector Association="DBModel.FK_YL_FLOWNODE_FLOW_REF_NODE" />
+        <AssociationConnector Association="DBModel.FK_ORDER_RESCUE_REF_GARAG" />
+        <AssociationConnector Association="DBModel.FK_ORDER_RESUE_SEND_REF_GARAG" />
+        <AssociationConnector Association="DBModel.FK_INSURE_PRODUCT_REF_INSURE" />
+        <AssociationConnector Association="DBModel.FK_ORDER_INSURE_REF_INSURER" />
+        <AssociationConnector Association="DBModel.FK_INS_PROD_REF_INS_PROD" />
+        <AssociationConnector Association="DBModel.FK_INSURE_PRODUCT_REF_PRODUCT" />
+        <AssociationConnector Association="DBModel.FK_YL_MESSAGE_REF_MESSAGE_TYPE" />
+        <AssociationConnector Association="DBModel.FK_YL_USER_MESSAGE_REF_MESSAGE" />
+        <AssociationConnector Association="DBModel.FK_YL_MODULE_REF_MODULE" />
+        <AssociationConnector Association="DBModel.FK_ORDER_FLOW_REF_ORDER" />
+        <AssociationConnector Association="DBModel.FK_ORDER_INSURE_REF_ORDER" />
+        <AssociationConnector Association="DBModel.FK_ORDER_RESCUE_REF_ORDER" />
+        <AssociationConnector Association="DBModel.FK_INSURE_PRODUCT_REF_ORDER" />
+        <AssociationConnector Association="DBModel.FK_ORDER_RESUE_SEND_REF_RESUE" />
+        <AssociationConnector Association="DBModel.FK_YL_ROLE_QUERY_REF_QUERY" />
+        <AssociationConnector Association="DBModel.FK_YL_QUESTION_REF_TYPE" />
+        <AssociationConnector Association="DBModel.FK_YL_ROLE_CONFIG_REF_ROLE" />
+        <AssociationConnector Association="DBModel.FK_YL_ROLE_QUERY_REF_ROLE" />
+        <AssociationConnector Association="DBModel.FK_SALESMAN_REF_TEAM" />
+        <AssociationConnector Association="DBModel.FK_SALESMAN_REF_USER" />
+        <AssociationConnector Association="DBModel.FK_YL_GROUP_LIST_REF_SCRIPT" />
+        <AssociationConnector Association="DBModel.FK_YL_SCRIPT_TASK_REF_SCRIPT" />
+        <AssociationConnector Association="DBModel.FK_YL_SCRIPT_TASK_LOG_REF_TASK" />
+        <AssociationConnector Association="DBModel.FK_YL_TASK_FLOW_REF_TASK" />
+        <AssociationConnector Association="DBModel.FK_TASK_FLOW_HANDLE_REF_FLOW" />
+        <AssociationConnector Association="DBModel.FK_TASK_HANDEL_USER_REF_FLOW" />
+        <AssociationConnector Association="DBModel.FK_YL_TASK_FLOW_REF_TASK_FLOW" />
+        <AssociationConnector Association="DBModel.FK_USER_ADDRESS_REF_USER" />
+        <AssociationConnector Association="DBModel.FK_USER_CARD_REF_USER" />
+        <AssociationConnector Association="DBModel.FK_USER_WALLET_REF_USER" />
+        <AssociationConnector Association="DBModel.FK_USER_WITHDRAW_REF_USER" />
+        <AssociationConnector Association="DBModel.FK_YL_USER_MESSAGE_REF_USER" />
+        <AssociationConnector Association="DBModel.FK_USER_WITHDRAW_REF_WITHDRAW" />
+        <AssociationConnector Association="DBModel.YL_BBS_FILE" />
+        <AssociationConnector Association="DBModel.YL_BBS_GOOD" />
+        <AssociationConnector Association="DBModel.YL_BULLETIN_FILE" />
+        <AssociationConnector Association="DBModel.YL_BULLETIN_ROLE" />
+        <AssociationConnector Association="DBModel.YL_CLIENT_CAR" />
+        <AssociationConnector Association="DBModel.YL_FLOW_FLOWNODE_ROLE" />
+        <AssociationConnector Association="DBModel.YL_OAUTH_LOGIN" />
+        <AssociationConnector Association="DBModel.YL_ROLE_FUNCTION" />
+        <AssociationConnector Association="DBModel.YL_ROLE_MODULE" />
+        <AssociationConnector Association="DBModel.YL_SERVICEMAN" />
+        <AssociationConnector Association="DBModel.YL_TASK_FLOW_HANDLE_FILES" />
+        <AssociationConnector Association="DBModel.YL_USER_DISTRICT" />
+        <AssociationConnector Association="DBModel.YL_USER_MODULE" />
+        <AssociationConnector Association="DBModel.YL_USER_ROLE" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

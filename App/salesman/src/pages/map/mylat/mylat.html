@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-toolbar color="car">
+    <ion-buttons left>
+      <button ion-button icon-only (click)="GoBack()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>定位我的位置</ion-title>
+    <ion-buttons right>
+      <button ion-button icon-only (click)="selectMark()">
+        <ion-icon name="checkmark-circle"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <div #allmap style="width:100%;height:100%"></div>
+    <ion-item-group *ngIf="ShowList!=null" style="position: absolute; top: 0px; background-color: white;width: 100%">
+      <ion-item-divider color="light">
+        <ion-input type="text" [(ngModel)]="searchKey" (click)="selectLat()"></ion-input>
+        <button class="button button-balanced" (click)="SearchName()">
+          搜索
+        </button>
+      </ion-item-divider>
+      <ion-item *ngFor="let o of allPlace">
+          <ion-label (click)="ShowName(o)">{{o.title}}</ion-label>
+        </ion-item>
+    </ion-item-group>
+</ion-content>

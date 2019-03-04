@@ -1,0 +1,170 @@
+﻿@{
+    ViewBag.Title = "CheckUser";
+}
+@Html.Hidden("id", Request["id"])
+<table style="width: 100%">
+    <tr>
+        <td style="width: 100%;" valign="top" colspan="4">
+            <div class="input-group" style="width: 100%;">
+                <span class="input-group-addon" data-size="4">选择角色</span>
+                <div class="form-control">
+                    @Html.CheckBoxList("RoleIdStr",ViewData["AllRole"] as IList<SelectListItem>)
+                </div>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td style="width: 30%;">
+            <div class="input-group" style="width: 100%;">
+                <div class="form-control">
+                    <span>选择区域</span>
+                    <div style="width: 100%; height: 220px; overflow-y: auto;">
+                        <ul id="tt" class="easyui-tree" data-options="
+                            url:'@Url.Content("~/District/GetAsyn")',
+                            method:'get',
+                            lines:true,height:100,
+                            onClick: function(node){
+                                GetAllUser(node.id);
+	                        }
+                            ">
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </td>
+        <td style="width: 30%;">
+            <div class="input-group" style="width: 100%;">
+                <div class="form-control">
+                    <span>所有用户</span>
+                    @Html.ListBox("AllUser", new List<SelectListItem>(), new { @style = "width:100%;height: 220px;margin:0px" })
+                </div>
+            </div>
+        </td>
+        <td style="width: 10%;">
+            <div class="input-group" style="width: 100%;">
+                <div class="form-control">
+                    <span>操作</span>
+                    <div style="width: 100%; height: 220px; overflow-y: auto;">
+                        <br />
+                        <br />
+                        <button style="width: 100%" id="btn_to_right" onclick="ToRight()">＞＞</button>
+                        <br />
+                        <br />
+                        <button style="width: 100%" id="btn_to_left" onclick="ToLeft()">＜＜</button>
+                    </div>
+                </div>
+            </div>
+        </td>
+        <td style="width: 30%;">
+            <div class="input-group" style="width: 100%;">
+                <div class="form-control">
+                    <span>当前所选用户</span>
+                    @Html.ListBox("NowUser", new List<SelectListItem>(), new { @style = "width:100%;height: 220px;margin:0px" })
+                </div>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="4">
+            <div style="text-align:center;padding:10px;">
+            <a class="easyui-linkbutton" data-options="iconCls:'icon-save'" onclick="onSubmit()">保存</a>              
+        </div> 
+
+        </td>
+    </tr>
+</table>
+<script type="text/javascript">
+    $(function () {
+
+        $.ajax({
+            url: '../User/GetBylUserId?t=' + Math.random(),
+            data: {
+                userIdStr: $("#id").val()
+            },
+            success: function (data) {
+                $("#NowUser").empty();
+                for (var x = 0; x < data.length; x++) {
+                    $("<option value='" + data[x].id + "'>" + data[x].name + "</option>").appendTo("#NowUser")//添加下拉框的option
+                }
+            },
+            error: function (data) {
+
+            }
+        });
+        setTimeout("ExpFirst()", 1000);
+    });
+
+
+    function HideAllItem(name) {
+        var num = [];
+        $("input[name='" + name + "_JSITEM']").each(function () {
+            if ($(this).attr("checked") != 'checked') {
+                $(this).parent("label").hide();
+            }
+        })
+    }
+
+    function GetAllUser(disId) {
+        $.ajax({
+            url: '../User/UserGetBylRoleDistrict?t=' + Math.random(),
+            data: {
+                districtId: disId,
+                roleIdStr: $("#RoleIdStr").val()
+            },
+            success: function (data) {
+                $("#AllUser").empty();
+                for (var x = 0; x < data.length; x++) {
+                    $("<option value='" + data[x].id + "'>" + data[x].name + "</option>").appendTo("#AllUser")//添加下拉框的option
+                }
+            },
+            error: function (data) {
+
+            }
+        });
+    }
+    function ToLeft() {
+        $("#NowUser option:selected").each(function () {//由于复选框一般选中的是多个,所以可以循环输出
+            $(this).appendTo("#AllUser")//添加下拉框的option
+        });
+        GetValue();
+    }
+    function ToRight() {
+
+        $("#AllUser option:selected").each(function () {//由于复选框一般选中的是多个,所以可以循环输出
+            $(this).appendTo("#NowUser")//添加下拉框的option
+        });
+        GetValue();
+    }
+    function GetValue()
+    {
+        var t = "";
+        $("#NowUser option").each(function () {//由于复选框一般选中的是多个,所以可以循环输出
+            t += $(this).val()+",";
+        });
+        try{
+            parent.DivOpenVar = t;
+
+        }catch(e){};
+    }
+
+
+    function onSubmit() {
+        try {
+            parent.DivOpenVar = t;
+        } catch (e) { };
+        parent.CloseWin();
+
+    }
+    function ExpFirst()
+    {
+        //$("#tt li:eq(0)").find("div").addClass("tree-node-selected");   //设置第一个节点高亮  
+        var n = $("#tt").tree("getRoot");
+        if (n != null) {
+            $("#tt").tree("expand", n.target);    //相当于默认点击了一下第一个节点，执行onSelect方法  
+            $("#tt").tree("select", n.target);
+            var node = $("#tt").tree("getNode", n.target);
+            GetAllUser(node.id);
+        }
+    }
+
+</script>

@@ -1,0 +1,38 @@
+<ion-view view-title="代审车" hide-back-button="true">
+    <ion-nav-buttons side="left">
+        <button class="button button-icon icon ion-ios-arrow-back light" ui-sref="home"></button>
+    </ion-nav-buttons>
+    <ion-content class="has-header">
+            <div class="list">
+           <img src="img/ds1.png" width="100%"/>
+         </div>
+        <div class="list light-bg" style="margin-top: 10px;margin-bottom: 10px">
+            <label class="item item-input " >
+                <span class="input-label">接车地点</span>
+                <input type="text" placeholder="用户请输入详细地址">
+            </label>
+            <label class="item item-input item-floating-label">
+                <span class="input-label has-input">备注说明</span>
+                <input type="text" style="height:200px;">
+            </label>
+        </div>
+
+        <div class="list light-bg" style="margin-top: 10px;margin-bottom: 10px">
+
+            <label class="item item-input" >
+
+                <span class="input-label">支付金额</span>
+             <span style="color:red;font-size: 16px">{{650.00| currency:'￥'}}</span>
+
+           </label>
+            </div>
+        <div class="button-div" style="margin-top: 30px">
+            <button class="button button-energized carIn-button" on-tap="searchCar.submit($event)">
+                立即支付
+            </button>
+        </div>
+
+
+
+    </ion-content>
+</ion-view>

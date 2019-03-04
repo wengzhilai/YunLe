@@ -1,0 +1,100 @@
+﻿
+cd D:\app\Administrator\admin\orcl\dpdump
+del YL.dmp YL.log 
+zip yl_12_8.zip YL.dmp YL.log
+copy yl_12_8.zip D:\www\YL\yl_12_8.zip
+EXPDP USERID='YL/YL@orcl as sysdba' schemas=YL directory=DATA_PUMP_DIR dumpfile=YL.dmp logfile=YL.log version=10.2.0.1.0
+
+EXPDP USERID='C##YL/YL@orcl as sysdba' schemas=C##YL directory=DATA_PUMP_DIR dumpfile=YL.dmp logfile=YL.log version=10.2.0.1.0
+IMPDP USERID='YL/YL@orcl as sysdba' schemas=C##YL directory=DATA_PUMP_DIR dumpfile=YL.dmp logfile=YL.log version=10.2.0.1.0 REMAP_SCHEMA=C##YL:YL
+
+
+打开IIS服务管理器，找到服务器，右键-属性，打开IIS服务属性； 
+单击MIME类型下的“MIME类型”按钮，打开MIME类型设置窗口； 
+单击“新建”，建立新的MIME类型； 
+扩展名中填写“.apk”,
+MIME类型中填写apk的MIME类型“ application/vnd.android.package-archive ” 
+
+单击“确定”保存设置。 
+重启IIS，使设置生效。 
+现在使用IIS服务器的网站就可以下载.apk文件了。 
+.ipa无法下载
+解决步骤：
+1）、打开IIS服务管理器，找到服务器，右键-属性，打开IIS服务属性；
+2、单击MIME类型下的“MIME类型”按钮，打开MIME类型设置窗口；
+3）、单击“新建”，建立新的MIME类型；
+扩展名是：.apk MIMI类型是：application/vnd.android.package-archive
+扩展名是：.ipa MIMI类型是：application/iphone
+4）、单击“确定”保存设置。重启IIS，使设置生效。
+如此操作之后，使用IIS服务器的网站便可以下载.apk文件、.ipa文件了。
+
+
+delete from YL_USER_ROLE where user_id>109;
+delete from YL_CUSTOMER where user_id>109;
+
+--
+delete from YL_USER_DISTRICT;
+delete from YL_USER_ROLE;
+delete from YL_USER_MODULE;
+
+
+delete from YL_USER_WALLET;
+delete from YL_COSTLIST;
+delete from YL_USER_WITHDRAW;
+delete from YL_USER_CARD;
+
+delete from YL_SMS_SEND;
+delete from YL_USER_MESSAGE;
+delete from YL_MESSAGE;
+
+
+delete from YL_ORDER_INSURE_PRODUCT;
+delete from YL_ORDER_INSURE;
+delete from YL_ORDER_FLOW;
+delete from YL_ORDER_RESCUE_SEND;
+delete from YL_ORDER_RESCUE;
+delete from YL_ORDER;
+
+delete from YL_TASK_FLOW_HANDLE_USER;
+delete from YL_TASK_FLOW_HANDLE_FILES;
+delete from YL_TASK_FLOW_HANDLE;
+delete from YL_TASK_FLOW;
+delete from YL_TASK;
+
+delete from YL_CLIENT_CAR;
+delete from YL_CAR;
+delete from YL_CLIENT;
+
+delete from YL_SERVICEMAN;
+delete from YL_SALESMAN;
+
+delete from YL_LOGIN where ID>100;
+delete from YL_USER_ADDRESS where user_ID>100;
+delete from YL_USER where ID>100;
+
+
+select * from YL_TASK where CREATE_USER not in (select id from yl_user)
+
+
+
+
+
+
+
+Insert into YL_USER
+   (ID, NAME, LOGIN_NAME, DISTRICT_ID, IS_LOCKED, 
+    LOGIN_COUNT, LAST_LOGIN_TIME, LAST_LOGOUT_TIME, REGION)
+ Values
+   (1, 'admin', 'admin', 1, 0, 
+    1, TO_TIMESTAMP('2015/11/13 15:41:31.258850','YYYY/fmMMfm/fmDDfm fmHH24fm:MI:SS.FF'), TO_TIMESTAMP('2015/11/13 12:14:18.451734','YYYY/fmMMfm/fmDDfm fmHH24fm:MI:SS.FF'), '1');
+COMMIT;
+
+Insert into YL_LOGIN
+   (ID, LOGIN_NAME, PASSWORD, PHONE_NO, VERIFY_CODE, 
+    VERIFY_TIME, IS_LOCKED, PASS_UPDATE_DATE, REGION)
+ Values
+   (1, 'admin', 'f581680ee8b0f6ece8fe1cb841c7b6dc', '18180770313', '9008', 
+    TO_TIMESTAMP('2015/7/2 15:24:36.257683','YYYY/fmMMfm/fmDDfm fmHH24fm:MI:SS.FF'), 0, TO_TIMESTAMP('2015/11/12 16:09:02.677509','YYYY/fmMMfm/fmDDfm fmHH24fm:MI:SS.FF'), '1');
+COMMIT;
+insert into yl_user_role(user_id,role_id) value(1,1);
+COMMIT;

@@ -1,0 +1,19 @@
+@import "../../../theme/variables.scss";
+insure-edit {
+    ion-col{
+    background-color: #FFFFFF;
+    border-radius: 2px;
+    text-align: -webkit-center;
+  }
+  ion-card img {
+    display: block;
+    width: auto;
+}
+  .isAll{
+    background-color:map-get($colors,car);
+    font-size: 12px;
+    padding: 0px 5px;
+    color: #FFFFFF;
+    text-align: center
+  }
+}

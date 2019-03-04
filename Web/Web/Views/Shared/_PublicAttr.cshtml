@@ -1,0 +1,144 @@
+﻿@model ProInterface.Models.BasePurchase
+@{
+    ViewBag.Title = "PublicAttr";
+   
+}
+<script type="text/javascript">
+    function GetShowHide()
+    {
+        var sx = $("#pubmin").css("display");
+        if (sx == "none") {
+            $("#imgpurchse").attr("class", "glyphicon glyphicon-chevron-up")
+            $("#txtpurchse").html("点击隐藏");
+            $("#pubmin").slideDown(500);
+        }
+        else {
+            $("#imgpurchse").attr("class", "glyphicon glyphicon-chevron-down")
+            $("#txtpurchse").html("点击显示");
+            $("#pubmin").slideUp(500);
+        }
+    }
+
+</script>
+
+<link href="~/Scripts/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+<script src="~/Scripts/bootstrap/js/bootstrap.min.js"></script>
+<link href="~/Scripts/bootstrap/mybootcss.css" rel="stylesheet" />
+<script src="~/Scripts/bootstrap/Settitlewidth.js"></script>
+<div class="panel panel-info">
+    <div class="panel-heading">采购详细信息&nbsp;&nbsp;<button type="button" onclick="GetShowHide()" class="btn btn-link btn-sm"><span id="imgpurchse" class="glyphicon glyphicon-chevron-down"></span><span id="txtpurchse">&nbsp;&nbsp;点击显示</span></button></div>
+    <div class="panel-body">
+        <div id="pubmin" style="display:none"  >
+        <table  class="boot-tablong">
+            <tr>
+                <td>
+                    <div class="input-group">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.Name)</span>
+                        <div class="form-control">
+                            @Model.Name
+                        </div>
+                    </div>
+
+                </td>
+                <td>
+                    <div class="input-group">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.ItemTypeName)</span>
+                        <div class="form-control">
+                            @Model.ItemTypeName
+                        </div>
+                    </div>
+
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <div class="input-group">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.PurchaseType)</span>
+                        <div class="form-control">
+                            @Model.PurchaseType
+                        </div>
+                    </div>
+
+                </td>
+                <td>
+                    <div class="input-group">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.SpendType)</span>
+                        <div class="form-control">
+                            @Model.SpendType
+                        </div>
+                    </div>
+
+                </td>
+            </tr>
+                        <tr>
+                <td>
+                    <div class="input-group">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.ModeType)</span>
+                        <div class="form-control">
+                            @Model.ModeType
+                        </div>
+                    </div>
+
+                </td>
+                <td>
+                    <div class="input-group">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.OrgWay)</span>
+                        <div class="form-control">
+                            @Model.OrgWay
+                        </div>
+                    </div>
+
+                </td>
+            </tr>
+
+                                    <tr>
+                <td>
+                    <div class="input-group">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.BudgetFee)</span>
+                        <div class="form-control">
+                            @Model.BudgetFee
+                        </div>
+                    </div>
+
+                </td>
+                <td>
+                    
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                     <div class="input-group">
+                        <span class="input-group-addon" data-size="4">申请文件</span>
+                        <div class="form-control">
+                          @Html.HiddenFor(m => m.MsgStr)
+                    <table id="tabqua" class="tab_tab">
+                    </table>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        </div>
+    </div>
+</div>
+ 
+
+
+
+
+<script type="text/javascript">
+    $(function () {
+        var msgStr = $("#MsgStr").val();
+        if (msgStr != null && msgStr != "") {
+            sid = JSON.parse(msgStr).length;
+            var array = JSON.parse(msgStr);
+            for (var i = 0; i < array.length; i++) {
+              @*  var filePath = @Url.Content("~/UpFiles/") +array[i].FILES_PATH;*@
+                var filePath = "../Merchant/DownFile?fileid=" + array[i].FILES_ID;
+
+                $("#tabqua").append("<tr><td style='width:80px'><input id='hid_MSG_ID_" + i + "' name='hid_MSG_ID_" + i + "' type='hidden' value='" + array[i].MSG_ID + "' /><input id='hid_FILES_ID_" + i + "' name='hid_FILES_ID_" + i + "' type='hidden' value='" + array[i].FILES_ID + "' /><p id='msg_" + i + "'>" + array[i].MSG_NAME + ":</p></td><td><a href='" + filePath + "' title='下载_'>" + array[i].FILES_NAME + "</a></td></tr>");
+            }
+        }
+    });
+</script>

@@ -1,0 +1,50 @@
+<ion-view view-title="订单信息" hide-back-button="true">
+  <ion-nav-buttons side="left">
+    <button class="button button-icon icon ion-ios-arrow-back light" ui-sref="orderList"></button>
+  </ion-nav-buttons>
+  <ion-content class="has-header">
+    <div class="list">
+      <div class="item item-icon-left">
+        <i class="icon ion-grid" style="font-size:20px;margin-left: -15px;max-width: 15px;"></i>
+        <div class="input-label" style="margin-left: 20px;font-weight:bold;">订单详情</div>
+      </div>
+        <div class="list" style="margin-bottom: 10px;">
+          <label class="item item-input" style="padding-left: 20px;line-height: 1">
+            <div class="input-label" style="margin-left: 20px;"><span style="font-weight:bold;">故障类型：</span>{{order.bean.HITCH_TYPE}}
+            </div>
+          </label>
+
+          <label class="item item-input" style="padding-left: 20px;line-height: 1">
+            <div class="input-label" style="margin-left: 20px;"><span style="font-weight:bold;">联系人姓名：</span>{{order.bean.CLIENT_NAME}}
+            </div>
+          </label>
+          <label class="item item-input" style="padding-left: 20px;line-height: 1">
+            <div class="input-label" style="margin-left: 20px;"><span style="font-weight:bold;">联系人电话：</span>{{order.bean.CLIENT_PHONE}}
+            </div>
+          </label>
+          <label class="item item-input" style="padding-left: 20px;line-height: 1">
+            <div class="input-label" style="margin-left: 20px;"><span style="font-weight:bold;">车牌号：</span>{{order.bean.PLATE_NUMBER}}
+            </div>
+          </label>
+
+          <label class="item item-input" style="padding-left: 20px;line-height: 1">
+            <div class="input-label" style="margin-left: 20px;"><span style="font-weight:bold;">问题描述：</span>{{order.bean.REMARK}}
+            </div>
+          </label>
+          <div class="item item-icon-left">
+            <i class="icon ion-grid" style="font-size:20px;margin-left: -15px;max-width: 15px;"></i>
+            <div class="input-label" style="margin-left: 20px;font-weight:bold;">照片</div>
+          </div>
+         <div ng-if="order.bean.AllFiles.length!=0">
+          <div class="item item-input" style="padding-left: 20px;line-height: 1">
+            <div ng-repeat="o in order.bean.AllFiles" >
+           <img src="{{o.URL|imgUrl}}" height="50px" width="50px" style="margin: 10px"
+                   ng-click="order.showImg($event)"/>
+            </div>
+          </div>
+         </div>
+        </div>
+      </div>
+
+  </ion-content>
+</ion-view>

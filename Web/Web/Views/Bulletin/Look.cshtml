@@ -1,0 +1,136 @@
+﻿@model ProInterface.Models.TBulletin
+@{
+    ViewBag.Title = "Look";
+}
+
+@if (Model == null)
+{
+    <span>ID不存在:@Request["id"]</span>
+    return;
+}
+
+<div style="text-align: center; font-size: 18px; color: #000; ">@Html.SpanFor(m => m.TITLE)</div>
+<div style="text-align: center; font-size: 14px; color: #6f6f6f;  ">【@Html.SpanFor(m => m.TYPE_CODE)】<span style="margin-left: 20px">发布者：</span>@Html.SpanFor(m => m.PUBLISHER)【@Html.SpanFor(m => m.DistrictName)】</div>
+<div style="text-align: center; font-size: 14px; color: #6f6f6f;  ">@Html.SpanFor(m => m.ISSUE_DATE)</div>
+<div style="font-size: 14px; color: #3e3e3e; margin: 10px; text-indent: 2em;">@Html.SpanFor(m => m.CONTENT)</div>
+@if (Model.AllFiles!=null && Model.AllFiles.Count > 0)
+{
+    <div class="list-group" style="margin: 10px">
+        <a class="list-group-item disabled">附件下载
+        </a>
+        @foreach (var t in Model.AllFiles)
+        {
+            var rul="http://"+Request.ServerVariables["HTTP_HOST"]+Url.Content(t.URL);
+            <a href="@(rul)" class="list-group-item" title="点击下载">@t.NAME</a>
+        }
+    </div>  
+}
+<button type="button" class="btn btn-default btn-xs" id="down_Excel" onclick="window.location='DownContent?id=@Html.DisplayFor(m=>m.ID)'"><span class="glyphicon glyphicon-download-alt"></span>正文文本另存</button>
+
+
+<div style="height: 5px"></div>
+    <div class="input-group">
+        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.AllChildrenItem)</span>
+        <div class="form-control">
+
+            @foreach (var t in this.Model.AllChildrenItem)
+            {
+                <li class="list-group-item">
+                    <div class="row">
+                            <div class="col-md-1 ">
+                                <button type="button" class="btn btn-default" onclick="DivEditDialog('~/BulletinReview/Details?id=@t.ID', '修改内容', 600,300)">修改</button>
+                            </div>
+                        <div class="col-md-10">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <p>
+                                        @t.CONTENT
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row" style="font-size: 12px">
+                                <div class="col-md-2">
+                                    <strong>用户名</strong>:
+                                        @t.UserName
+                                </div>
+                                <div class="col-md-2">
+                                    <strong>角色</strong>:
+                                        @t.UserRole
+                                </div>
+                                <div class="col-md-2">
+                                    <strong>归属</strong>:
+                                        @t.DistictName
+                                </div>
+                                <div class="col-md-2">
+                                    <strong>电话</strong>:
+                                        @t.UserPhone
+                                </div>
+                                <div class="col-md-4">
+                                    <strong>添加时间</strong>:
+                                        @t.ADD_TIME.ToString()
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            }
+        </div>
+    </div>
+
+    <div style="height: 5px"></div>
+
+    <div class="input-group" id="chrome" style="display:none">
+        <span class="input-group-addon" data-size="4">回复</span>
+        <div class="form-control">
+@using (Ajax.BeginForm("Details", "BulletinReview", new AjaxOptions
+{
+    UpdateTargetId = "myPnl",
+    Confirm = "确定要提交吗",
+    OnBegin = "OnBegin",
+    OnSuccess = "OnSuccess",
+    OnFailure = "OnFailure",
+    OnComplete = "OnComplete"
+}))
+{
+            @Html.TextArea("CONTENT", "", new { @style = "width:100%", @class = "list-group-item" })
+            @Html.Hidden("BULLETIN_ID", Model.ID)
+
+            <div style="height: 5px"></div>
+        <input style="width: 60px; display: none; margin-right: 20px;" type="submit" value="保存" />
+            <button type="button" class="btn btn-success" onclick="onSubmit()">提交</button>
+}
+        </div>
+    </div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript" src="~/Scripts_Page/FunBase.js"></script>
+    <script>
+        $(function () {
+            var isChrome = navigator.userAgent.toLowerCase().match(/chrome/) != null;
+            if (isChrome) {
+                $("#chrome").show();
+            }
+        });
+
+        function OnSuccess(data) {
+            if (data.IsError != null) {
+                if (data.IsError) {
+                    divalert("失败", data.Message);
+                    return;
+                }
+                else {
+                    alert(data.Message);
+                }
+            }
+            try {
+                location.reload();
+
+
+                //  parent.CloseWin();
+            }
+            catch (e) { }
+
+        }
+    </script>
+    }

@@ -1,0 +1,22 @@
+user-meuu {
+
+  .user-head {
+    min-height: 150px;
+    min-width: 100%;
+    background-image: url(../img/userbg.png);
+    /*background-repeat:no-repeat;*/
+    text-align: center;
+  };
+  ion-list {
+    ion-icon {
+      background-color: #74DD43;
+      color: white;
+      width: 30px;
+      height: 30px;
+      line-height: 30px;
+      text-align: center;
+      border-radius: 6px;
+    }
+  }
+
+}

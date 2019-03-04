@@ -1,0 +1,28 @@
+<ion-view hide-back-button="true" ng-init="orderList.loadMore()">
+    <ion-nav-title>维修保养</ion-nav-title>
+    <ion-nav-buttons side="left">
+        <button class="button button-icon icon ion-ios-arrow-back light" ui-sref="home"></button>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+        <button class="button button-icon icon ion-android-add light" ui-sref="maintainMap"></button>
+    </ion-nav-buttons>
+
+    <ion-content class="has-header" style="background-color: #f0f0f0">
+        <ion-refresher pulling-text="下拉刷新" on-refresh="orderList.doRefresh()"></ion-refresher>
+
+        <div class="list" style="margin-top: 10px;" collection-repeat="o in orderList.lists.data">
+            <div class="item service-div" ui-sref="followMaintainOrder({id: o.ID, reload: true})"   on-hold="orderList.showSFD(o)" style="margin-bottom: 5px">
+                <div class="service-first">下单时间：{{o.CREATE_TIME|UnixNum| date:"yyyy-MM-dd HH:mm"}}</div>
+                <div class="service-second">订单号：{{o.ORDER_NO}}</div>
+                <div class="service-third">金额：{{o.COST}}</div>
+                <div class="service-fourth">付款状态：{{o.STATUS}}</div>
+            </div>
+
+        </div>
+        <ion-infinite-scroll ng-if="orderList.hasNextPage()||orderList.bean.currentPage >1"
+                             on-infinite="orderList.loadMore()"
+                             distance="1%">
+        </ion-infinite-scroll>
+
+    </ion-content>
+</ion-view>

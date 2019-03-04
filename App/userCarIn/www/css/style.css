@@ -1,0 +1,183 @@
+/*登录页*/
+.item {
+    padding: 10px;
+}
+.item-icon-left .icon {
+    left: 25px;
+}
+.login-register{
+    float: right;
+}
+.login-register.button {
+    font-size: 14px;
+
+}
+/*首页*/
+.home-slide ion-slide{
+    height: 150px;
+    width:100%;
+}
+.home-slide ion-slide img{
+    height: 150px;
+    width:100%;
+}
+.slider-pager{
+    bottom: 8px;
+}
+.slider-pager .slider-pager-page{
+    font-size: 5px;
+}
+.home-car{
+    margin-top: 10px;
+    height: 100px;
+    background-color: #fff;
+}
+.home-addcar{
+    margin-top: 10px;
+    height: 40px;
+    background-color: #fff;
+    font-size: 14px;
+    padding-top: 10px;
+
+    text-align: center;
+}
+.home-icon{
+    background-color: #fff;
+    color: #666;
+    font-size: 12px;
+    height: 200px;
+
+ }
+.home-icon .row{
+    height:50%;
+}
+.home-icon img{
+    height: 50px;
+    width: 50px;
+ }
+.home-icon p{
+    color: #666;
+    font-size: 12px;
+}
+
+/**查询车辆**/
+.searchcar-right{
+    color:#ff8978 ;
+    margin-right: 10px;
+    float: right;
+    font-size: 13px;
+}
+.search.item-input {
+    padding: 10px;
+    padding-left: 20px;
+    border-width: 0px;
+
+}
+.col{
+    padding: 0px;
+
+}
+/**车辆信息**/
+.input-label{
+    font-size: 14px;
+}
+/**公共**/
+.bar.bar-carin {
+    border-color:#ff8978;
+    background-color: #ff8900;
+    background-image: linear-gradient(0deg, #e6b500, #e6b500 50%, transparent 50%);
+    color: #fff;
+}
+.user_button{
+    color:#000;
+    line-height: 20px;
+    font-size: 12px;
+    min-height: 20px;
+}
+ion-content{
+    background-color: #f0f0f0;
+}
+/**图标水平居中**/
+.icon-center
+{
+    border-width: 0px;
+}
+
+.font-right{
+    color:#666 ;
+    padding-top: 5px;
+    margin-right: 10px;
+    float: right;
+    font-size: 13px;
+}
+.font-right a,a:hover{
+      text-decoration: none !important;
+}
+.button-div{
+    width: 80%;
+    margin-bottom: 30px;
+    margin-top: 50px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.carIn-button{
+    width: 100%;
+    margin-bottom: 10px;
+    height: 35px;
+    font-size: 16px;
+}
+/**个人中心**/
+.user-head{
+    min-height: 150px;
+    min-width: 100%;
+    background-image: url(../img/userbg.png);
+    /*background-repeat:no-repeat;*/
+    text-align: center;
+}
+.my-button span{
+font-size: 12px;
+    color: #666;
+}
+.my-button i{
+    color: #666;
+}
+.user-div{top: 100px;
+    margin-top: 10px;
+
+}
+/**创建道路救援单**/
+.help-button{
+    top:100px;left:33%;position: fixed;width:35%;cursor:pointer;
+}
+.help-button span{
+    font-size: 12px;
+    color:#666;
+}
+/**回收代审车**/
+.trial-div div{
+    font-size: 13px;
+    color: #666;
+    padding-bottom: 5px;
+}
+.trial-div{
+    padding-top: 15px;
+    padding-left: 10px;
+    padding-bottom: 15px;
+}
+/**维修保养列表**/
+.service-div{
+    padding-top: 10px;
+    color:#666;
+    font-size: 12px;
+    padding-bottom: 10px;
+}
+.service-first{
+    font-size: 14px;
+    padding-bottom: 10px;
+}
+/**我的爱车列表**/
+.carlist-div{
+    color:#666;
+    font-size: 12px;
+    margin-left: 100px;
+}

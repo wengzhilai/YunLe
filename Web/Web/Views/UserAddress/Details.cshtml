@@ -1,0 +1,132 @@
+
+@model ProInterface.Models.YL_USER_ADDRESS
+@{
+    ViewBag.Title = "编辑用户地址";
+}
+
+<style>
+    .col-md-6, .col-md-12 {
+        padding: 1px;
+        float: left;
+    }
+    .form-control[readonly] {
+        cursor: not-allowed;
+        background-color: #fff;
+    }
+</style>
+<link href="~/Scripts/datetimepicker/jquery.datetimepicker.css" rel="stylesheet" />
+<script type="text/javascript" src="~/Scripts/datetimepicker/jquery.datetimepicker.js"></script>
+
+<div id="myPnl" style="display:none"></div>
+@using (Ajax.BeginForm(new AjaxOptions
+{
+    UpdateTargetId = "myPnl",
+    Confirm = "确定要提交吗",
+    OnBegin = "OnBegin",
+    OnSuccess = "OnSuccess",
+    OnFailure = "OnFailure",
+    OnComplete = "OnComplete"
+}))
+{
+    @Html.HiddenFor(m=>m.ID)
+        <table style="table-layout:fixed;width:100%">
+            <tr>
+                <td>
+
+                <div class="col-md-6">
+                    
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.USER_ID)</span>
+                        <div class = "form-control">
+                            @Html.TextBoxFor(m => m.USER_ID, new { @class = "easyui-numberbox",precision="2" })
+                            @Html.ValidationMessageFor(m => m.USER_ID)
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+                    
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.NAME)</span>
+                        @Html.TextBoxFor(m => m.NAME, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.NAME)
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+                    
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.PHONE)</span>
+                        @Html.TextBoxFor(m => m.PHONE, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.PHONE)
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+                    
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.CITY)</span>
+                        @Html.TextBoxFor(m => m.CITY, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.CITY)
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+                    
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.COUNTY)</span>
+                        @Html.TextBoxFor(m => m.COUNTY, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.COUNTY)
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+                    
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.ADDRESS)</span>
+                        @Html.TextBoxFor(m => m.ADDRESS, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.ADDRESS)
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+                    
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.IS_DEFAULT)</span>
+                        <div class = "form-control">
+                            @Html.TextBoxFor(m => m.IS_DEFAULT, new { @class = "easyui-numberbox",precision="2" })
+                            @Html.ValidationMessageFor(m => m.IS_DEFAULT)
+                        </div>
+                    </div>
+
+                </div>
+
+                </td>
+            </tr>
+        </table>
+        <div style="text-align:center;padding:10px;display:none;">
+            <a class="easyui-linkbutton" data-options="iconCls:'icon-save'" onclick="onSubmit()">保存</a>              
+            <a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" onclick="parent.CloseWin();">取消</a>              
+            <input style="width: 60px; display:none; margin-right: 20px;" type="submit" value="保存" />
+        </div> 
+}
+<script type="text/javascript" src="~/Scripts_Page/FunBase.js"></script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $(function () {
+            $('.form_datetime').datetimepicker({
+                timepicker: false,
+                step: 5,
+                format: 'Y/m/d'
+            });
+        })
+    </script>
+}

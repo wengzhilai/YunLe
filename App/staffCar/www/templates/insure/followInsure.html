@@ -1,0 +1,207 @@
+<ion-view view-title="投保跟踪" hide-back-button="true">
+  <ion-nav-buttons side="left">
+    <button class="button button-icon icon ion-ios-arrow-back light" ui-sref="home({})" ng-click="$ionicGoBack()"></button>
+  </ion-nav-buttons>
+  <ion-nav-buttons side="right">
+    <button class=" button button-icon icon light ion-compose" data-pack="default" data-tags="添加"
+            style="display: inline-block;font-size: 30px" ui-sref="editInsureFast({id:Order.bean.ID})"></button>
+  </ion-nav-buttons>
+  <ion-content class="has-header">
+    <div class="list" style="margin-top: 10px;margin-bottom: 10px;">
+      <div class="item item-icon-left">
+        <i class="icon ion-ios-list-outline"
+           style="font-size:20px;font-weight:bold;margin-left: -15px;max-width: 15px;"></i>
+        <div class="input-label" style="margin-left: 20px;"><span style="font-weight:bold;">订单号：</span>{{Order.bean.ORDER_NO}}
+        </div>
+      </div>
+      <div class="item item-icon-left">
+        <i class="icon "
+           style="font-size:20px;font-weight:bold;margin-left: -15px;max-width: 15px;"></i>
+        <div class="input-label" style="margin-left: 20px;"><span style="font-weight:bold;">订单状态：</span>{{Order.bean.STATUS}}
+        </div>
+      </div>
+      <div class="item item-icon-left">
+      <i class="icon "
+         style="font-size:20px;font-weight:bold;margin-left: -15px;max-width: 15px;"></i>
+      <div class="input-label" style="margin-left: 20px;"><span style="font-weight:bold;">订单金额：</span>{{Order.bean.COST| currency:'￥'}}
+      </div>
+    </div>
+      <div class="item item-icon-left">
+        <i class="icon "
+           style="font-size:20px;font-weight:bold;margin-left: -15px;max-width: 15px;"></i>
+        <div class="input-label" style="margin-left: 20px;"><span style="font-weight:bold;">创建时间：</span>{{Order.bean.CREATE_TIME|UnixNum| date:"yyyy-MM-dd HH:mm"}}
+        </div>
+      </div>
+    </div>
+    <div class="list">
+      <div class="item item-icon-left">
+        <i class="icon ion-grid" style="font-size:20px;margin-left: -15px;max-width: 15px;"
+           ng-click="Order.showInsureSingle()"></i>
+        <div class="input-label" style="margin-left: 20px;font-weight:bold;">订单详情</div>
+      </div>
+      <div id="insureSingleDiv">
+        <div class="list" style="margin-bottom: 10px;">
+          <label class="item item-input" style="padding-left: 20px;line-height: 1">
+            <div class="input-label" style="margin-left: 20px;"><span style="font-weight:bold;">车主姓名：</span>{{Order.bean.CAR_USERNAME}}
+            </div>
+          </label>
+
+          <label class="item item-input" style="padding-left: 20px;line-height: 1">
+            <div class="input-label" style="margin-left: 20px;"><span style="font-weight:bold;">身份证号：</span>{{Order.bean.ID_NO}}
+            </div>
+          </label>
+          <label class="item item-input" style="padding-left: 20px;line-height: 1">
+            <div class="input-label" style="margin-left: 20px;"><span style="font-weight:bold;">购买方式：</span>{{Order.bean.PURCHASE_WAY}}
+            </div>
+          </label>
+          <div ng-if="Order.bean.idNoUrl!=null || Order.bean.idNoUrl1!=null">
+            <div class="item item-icon-left">
+              <i class="icon ion-images" style="font-size:20px;margin-left: -15px;max-width: 15px;"></i>
+              <div class="input-label" style="margin-left: 20px;font-weight:bold;">车主证件</div>
+            </div>
+            <div class="item item-input" ng-if="Order.bean.idNoUrl!=null" style="padding-left: 20px;line-height: 1">
+              <img ng-src="{{Order.bean.idNoUrl|imgUrl}}" height="50px" width="50px" style="margin: 10px"
+                   ng-click="Order.showBigImage($event)"/>
+            </div>
+            <div class="item item-input" ng-if="Order.bean.idNoUrl1!=null" style="padding-left: 20px;line-height: 1">
+              <img ng-src="{{Order.bean.idNoUrl1|imgUrl}}" height="50px" width="50px" style="margin: 10px"
+                   ng-click="Order.showBigImage($event)"/>
+            </div>
+          </div>
+          <div ng-if="Order.bean.recognizeePicUrl!=null || Order.bean.recognizeePicUrl1!=null">
+            <div class="item item-icon-left">
+              <i class="icon ion-images" style="font-size:20px;margin-left: -15px;max-width: 15px;"></i>
+              <div class="input-label" style="margin-left: 20px;font-weight:bold;">被保人证件</div>
+            </div>
+            <div class="item item-input" ng-if="Order.bean.recognizeePicUrl!=null"
+                 style="padding-left: 20px;line-height: 1">
+              <img ng-src="{{Order.bean.recognizeePicUrl|imgUrl}}" height="50px" width="50px" style="margin: 10px"
+                   ng-click="Order.showBigImage($event)"/>
+            </div>
+            <div class="item item-input" ng-if="Order.bean.recognizeePicUrl1!=null"
+                 style="padding-left: 20px;line-height: 1">
+              <img ng-src="{{Order.bean.recognizeePicUrl1|imgUrl}}" height="50px" width="50px" style="margin: 10px"
+                   ng-click="Order.showBigImage($event)"/>
+            </div>
+          </div>
+          <div ng-if="Order.bean.driverPicUrl!=null || Order.bean.driverPicUrl1!=null">
+            <div class="item item-icon-left">
+              <i class="icon ion-images" style="font-size:20px;margin-left: -15px;max-width: 15px;"></i>
+              <div class="input-label" style="margin-left: 20px;font-weight:bold;">投保人证件</div>
+            </div>
+            <div class="item item-input" ng-if="Order.bean.driverPicUrl!=null"
+                 style="padding-left: 20px;line-height: 1">
+              <img ng-src="{{Order.bean.driverPicUrl|imgUrl}}" height="50px" width="50px" style="margin: 10px"
+                   ng-click="Order.showBigImage($event)"/>
+            </div>
+            <div class="item item-input" ng-if="Order.bean.driverPicUrl1!=null"
+                 style="padding-left: 20px;line-height: 1">
+              <img ng-src="{{Order.bean.driverPicUrl1|imgUrl}}" height="50px" width="50px" style="margin: 10px"
+                   ng-click="Order.showBigImage($event)"/>
+            </div>
+          </div>
+          <div ng-if="Order.bean.DrivingPicUrl!=null || Order.bean.DrivingPicUrl1!=null">
+            <div class="item item-icon-left">
+              <i class="icon ion-images" style="font-size:20px;margin-left: -15px;max-width: 15px;"></i>
+              <div class="input-label" style="margin-left: 20px;font-weight:bold;">行驶证件</div>
+            </div>
+            <div class="item item-input" ng-if="Order.bean.DrivingPicUrl!=null"
+                 style="padding-left: 20px;line-height: 1">
+              <img ng-src="{{Order.bean.DrivingPicUrl|imgUrl}}" height="50px" width="50px" style="margin: 10px"
+                   ng-click="Order.showBigImage($event)"/>
+            </div>
+            <div class="item item-input" ng-if="Order.bean.DrivingPicUrl1!=null"
+                 style="padding-left: 20px;line-height: 1">
+              <img ng-src="{{Order.bean.DrivingPicUrl1|imgUrl}}" height="50px" width="50px" style="margin: 10px"
+                   ng-click="Order.showBigImage($event)"/>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div ng-if="Order.bean.AllFiles.length!=0">
+        <div class="item item-icon-left">
+          <i class="icon ion-grid" style="font-size:20px;margin-left: -15px;max-width: 15px;"></i>
+          <div class="input-label" style="margin-left: 20px;font-weight:bold;">照片</div>
+        </div>
+        <div class="item item-input" style="padding-left: 20px;line-height: 1">
+          <div ng-repeat="o in Order.bean.AllFiles">
+            <img ng-src="{{o.URL|imgUrl}}" height="50px" width="50px" style="margin: 10px"
+                 ng-click="Order.showBigImage($event)"/>
+          </div>
+        </div>
+      </div>
+
+      <label class="item item-input item-select" style="padding-left: 20px;line-height: 1">
+        <span class="input-label" style="width:20%;font-weight:bold">选择保险公司</span>
+        <select
+          ng-model="Order.bean.INSURER_ID"
+          ng-options="value.ID as value.NAME for value in Order.bean.AllInsurePrice">
+        </select>
+      </label>
+
+      <div class="list" style="padding-top: 0px; padding-bottom: 0px;margin-bottom: 0px"
+           ng-repeat="o in Order.bean.AllInsurePrice">
+        <div ng-if="Order.bean.INSURER_ID==o.ID">
+          <div ng-repeat="x in o.AllProductPrice">
+            <ion-toggle style="height: 50px;padding-left: 10px;font-weight: bold" ng-disabled="true"
+                        ng-model="x.isCheck">{{x.NAME}}
+            </ion-toggle>
+            <label class="item item-input" style="padding-left: 20px;line-height: 1" ng-if="x.isCheck">
+              <span class="input-label" style="width:20%;font-weight:bold">{{x.NAME}}保额</span>
+              <a>{{x.maxPay}}</a>
+              <a ng-if="x.Price!=null">/实收{{x.Price}}</a>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div ng-if="Order.bean.AllFlow.length!=0">
+        <div class="item item-icon-left">
+          <i class="icon ion-grid" style="font-size:20px;margin-left: -15px;max-width: 15px;"></i>
+          <div class="input-label" style="margin-left: 20px;font-weight:bold;">流程</div>
+        </div>
+      </div>
+      <div class="item item-thumbnail-left" style="min-height: 0px;" ng-repeat="o in Order.bean.AllFlow"
+           ng-if="Order.bean.AllFlow.length!=0">
+        <img style="width: 30px;" src="img/follow1.png">
+        <div style="margin-left: 40px">
+          <div class="row">
+            <div class="col">
+              <p ng-if="o.AllHandleContent!=null">状态：{{o.NAME}}</p>
+              <p ng-if="o.DealUserName!=null">处理人：{{o.DealUserName}}</p>
+              <p ng-if="o.COST!=null">费用：{{ (o.COST==NULL|| o.COST=='')?"0": (o.COST| currency:'￥')}}{{
+                (o.OUT_TRADE_NO==null)?"": "(已支付)"}}</p>
+              <p ng-if="o.DEAL_TIME!=null">日期：{{o.DEAL_TIME|UnixNum| date:"yyyy-MM-dd HH:mm"}}</p>
+              <p ng-if="o.AllHandleContent!='' " style="font-weight: bold;color: red;">描述：{{o.AllHandleContent}}</p>
+            </div>
+            <div class="col">
+              <ion-scroll direction="x" ng-if="o.AllHandleFiles.length!=0">
+                <div style="width: {{o.AllHandleFiles.length * 80}}px">
+                  <img ng-repeat="o1 in o.AllHandleFiles" ng-src="{{o1.URL|imgUrl}}" height="70px" width="70px"
+                       style="margin: 5px" ng-click="Order.showBigImage($event)"/>
+                </div>
+              </ion-scroll>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div id="finishDiv" class="button-div" style="margin-top: 10px;margin-bottom: 60px;height: 10px;">
+      <button style="display: none" class="button button-energized carIn-button"
+              ng-if="Order.bean.STATUS!='完成' && Order.bean.COST!=0"
+              on-tap="Order.Pay($event)">
+        微信支付
+      </button>
+    </div>
+  </ion-content>
+  <div class="bar bar-footer row" style="padding: 0px;margin: 0px" ng-if="Order.bean.NextButton.length>0">
+    <div class="button-bar bar-positive" style="margin-top: 5px;">
+      <a class="button " ng-repeat="o in Order.bean.NextButton"
+         ui-sref="Task/Handle({taskId:Order.bean.TaskId,butName:o,taskFlowId:Order.bean.TaskFlowId,orderId:Order.bean.ID,returnUrl:'followInsure'})">{{o}}</a>
+    </div>
+  </div>
+</ion-view>

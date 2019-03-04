@@ -1,0 +1,128 @@
+
+@model ProInterface.Models.YfUserWithdraw
+@{
+    ViewBag.Title = "编辑用户提现";
+}
+
+<style>
+    .col-md-6, .col-md-12 {
+        padding: 1px;
+        float: left;
+    }
+
+    .form-control[readonly] {
+        cursor: not-allowed;
+        background-color: #fff;
+    }
+</style>
+<link href="~/Scripts/datetimepicker/jquery.datetimepicker.css" rel="stylesheet" />
+<script type="text/javascript" src="~/Scripts/datetimepicker/jquery.datetimepicker.js"></script>
+
+<div id="myPnl" style="display:none"></div>
+@using (Ajax.BeginForm(new AjaxOptions
+{
+    UpdateTargetId = "myPnl",
+    Confirm = "确定要提交吗",
+    OnBegin = "OnBegin",
+    OnSuccess = "OnSuccess",
+    OnFailure = "OnFailure",
+    OnComplete = "OnComplete"
+}))
+{
+    @Html.HiddenFor(m => m.ID)
+    <table style="table-layout:fixed;width:100%">
+        <tr>
+            <td>
+                <div class="col-md-6">
+
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.BankName)</span>
+                        <div class="form-control">
+                            @Html.DisplayFor(m => m.BankName)
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.UserName)</span>
+                        <div class="form-control">
+                            @Html.DisplayFor(m => m.UserName)
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.CardNumber)</span>
+                        <div class="form-control">
+                            @Html.DisplayFor(m => m.CardNumber)
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.MONEY)</span>
+                        <div class="form-control">
+                            @Html.DisplayFor(m => m.MONEY)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.STATUS)</span>
+                        @Html.DropDownListFor(m => m.STATUS, new[]{
+                       new SelectListItem(){ Text="申请", Value="申请"},
+                       new SelectListItem(){ Text="已转", Value="已转"},
+                       new SelectListItem(){ Text="拒绝", Value="拒绝"},
+                       new SelectListItem(){ Text="取消", Value="取消",Selected=true}
+                   }, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.STATUS)
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.STATUS_TIME)</span>
+                        <div class="form-control">
+                            @Html.DisplayFor(m => m.STATUS_TIME)
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-md-6">
+
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.REMARK)</span>
+                        <div class="form-control">
+                            @Html.DisplayFor(m => m.REMARK)
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+        <div style="text-align:center;padding:10px;display:none;">
+            <a class="easyui-linkbutton" data-options="iconCls:'icon-save'" onclick="onSubmit()">保存</a>
+            <a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" onclick="parent.CloseWin();">取消</a>
+            <input style="width: 60px; display:none; margin-right: 20px;" type="submit" value="保存" />
+        </div>
+}
+<script type="text/javascript" src="~/Scripts_Page/FunBase.js"></script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $(function () {
+            $('.form_datetime').datetimepicker({
+                timepicker: false,
+                step: 5,
+                format: 'Y/m/d'
+            });
+        })
+    </script>
+}

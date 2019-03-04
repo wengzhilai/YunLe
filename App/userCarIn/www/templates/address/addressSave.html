@@ -1,0 +1,32 @@
+<ion-view view-title="地址管理" hide-back-button="true">
+    <ion-nav-buttons side="left">
+        <button class="button button-icon icon ion-ios-arrow-back light" ui-sref="addressList"></button>
+    </ion-nav-buttons>
+
+    <ion-content class="has-header">
+        <div class="list" style="margin-top: 10px;">
+            <label class="item item-input" style="padding-left: 20px;line-height: 1">
+                <span class="input-label" style="width:20%;font-weight:bold">联系人姓名</span>
+                <input type="text" ng-model="address.bean.NAME" placeholder="请填写联系人"/>
+            </label>
+            <label class="item item-input" style="padding-left: 20px;line-height: 1">
+                <span class="input-label" style="width:20%;font-weight:bold">联系电话</span>
+                <input type="text" ng-model="address.bean.PHONE" placeholder="请填写手机或座机"/>
+            </label>
+            <label class="item item-input" style="padding-left: 20px;line-height: 1">
+                <span class="input-label" style="width:20%;font-weight:bold">详细地址</span>
+                <input type="text" ng-model="address.bean.ADDRESS" placeholder="请填写街道或小区名称"/>
+            </label>
+            <label class="item item-input" style="padding-left: 20px;line-height: 1" on-tap="address.selectLat()">
+                <i class="icon ion-ios-location-outline" style="font-size:20px;font-weight:bold;margin-left: -15px;max-width: 15px;"></i>
+                <span class="input-label" style="width:20%;font-weight:bold"  >经纬度</span>
+                <span>经度:{{address.bean.LANG}},纬度:{{address.bean.LAT}}</span>
+            </label>
+        </div>
+        <div class="button-div" style="margin-top: 30px">
+            <button class="button button-energized carIn-button" on-tap="address.save($event)">
+                保存
+            </button>
+        </div>
+    </ion-content>
+</ion-view>

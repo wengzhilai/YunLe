@@ -1,0 +1,43 @@
+﻿@model ProInterface.Models.FilesModel
+<script src="~/Scripts/jquery-1.7.1.min.js"></script>
+<link href="~/Scripts/bootstrap/css/bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/bootstrap/js/bootstrap.js"></script>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <td colspan="5" style="font-size: 18px; height: 30px; background-color: #fff; text-align:center; color: #494949">文件下载</td>
+        </tr>
+        <tr>
+            <td>序号</td>
+            <td>文件名</td>
+            <td>文件大小</td>
+            <td>上传时间</td>
+            <td>下载</td>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null)
+        {
+            int p = 1;
+            foreach (var k in Model.file)
+            {
+                long lenght = (k.Length / 1024);
+            <tr>
+                <td>@p</td>
+                <td>@k.Name</td>
+                <td>
+                    @lenght
+                    KB</td>
+                <td>@k.CreationTime</td>
+                <td><a href="@Url.Content("~/UploadFile/DownFile?filename=" + k.Name)"  title='下载' >点击下载</a></td>
+            </tr>
+                p++;
+            }
+        }
+
+    </tbody>
+</table>
+
+
+
+

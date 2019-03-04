@@ -1,0 +1,111 @@
+<ion-item-group>
+  <ion-item-divider class="item-divider-md-light">
+    <div class="input-wrapper">
+      <ion-label>
+        定位信息
+      </ion-label>
+    </div>
+  </ion-item-divider>
+  <ion-item>
+    <div class="input-wrapper">
+      <ion-label>车辆位置</ion-label>
+      <input class="text-input" type="text"></input>
+    </div>
+  </ion-item>
+</ion-item-group>
+<ion-item-group>
+  <ion-item-divider class="item-divider-md-light">
+    <div class="input-wrapper">
+      <ion-label>
+        订单详情
+      </ion-label>
+    </div>
+  </ion-item-divider>
+  <ion-item>
+    <div class="input-wrapper">
+      <picker data-bindstr="ORDER_TYPE" data-range="{{orderTypeArr}}" range="{{orderTypeArr}}" bindchange="bindPickerChange">
+        <ion-label>订单类型:</ion-label>
+        <ion-label>
+          {{bean.ORDER_TYPE}}
+        </ion-label>
+      </picker>
+    </div>
+  </ion-item>
+  <ion-item>
+    <div class="input-wrapper">
+      <picker bindchange="bindPickerChange" data-bindstr="REACH_TYPE" data-range="{{['送店','接车']}}" range="{{['送店','接车']}}">
+        <ion-label>送车方式:</ion-label>
+        <ion-label>
+          {{bean.REACH_TYPE}}
+        </ion-label>
+      </picker>
+    </div>
+  </ion-item>
+  <ion-item>
+    <div class="input-wrapper">
+      <picker mode="date" data-bindstr="REACH_TIME" bindchange="bindPickerChange" start="2015-09-01" end="2017-09-01">
+        <ion-label>送到时间:</ion-label>
+        <ion-label-right>
+          {{bean.REACH_TIME}}
+        </ion-label-right>
+      </picker>
+    </div>
+  </ion-item>
+  <ion-item>
+    <div class="input-wrapper">
+      <picker mode="date" data-bindstr="PICK_TIME" bindchange="bindPickerChange" start="2015-09-01" end="2017-09-01">
+        <ion-label>接车时间:</ion-label>
+        <ion-label-right>
+          {{bean.PICK_TIME}}
+        </ion-label-right>
+      </picker>
+    </div>
+  </ion-item>
+  <ion-item>
+    <div class="input-wrapper">
+      <picker data-bindstr="HITCH_TYPE" data-range="{{hitchTypeArr}}" range="{{hitchTypeArr}}" bindchange="bindPickerChange">
+        <ion-label>故障类型:</ion-label>
+        <ion-label>
+          {{bean.HITCH_TYPE}}
+        </ion-label>
+      </picker>
+    </div>
+  </ion-item>
+  <ion-item>
+    <div class="input-wrapper">
+      <ion-label>联系人姓名</ion-label>
+      <input bindinput="bean.CLIENT_NAME" class="text-input" type="text"></input>
+    </div>
+  </ion-item>
+  <ion-item>
+    <div class="input-wrapper">
+      <ion-label>其它联系方式</ion-label>
+      <input bindinput="bean.OTHER_PHONE" class="text-input" type="text"></input>
+    </div>
+  </ion-item>
+  <ion-item>
+    <div class="input-wrapper">
+      <ion-label>车牌号</ion-label>
+      <input bindinput="bean.PLATE_NUMBER" class="text-input" type="text"></input>
+    </div>
+  </ion-item>
+    <ion-item>
+    <div class="input-wrapper">
+      <ion-label>
+        <button type="primary" bindtap="AddImg">
+          <ion-icon name="calendar" role="img" class="icon icon-md ion-md-cloud-upload" aria-label="calendar"></ion-icon><span>上传图片</span> </button>
+      </ion-label>
+    </div>
+  </ion-item>
+  <ion-item  wx:for="{{bean.AllFiles}}" wx:key="ID" wx:for-item="o">
+<image class="ShowUpFile" data-indexNo="allFile_{{o.indexNo}}"  bindtap="upImg" src="../../../assets/img/head1.png" ></image>
+</ion-item>
+  <ion-item>
+    <div class="input-wrapper">
+      <ion-label>备注
+      </ion-label>
+      <textarea bindinput="bean.REMARK" class="text-input" type="text"></textarea>
+    </div>
+  </ion-item>
+
+</ion-item-group>

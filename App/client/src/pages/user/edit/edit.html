@@ -1,0 +1,60 @@
+<ion-header>
+  <ion-toolbar color="car">
+    <ion-buttons left>
+      <button ion-button icon-only (click)="GoBack()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>个人资料</ion-title>
+    <ion-buttons right>
+      <button ion-button icon-only (click)="updatePassword()">
+        <ion-icon name="key"></ion-icon>
+      </button>
+      <button ion-button icon-only (click)="save()">
+        <ion-icon name="checkmark-circle"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-list [formGroup]="userForm">
+    <ion-item>
+      <ion-label floating>姓名</ion-label>
+      <ion-input type="text" formControlName="NAME"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>性别</ion-label>
+      <ion-select formControlName="SEX" okText="确定" cancelText="取消">
+        <ion-option value="男">先生</ion-option>
+        <ion-option value="女">女士</ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>电话</ion-label>
+      <ion-input type="tel" formControlName="phone"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>身份证号</ion-label>
+      <ion-input type="text" formControlName="ID_NO"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>头像照片</ion-label>
+    </ion-item>
+    <ion-item>
+      <img src="{{bean.iconURL|ImgUrl}}" height="50px"
+           width="50px" alt="头像照片" style="margin: 10px"
+           (click)="upImg('iconURL')"/>
+    </ion-item>
+    <ion-item>
+      <ion-label>证件照片</ion-label>
+    </ion-item>
+    <ion-item>
+      <img src="{{bean.idNoUrl|ImgUrl}}" height="50px"
+           width="50px" alt="证件照片" style="margin: 10px"
+           (click)="upImg('idNoUrl')"/>
+    </ion-item>
+  </ion-list>
+  <div padding>
+    <button ion-button color="car" block (click)="save()">保存</button>
+  </div>
+</ion-content>

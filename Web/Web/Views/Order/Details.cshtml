@@ -1,0 +1,127 @@
+@model ProInterface.Models.YlOrder
+@{
+    ViewBag.Title = "编辑车辆";
+}
+
+<style>
+    .col-md-6, .col-md-12 {
+        padding: 1px;
+        float: left;
+    }
+
+    .form-control[readonly] {
+        cursor: not-allowed;
+        background-color: #fff;
+    }
+</style>
+<link href="~/Scripts/datetimepicker/jquery.datetimepicker.css" rel="stylesheet" />
+<script type="text/javascript" src="~/Scripts/datetimepicker/jquery.datetimepicker.js"></script>
+
+<div id="myPnl" style="display:none"></div>
+@using (Ajax.BeginForm(new AjaxOptions
+{
+    UpdateTargetId = "myPnl",
+    Confirm = "确定要提交吗",
+    OnBegin = "OnBegin",
+    OnSuccess = "OnSuccess",
+    OnFailure = "OnFailure",
+    OnComplete = "OnComplete"
+}))
+{
+    @Html.HiddenFor(m => m.ID)
+    <table style="table-layout:fixed;width:100%">
+        <tr>
+            <td>
+                <div class="col-md-6">
+
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.ClientName)</span>
+                        <div class="form-control">
+                            @Html.DisplayFor(m => m.ClientName)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.ClientPhone)</span>
+                        <div class="form-control">
+                            @Html.DisplayFor(m => m.ClientPhone)
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.ORDER_NO)</span>
+                        @Html.TextBoxFor(m => m.ORDER_NO, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.ORDER_NO)
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.ORDER_TYPE)</span>
+                        <div class="form-control">
+                            @Html.DisplayFor(m => m.ORDER_TYPE)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.PAY_STATUS)</span>
+                        @Html.TextBoxFor(m => m.PAY_STATUS, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.PAY_STATUS)
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.COST)</span>
+                        <div class="form-control">
+                            @Html.TextBoxFor(m => m.COST, new { @class = "easyui-numberbox", precision = "2" })
+                            @Html.ValidationMessageFor(m => m.COST)
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-md-12">
+
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.REMARK)</span>
+                        @Html.TextAreaFor(m => m.REMARK, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.REMARK)
+                    </div>
+
+                </div>
+
+            </td>
+        </tr>
+    </table>
+        <div style="text-align:center;padding:10px;display:none;">
+            <a class="easyui-linkbutton" data-options="iconCls:'icon-save'" onclick="onSubmit()">保存</a>
+            <a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" onclick="parent.CloseWin();">取消</a>
+            <input style="width: 60px; display:none; margin-right: 20px;" type="submit" value="保存" />
+        </div>
+}
+<script type="text/javascript" src="~/Scripts_Page/FunBase.js"></script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $(function () {
+            $('.form_datetime').datetimepicker({
+                timepicker: false,
+                step: 5,
+                format: 'Y/m/d'
+            });
+        })
+    </script>
+}

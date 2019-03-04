@@ -1,0 +1,133 @@
+
+@model ProInterface.Models.YlGarage
+@{
+    ViewBag.Title = "编辑维护站";
+}
+<script type="text/javascript" src="~/Scripts/ajaxfileupload.js"></script>
+<style>
+    .col-md-6, .col-md-12 {
+        padding: 1px;
+        float: left;
+    }
+    .form-control[readonly] {
+        cursor: not-allowed;
+        background-color: #fff;
+    }
+</style>
+<link href="~/Scripts/datetimepicker/jquery.datetimepicker.css" rel="stylesheet" />
+<script type="text/javascript" src="~/Scripts/datetimepicker/jquery.datetimepicker.js"></script>
+
+<div id="myPnl" style="display:none"></div>
+@using (Ajax.BeginForm(new AjaxOptions
+{
+    UpdateTargetId = "myPnl",
+    Confirm = "确定要提交吗",
+    OnBegin = "OnBegin",
+    OnSuccess = "OnSuccess",
+    OnFailure = "OnFailure",
+    OnComplete = "OnComplete"
+}))
+{
+    @Html.HiddenFor(m=>m.ID)
+        <table style="table-layout:fixed;width:100%">
+            <tr>
+                <td>
+
+                <div class="col-md-6">
+                    
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.NAME)</span>
+                        @Html.TextBoxFor(m => m.NAME, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.NAME)
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+                    
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.ADDRESS)</span>
+                        @Html.TextBoxFor(m => m.ADDRESS, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.ADDRESS)
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+                    
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.LANG)</span>
+                        @Html.TextBoxFor(m => m.LANG, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.LANG)
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+                    
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.LAT)</span>
+                        @Html.TextBoxFor(m => m.LAT, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.LAT)
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+                    
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.PHONE)</span>
+                        @Html.TextBoxFor(m => m.PHONE, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.PHONE)
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+                    
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.PIC_ID)</span>
+                        <div class="form-control">
+                            <button type="button" class="btn btn-default btn-xs" id="image2" onmousemove="MoveFilePic(this,event,'_FilePic')"><span class="glyphicon glyphicon-upload"></span>上传</button>
+                            <button type="button" class="btn btn-default btn-xs" id="down_Excel" onclick="WindowOpen($('#IdNoPicUrl').val())"><span class="glyphicon glyphicon-download-alt"></span>下载</button>
+                            <input id="_FilePic" name="_FilePic" type="file" onchange="ChangePic('picIdUrl', 'PIC_ID', '_FilePic')" style="display: none">
+                            @Html.TextBoxFor(m => m.picIdUrl, new { @style = "width:50%" })
+                            @Html.HiddenFor(m => m.PIC_ID)
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-md-12">
+                    
+                    <div class="input-group" style="width: 100%;">
+                        <span class="input-group-addon" data-size="4">@Html.LabelFor(m => m.REMARK)</span>
+                        @Html.TextAreaFor(m => m.REMARK, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.REMARK)
+                    </div>
+
+                </div>
+
+                </td>
+            </tr>
+        </table>
+        <div style="text-align:center;padding:10px;display:none;">
+            <a class="easyui-linkbutton" data-options="iconCls:'icon-save'" onclick="onSubmit()">保存</a>              
+            <a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" onclick="parent.CloseWin();">取消</a>              
+            <input style="width: 60px; display:none; margin-right: 20px;" type="submit" value="保存" />
+        </div> 
+}
+<script type="text/javascript" src="~/Scripts_Page/FunBase.js"></script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $(function () {
+            $('.form_datetime').datetimepicker({
+                timepicker: false,
+                step: 5,
+                format: 'Y/m/d'
+            });
+        })
+    </script>
+}

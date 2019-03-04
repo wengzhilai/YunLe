@@ -1,0 +1,319 @@
+﻿@model ProInterface.Models.TUser
+@{
+    ViewBag.Title = ProInterface.AppSet.SysName;
+    Layout = null;
+}
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ProInterface.AppSet.SysName</title>
+    <script src="~/Scripts/jquery-1.7.1.min.js"></script>
+    <script src="~/Scripts/jquery.cookie.js"></script>
+    <link href="~/Scripts/easyui/themes/bootstrap/easyui.css" rel="stylesheet" />
+    <link href="~/Scripts/easyui/themes/icon.css" rel="stylesheet" />
+    <script src="~/Scripts/easyui/jquery.easyui.min.js"></script>
+    <link href="~/Scripts/bootstrap/css/bootstrap.css" rel="stylesheet" />
+    <script src="~/Scripts/bootstrap/js/bootstrap.js"></script>
+    <link href="~/Content/Styles/main.css" rel="stylesheet" />
+    <script src="~/Scripts/boot.js"></script>
+    <script src="~/Scripts_Page/main.js"></script>
+    <script src="~/Scripts/bootstrap/respond.src.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            GetSkin();
+            setTimeout("GetNewCount()", 30000);
+        });
+
+        function GetNewCount() {
+            $.ajax({
+                url: bootPATH + "/Home/UserMessageGetNewCount",
+                cache: false,
+                success: function (data) {
+                    if (data > 0) {
+                        $("#count1").text(data);
+                        $("#count2").text(data);
+                    }
+                    else {
+                        $("#count1").text("");
+                        $("#count2").text("");
+                    }
+                    setTimeout("GetNewCount()", 30000);
+                }
+            });
+        }
+
+        function SetSkin(skin) {
+            $("link[name='myskin']").remove();
+            if (skin == null) {
+                $.cookie('skin', null, { expires: 0 });
+                return;
+            }
+            $.cookie('skin', skin, { expires: 60 });
+            $("<link>").attr({ name: "myskin", rel: "stylesheet", type: "text/css", href: bootPATH + "/Styles/Skin/" + skin + ".css" }).appendTo("head");
+        }
+        function GetSkin() {
+            if ($.cookie('skin') != null) {
+                var skin = $.cookie('skin');
+                $("<link>").attr({ name: "myskin", rel: "stylesheet", type: "text/css", href: bootPATH + "/Styles/Skin/" + skin + ".css" }).appendTo("head");
+            }
+        }
+    </script>
+</head>
+<body id="mainbody">
+    <div class="boot-panel boot-panel-default" style="border: 0; margin: 0;">
+        <div id="main-header" class="boot-panel-heading" style="background-color: #fff; padding: 0; border-bottom: 0; border-top-right-radius: 0px; border-top-left-radius: 0px;">
+            <div id="main-header-top" class="row headBack" style="height: 50px; margin: 0;">
+                <div class="col-sm-4 col-md-3 col-lg-9">
+                    <div class="mainlogo" style="background: url(@(Url.Content("~/Content/Styles/Images/homelogo_1.png"))) no-repeat;"></div>
+
+                </div>
+
+                <div class="col-sm-4 col-md-3 col-lg-3">
+                    <div class="btn-group" style="position: absolute; right: 10px; top: 7px;">
+                        <button class="btn btn-default dropdown-toggle" style="border: none;" type="button" id="dropdownMenu1" data-toggle="dropdown">
+                            <span class="glyphicon glyphicon-user"></span><span style="font-size: 13px;">@Model.RoleAllName</span>
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1" style="font-size: 13px; min-width: inherit;">
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#" onclick="SetPsw()"><span class="glyphicon glyphicon-lock"></span>&nbsp;修&nbsp;改&nbsp;密&nbsp;码</a></li>
+
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="@Url.Content("~/Login/LoginOut")"><span class="glyphicon glyphicon-off"></span>&nbsp;退&nbsp;出</a></li>
+                            <li role="presentation" class="divider"></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1">
+                                <span onclick="SetSkin('black')" class="glyphicon glyphicon-stop" style="color: #818181; cursor: pointer"></span>
+                                <span onclick="SetSkin('pink')" class="glyphicon glyphicon-stop" style="color: #ff6599; cursor: pointer"></span>
+                                <span onclick="SetSkin('blue')" class="glyphicon glyphicon-stop" style="color: #3592e2; cursor: pointer"></span>
+                                <span onclick="SetSkin('green')" class="glyphicon glyphicon-stop" style="color: #60af00; cursor: pointer"></span>
+                                <span onclick="SetSkin('cyan')" class="glyphicon glyphicon-stop" style="color: #2db8ad; cursor: pointer"></span>
+                                <span onclick="SetSkin()" class="glyphicon glyphicon-stop" style="cursor: pointer"></span>
+                            </a></li>
+                        </ul>
+
+                    </div>
+                    <div class="btn-group" style="position: absolute; right: 248px; top: 7px;">
+                        <button class="btn btn-default dropdown-toggle" style="border: none;" type="button" id="dropdownMenu2" data-toggle="dropdown">
+                            <span class="glyphicon glyphicon-map-marker"></span><span style="font-size: 13px;">@(Model.DistrictName)</span>
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu2" style="font-size: 13px; min-width: inherit;">
+                            @if (Model.RoleAllName.IndexOf("区县经理") > -1 || Model.RoleAllName.IndexOf("系统管理员") > -1 || Model.RoleAllName.IndexOf("市公司") > -1)
+                            {
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="~/Home/ChangeRegion?region=@ProInterface.AppSet.CityId">全省</a></li>
+                            }
+                            @foreach (var t in Model.CanChangeDistrict)
+                            {
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="~/Home/ChangeRegion?region=@t.ID">@t.NAME</a></li>
+                            }
+                        </ul>
+                    </div>
+                    <div class="btn-group" style="position: absolute; right: 140px; top: 7px;">
+                        <button class="btn btn-default dropdown-toggle" style="border: none;" type="button" id="Msg" data-toggle="dropdown">
+                            <span class="glyphicon glyphicon-comment"></span><span style="font-size: 13px;">消息</span>&nbsp;<span id="count1" style="color: red"></span>
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu2" style="font-size: 13px; min-width: inherit;">
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0)" style="outline-style: none" onclick="SetMsg('未读消息')">未读消息&nbsp;<span id="count2" style="color: red"></span></a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0)" style="outline-style: none" onclick="SetMsg('已读消息')">已读消息</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <nav class="navbar navbar-default" role="navigation">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    @* <span class="navbar-brand">中国移动</span>*@
+                </div>
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    @MvcHtmlString.Create(Model.ParentMenu)
+                    <div class="nav navbar-nav navbar-right">
+                        <span onclick="SetTopShowHide(this)" title="点击展开/收缩顶部" class="btn-tophideshow"><span class="glyphicon glyphicon-chevron-up"></span></span>
+                    </div>
+                </div>
+
+            </nav>
+        </div>
+        <div id="main-content" class="boot-panel-body" style="border: 0; padding: 5px 0 2px 0;">
+            <div class="content-left" id="content-left">
+                <button onclick="SetContentLeftShowHide(0)" type="button" class="btn btn-link" style="text-decoration: none; padding: 3px 1px;"><span class="glyphicon glyphicon-chevron-right"></span></button>
+            </div>
+            <div class="content-center" id="content-center">
+                <div id="left-menu" class="boot-panel boot-panel-default">
+                    <div class="boot-panel-heading">
+                        <table id="left-menu-tab" style="width: 100%; padding: 0; margin: 0; font-size: 12px">
+                            <tr>
+                                <td>
+                                    <input class="easyui-combobox" id="browser" name="browser" style="width: 150px;" data-options="
+                onChange: onChangeKey,
+                url: 'ModuleFilter?key=',
+                onSelect: onSelectKey,
+                valueField:'id',
+                textField:'text',
+                groupField:'target'
+            ">
+                                    <script>
+                                        function onChangeKey(newValue, oldValue) {
+                                            var key = $('#browser').combobox('getText').trim();
+                                            $.ajax({
+                                                url: 'ModuleFilter?key=' + key,
+                                                data: {
+                                                    t: Math.random()
+                                                },
+                                                success: function (data) {
+                                                    $('#browser').combobox('loadData', data);
+                                                    $('#browser').combobox('setText', key);
+                                                },
+                                                error: function (data) {
+                                                    
+                                                }
+                                            });
+                                        }
+
+                                        function onSelectKey(item)
+                                        {
+                                            eval(item.id);
+                                        }
+                                    </script>
+                                </td>
+                                <td style="width: 22px;">
+                                    <button type="button" onclick="SetContentLeftShowHide(1)" class="btn btn-link" style="text-decoration: none; padding: 0 1px;"><span class="glyphicon glyphicon-chevron-left"></span></button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="boot-panel-body" style="height:95%;width:100%;padding: 0;overflow:auto">
+                        <ul id="tt" class="easyui-tree" data-options="
+                            url:'@Url.Content("~/Home/GetAllModules")',
+                            method:'get',
+                            lines:true,
+                            onClick: function(node){
+                                if(node.attributes[0].url!=null)
+                                {
+		                            eval(node.attributes[0].url); 
+                                }
+	                        }
+                            ">
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="content-right" id="content-right">
+                <div id="mytab" class="easyui-tabs">
+                    <div title="首页"   href="~/Home/Iframe?url=@Url.Content("~/Home/Home")" >
+                    </div>
+                </div>
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+        <div id="main-footer" class="boot-panel-footer" style="background-color: #e5e5e5; padding: 1px 15px;">
+            <table border="0" style="width: 100%; height: 24px; text-align: center; vertical-align: middle; font-size: 12px; padding: 0; margin: 0;">
+                <tr>
+                    <td></td>
+                    <td style="font-weight: 600; color: #3592e2;">登录用户名:@Model.NAME</td>
+                    <td style="margin: 10px; font-weight: 600; color: #3592e2;">IP:@Html.SpanFor(m => m.EMAIL_ADDR)</td>
+                    <td style="margin: 10px; font-weight: 600; color: #3592e2;">@Html.SpanFor(m => m.REMARK)</td>
+                    <td style="margin: 10px; font-weight: 600; color: #3592e2;"><span id="curtdate"></span></td>
+                    <td style="float: right; font-weight: 600; color: #3592e2; margin-top: 2px;">技术支持：@ProInterface.AppSet.Support</td>
+                    <td style="width: 70px">
+                        <a href="http://www.27580sc.com/" title="关于我们" target="_blank">关于我们</a>&nbsp;|
+                    </td>
+                    <td style="width: 70px">
+                        <a title="帮助中心" href="#">帮助中心</a>&nbsp;|
+                    </td>
+                    <td style="width: 70px"><a href="javascript:void(0)" title="收藏网址" onclick="btnsc()">收藏网址</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="modal fade" id="mymodelmsg" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" style="width: 60%">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="msg"></h4>
+                </div>
+                <div class="modal-body" style="height: 300px; overflow: hidden;">
+                    <iframe style="width: 100%; height: 100%; border: 0;" id="FramMsg"></iframe>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+    </div>
+    <div class="modal fade" id="mymodelpsw" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">密码修改</h4>
+                </div>
+                <div class="modal-body" style="height: 300px; overflow: hidden;">
+                    <iframe style="width: 100%; height: 100%; border: 0;" src="@Url.Content("~/User/UserResetPwdFrom")"></iframe>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    @MvcHtmlString.Create(Model.ChirldMenu)
+
+    <script type="text/javascript">
+        function SetMsg(text) {
+            $("#msg").text(text);
+            if (text == "未读消息") {
+                $("#FramMsg").attr("src", bootPATH + "/User/UserMessageGetNew");
+            }
+            else {
+                $("#FramMsg").attr("src", bootPATH + "/User/UserMessageGetOld");
+            }
+            $("#mymodelmsg").modal('show');
+        }
+        function SetPsw() {
+            $("#mymodelpsw").modal('show');
+        }
+        function HidePsw() {
+            $("#mymodelpsw").hide();
+        }
+
+
+        $(function () {
+            @if (Request["url"] != null && Request["name"] != null)
+            {
+
+            <Text>
+            var url = '@Request["url"].ToString()';
+            var name = '@Request["name"].ToString()';
+            var id = '@Request["mid"].ToString()';
+            //OpenTab('/DailyAudit/AuditAllDaily', '统一日常稽核', '61')
+            OpenTab(url, name, id);
+            </Text>
+            }
+
+        })
+
+        function showdate() {
+            var now = new Date()
+            if (now.getDay() == 0) week = " 星期日";
+            if (now.getDay() == 1) week = " 星期一";
+            if (now.getDay() == 2) week = " 星期二";
+            if (now.getDay() == 3) week = " 星期三";
+            if (now.getDay() == 4) week = " 星期四";
+            if (now.getDay() == 5) week = " 星期五";
+            if (now.getDay() == 6) week = " 星期六";
+            var date = now.getFullYear() + "年" + (now.getMonth() + 1) + "月" + now.getDate() + "日" + now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds() + "    " + week;
+            $("#curtdate").text(date);
+            setTimeout("showdate()", 1000);
+        }
+        showdate();
+    </script>
+
+</body>
+</html>

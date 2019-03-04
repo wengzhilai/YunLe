@@ -1,0 +1,100 @@
+<ion-header>
+  <ion-toolbar color="car">
+    <ion-buttons left>
+      <button ion-button icon-only (click)="GoBack()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>{{bean.ORDER_TYPE}}定单</ion-title>
+    <ion-buttons right>
+      <button ion-button icon-only (click)="SaveEnt()">
+        <ion-icon name="checkmark-circle"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-item-group>
+    <ion-item-divider color="light">
+      定位信息
+    </ion-item-divider>
+    <ion-item (click)="selectLat()">
+      <ion-label>车辆位置</ion-label>
+      <p item-right>{{bean.ADDRESS}}</p>
+    </ion-item>
+  </ion-item-group>
+  <ion-item-group>
+    <ion-item-divider color="light">
+      订单详情
+    </ion-item-divider>
+    <ion-item>
+      <ion-label>订单类型</ion-label>
+      <ion-select [(ngModel)]="bean.ORDER_TYPE" okText="确定" cancelText="取消">
+        <ion-option *ngFor="let key of OrderTypeStr" value="{{key}}">{{key}}</ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item *ngIf="bean.ORDER_TYPE=='维修' || bean.ORDER_TYPE=='保养'" (click)="selectGarage()">
+      <ion-label>选择维修站</ion-label>
+      <p item-right>{{bean.GarageName}}</p>
+    </ion-item>
+    <div *ngIf="bean.ORDER_TYPE!='救援'">
+      <ion-item>
+        <ion-label>送车方式</ion-label>
+        <ion-select [(ngModel)]="bean.REACH_TYPE" okText="确定" cancelText="取消">
+          <ion-option value="送店">送店</ion-option>
+          <ion-option value="接车">接车</ion-option>
+        </ion-select>
+      </ion-item>
+      <ion-item *ngIf="bean.REACH_TYPE=='送店'">
+        <ion-label>送到时间</ion-label>
+        <ion-datetime displayFormat="YYYY-MM-DDTHH:mm" yearValues="2017" [(ngModel)]="bean.REACH_TIME" cancelText="取消" doneText="完成"></ion-datetime>
+      </ion-item>
+    </div>
+    <ion-item *ngIf="bean.ORDER_TYPE=='维修' || bean.ORDER_TYPE=='救援'">
+      <ion-label>故障类型</ion-label>
+      <ion-select [(ngModel)]="bean.HITCH_TYPE" okText="确定" cancelText="取消">
+        <ion-option value="爆胎">爆胎</ion-option>
+        <ion-option value="接电">接电</ion-option>
+        <ion-option value="抛锚">抛锚</ion-option>
+        <ion-option value="交通事故">交通事故</ion-option>
+        <ion-option value="其它">其它</ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>联系人姓名</ion-label>
+      <ion-input type="text" [(ngModel)]="bean.CLIENT_NAME"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>联系方式</ion-label>
+      <ion-input type="text" [(ngModel)]="bean.CLIENT_PHONE"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>其它联系方式</ion-label>
+      <ion-input type="text" [(ngModel)]="bean.OTHER_PHONE"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>车牌号</ion-label>
+      <ion-input type="text" [(ngModel)]="bean.PLATE_NUMBER" capitalize></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>备注</ion-label>
+      <ion-textarea type="text" [(ngModel)]="bean.REMARK"></ion-textarea>
+    </ion-item>
+    <ion-item>
+      <button ion-button (click)="AddImg()">
+        <ion-icon name="cloud-upload">&nbsp;</ion-icon>
+        上传图片
+      </button>
+    </ion-item>
+    <ion-item>
+      <ion-scroll scrollX="true" style="height: 110px;">
+        <img *ngFor="let o of bean.AllFiles" name="allFile_{{o.indexNo}}" src="{{o.URL|ImgUrl}}" height="70px" width="70px" style="margin: 10px"
+          (click)="upImg('allFile_'+o.indexNo)" />
+      </ion-scroll>
+    </ion-item>
+  </ion-item-group>
+
+  <div padding>
+    <button ion-button color="car" block (click)="SaveEnt()">保存</button>
+  </div>
+</ion-content>

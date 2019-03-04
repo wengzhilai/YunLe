@@ -1,0 +1,43 @@
+<ion-header>
+  <ion-toolbar color="car">
+    <ion-buttons left>
+      <button ion-button icon-only (click)="GoBack()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>客户管理</ion-title>
+    <ion-buttons right>
+      <button ion-button icon-only (click)="GoAdd()">
+        <ion-icon name="add-circle"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-refresher *ngIf="isUpdateData"  (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content
+      pullingIcon="arrow-dropdown"
+      pullingText="下拉刷新"
+      refreshingSpinner="circles"
+      refreshingText="刷新中...">
+    </ion-refresher-content>
+  </ion-refresher>
+
+  <ion-list>
+    <ion-card *ngFor="let o of lists">
+      <ion-item  (click)="GoInfo(o)">
+        <ion-thumbnail item-left>
+          <img src="{{o.iconURL|ImgUrl}}"/>
+        </ion-thumbnail>
+        <h3>姓&nbsp;&nbsp;&nbsp;&nbsp;名：{{o.NAME}}</h3>
+        <h3><span>车牌号：</span><span *ngFor="let car of o.AllCar">{{car.PLATE_NUMBER}} </span> </h3>
+        <h3>登录名： {{o.LOGIN_NAME}}</h3>
+        <ion-icon item-right name="ios-arrow-forward-outline" class="ion-forward"></ion-icon>
+      </ion-item>
+    </ion-card>
+  </ion-list >
+  <ion-infinite-scroll (ionInfinite)="$event.waitFor(doInfinite($event))">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+</ion-content>

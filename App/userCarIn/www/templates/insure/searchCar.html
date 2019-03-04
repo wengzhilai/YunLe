@@ -1,0 +1,73 @@
+<ion-view view-title="低价保险" hide-back-button="true">
+    <ion-nav-buttons side="left">
+        <button class="button button-icon icon ion-ios-arrow-back light" ui-sref="home"></button>
+    </ion-nav-buttons>
+    <ion-content class="has-header">
+        <div class="list" style="margin-top: 30px;margin-bottom: 10px">
+            <div class="home-row row" style="padding: 0px;">
+                <div class="col col-25 ">
+                    <label class="search item item-input">
+                     <span class="input-label">车牌
+  <select style="padding:0;border: none;cursor: pointer;" ng-model="searchCar.tmpNo.no1">
+      <option value="川">川</option>
+      <option value="冀">冀</option>
+      <option value="豫">豫</option>
+      <option value="云">云</option>
+      <option value="辽">辽</option>
+      <option value="黑">黑</option>
+      <option value="湘">湘</option>
+      <option value="皖">皖</option>
+      <option value="鲁">鲁</option>
+      <option value="新">新</option>
+      <option value="苏">苏</option>
+      <option value="赣">赣</option>
+      <option value="鄂">鄂</option>
+      <option value="桂">桂</option>
+      <option value="甘">甘</option>
+      <option value="晋">晋</option>
+      <option value="蒙">蒙</option>
+      <option value="晋">晋</option>
+      <option value="陕">陕</option>
+      <option value="吉">吉</option>
+      <option value="闽">闽</option>
+      <option value="贵">贵</option>
+      <option value="粤">粤</option>
+      <option value="青">青</option>
+      <option value="藏">藏</option>
+      <option value="宁">宁</option>
+      <option value="琼">琼</option>
+      <option value="渝">渝</option>
+      <option value="京">京</option>
+      <option value="沪">沪</option>
+  </select>
+                     </span>
+
+                    </label>
+                </div>
+                <div class="col">
+                    <label class="search item item-input">
+                        <input type="text" ng-model="searchCar.tmpNo.no2"/>
+                    </label>
+                </div>
+
+            </div>
+            <label class="search item item-input" style="border-top:  1px solid #f0f0f0;">
+                <span class="input-label" style="width:15%;">用户</span>
+                <input type="text"  placeholder="用户请输入车主信息" ng-model="searchCar.bean.userName"/>
+            </label>
+        </div>
+        <span class="searchcar-right">新车未上牌?</span>
+        <div class="button-div">
+            <button class="button button-energized carIn-button" on-tap="searchCar.submit($event)">
+               下一步
+            </button>
+
+
+
+        </div>
+        </div>
+        </div>
+        </div>
+
+    </ion-content>
+</ion-view>

@@ -1,0 +1,63 @@
+<ion-view view-title="团队信息" hide-back-button="true" ng-init="team.init()">
+  <ion-nav-buttons side="left">
+    <button class="button button-icon icon ion-ios-arrow-back light"
+            UI-SREF="home({reload: true})"></button>
+  </ion-nav-buttons>
+
+  <ion-content class="has-header" style="margin-bottom: 44px" ng-repeat="o in team.lists.data">
+    <div class="list">
+      <div class="item item-divider editcust" style="font-size: 14px;margin-top: 0px">
+        基本资料
+      </div>
+      <a class="item item-thumbnail-right" style="padding-left: 20px;">
+        <img name="iconURL" src="{{o.qrcode.split('|')[1]|imgUrl}}" height="100px"
+             width="70px" alt="头像照片" style="margin: 10px" on-tap="team.showBigImage($event)"/>
+        <h2 style="line-height: 30px"><span style="font-weight:bold">推荐码：</span>{{o.REQUEST_CODE}}</h2>
+        <h2 style="line-height: 30px"><span style="font-weight:bold">名  称：</span>{{o.NAME}}</h2>
+        <h2 style="line-height: 30px"><span style="font-weight:bold">备  注：</span>{{o.REMARK}}</h2>
+      </a>
+      <label class="item item-input"  style="padding-left: 20px;">
+        <span class="input-label" style="font-weight:bold" >定单总数：{{o.orderNum}}</span>
+        <span class="input-label" style="font-weight:bold" >定单完成数：{{o.orderNumSucc}}</span>
+      </label>
+      <ion-scroll class="item item-input" style="height: {{team.scrollHeight}}px;width:100%;" >
+        <div class="list" style="width: 100%;">
+          <label ng-if="team.nowTabsIndex==1" class="item item-thumbnail-left" style="margin: 5px" ng-repeat="customer in o.allSalesman" >
+            <img name="iconURL" src="{{customer.iconURL|imgUrl}}" height="70px"
+                 width="70px" alt="头像照片" style="margin-left: 200px" on-tap="team.showBigImage($event)"
+                 />
+            <button class="button-clear"  style="text-align: left" ui-sref="salesmanInfo({id:customer.ID})">
+            <h2 ><span style="font-weight:bold">客户编号：</span>{{customer.ID}}</h2>
+            <h2 ><span style="font-weight:bold">客户姓名：</span>{{customer.NAME}}</h2>
+            <h2><span style="font-weight:bold">性别：</span>{{customer.SEX}}</h2>
+            <h2><span style="font-weight:bold">电话：</span>{{customer.LOGIN_NAME}}</h2>
+            </button>
+          </label>
+
+          <label ng-if="team.nowTabsIndex==2" class="item" style="margin: 5px" ng-repeat="order in o.allOrder" >
+            <h2 ><span style="font-weight:bold">订单编号：</span>{{order.ORDER_NO}}</h2>
+            <h2 ><span style="font-weight:bold">订单类型：</span>{{order.ORDER_TYPE}}</h2>
+            <h2><span style="font-weight:bold">当前状态：</span>{{order.LastStatus}}</h2>
+            <h2><span style="font-weight:bold">客户姓名：</span>{{order.ClientName}}</h2>
+            <h2><span style="font-weight:bold">客户电话：</span>{{order.ClientPhone}}</h2>
+            <h2><span style="font-weight:bold">车牌号：</span>{{order.CarPlateNumber}}</h2>
+          </label>
+
+        </div>
+      </ion-scroll>
+    </div>
+  </ion-content>
+  <div class="tabs-striped ">
+    <div class="tabs tabs-icon-left">
+      <a class="tab-item active" ng-click="team.onTab($event,1)">
+        <i class="icon ion-person-stalker"></i>
+        团队成员
+      </a>
+      <a class="tab-item " ng-click="team.onTab($event,2)">
+        <i class="icon ion-load-a"></i>
+        所有定单
+      </a>
+    </div>
+  </div>
+
+</ion-view>

@@ -1,0 +1,317 @@
+﻿@model ProInterface.Models.TQuery
+@{
+    ViewBag.Title = "Create";
+}
+<link href="~/Scripts/bootstrap/css/bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/bootstrap/js/bootstrap.js"></script>
+<script type="text/javascript" src="~/Scripts_Page/Query_Details.js"></script>
+<script type="text/javascript" src="~/Scripts/easyui/datagrid-detailview.js"></script>
+
+<div id="myPnl" style="display: none"></div>
+@using (Ajax.BeginForm(new AjaxOptions
+{
+    UpdateTargetId = "myPnl",
+    Confirm = "确定要提交吗",
+    OnBegin = "OnBegin",
+    OnSuccess = "OnSuccess",
+    OnFailure = "OnFailure",
+    OnComplete = "OnComplete"
+}))
+{
+    @Html.HiddenFor(m => m.ID)
+    <table style="table-layout:fixed;width:100%">
+        <tr>
+            <td>
+                <div class="input-group input-group-sm">
+                    <span class="input-group-addon" data-size="5">
+                        @Html.LabelFor(m => m.CODE)
+                    </span>
+                    @Html.TextBoxFor(m => m.CODE, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.CODE)
+                </div>
+            </td>
+            <td>
+                <div class="input-group input-group-sm">
+                    <span class="input-group-addon" data-size="5">
+                        @Html.LabelFor(m => m.NAME)
+                    </span>
+                    @Html.TextBoxFor(m => m.NAME, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.NAME)
+                </div>
+            </td>
+
+            <td>
+                <div class="input-group input-group-sm">
+                    <span class="input-group-addon" data-size="5">
+                        @Html.LabelFor(m => m.AUTO_LOAD)
+                    </span>
+                    @Html.MyDropDownListFor(m => m.AUTO_LOAD, new[]{
+                       new SelectListItem(){ Text="是", Value="1"},
+                       new SelectListItem(){ Text="否", Value="0"}
+                   }, new { @class = "form-control" })
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="input-group input-group-sm">
+                    <span class="input-group-addon" data-size="5">
+                        @Html.LabelFor(m => m.SHOW_CHECKBOX)
+                    </span>
+                    @Html.MyDropDownListFor(m => m.SHOW_CHECKBOX, new[]{
+                       new SelectListItem(){ Text="是", Value="1"},
+                       new SelectListItem(){ Text="否", Value="0"}
+                   }, new { @class = "form-control" })
+                </div>
+            </td>
+
+            <td>
+                <div class="input-group input-group-sm" style="width: 100%">
+                    <span class="input-group-addon" data-size="5">
+                        @Html.LabelFor(m => m.FILTR_LEVEL)
+                    </span>
+                    @Html.MyDropDownListFor(m => m.FILTR_LEVEL, new[]{
+                       new SelectListItem(){ Text="是", Value="1"},
+                       new SelectListItem(){ Text="否", Value="0", Selected=true}},
+                    new { @class = "form-control" })
+                </div>
+            </td>
+            <td>
+                <div class="input-group input-group-sm">
+                    <span class="input-group-addon" data-size="5">@Html.LabelFor(m => m.IS_DEBUG)</span>
+                    @Html.MyDropDownListFor(m => m.IS_DEBUG, new[]{
+                       new SelectListItem(){ Text="是", Value="1"},
+                       new SelectListItem(){ Text="否", Value="0", Selected=true}
+                   }, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.IS_DEBUG)
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="input-group input-group-sm" style="width: 100%">
+                    <span class="input-group-addon" data-size="5">
+                        @Html.LabelFor(m => m.PAGE_SIZE)
+                    </span>
+                    @Html.TextBoxFor(m => m.PAGE_SIZE, new { @class = "form-control" })
+                </div>
+            </td>
+            <td>
+                <div class="input-group input-group-sm" style="width: 100%">
+                    <span class="input-group-addon" data-size="5">
+                        @Html.LabelFor(m => m.DB_SERVER_ID)
+                    </span>
+                    @Html.MyDropDownListFor(m => m.DB_SERVER_ID, ViewData["db"] as IList<SelectListItem>, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.DB_SERVER_ID)
+                </div>
+            </td>
+
+            <td>
+                <div class="input-group input-group-sm" style="width: 100%">
+                    <span class="input-group-addon" data-size="5">
+                        @Html.LabelFor(m => m.NEW_DATA)
+                    </span>
+                    @Html.TextBoxFor(m => m.NEW_DATA, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.NEW_DATA)
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <div id="tt" class="easyui-tabs" data-options="plain:true,border:true,tabWidth:'auto',height:330">
+        <div title="SQL配置">
+            <table border="0" style="width: 100%">
+                <tr>
+                    <div class="input-group input-group-sm">
+                        <span class="input-group-addon" data-size="5">
+                            @Html.LabelFor(m => m.QUERY_CONF)
+                            <a class="easyui-linkbutton" plain="true" data-options="iconCls:'icon-reload'" onclick="ReloadCfg()" title="注：只有可以执行的SQL语句才可以分析">分析</a>
+                            <span for="QUERY_CONF" class="easyui-linkbutton" data-options="iconCls:'icon-help',size:'small',plain:true"></span>
+                        </span>
+                        @Html.TextAreaFor(m => m.QUERY_CONF, new { @class = "form-control", style = "width:100%;height:80px" })
+                    </div>
+                </tr>
+                <tr>
+                    <td>
+                        <table id="CFG_JSON">
+                            <thead>
+                                <tr>
+                                    <th data-options="field:'FieldName',width:100">@Html.LabelFor(m => m.QueryCfgEnt.FieldName)</th>
+                                    <th data-options="field:'Alias',width:100,editor:{type:'text'}">@Html.LabelFor(m => m.QueryCfgEnt.Alias)</th>
+                                    <th data-options="field:'Show',width:60,
+                        editor:{
+                            type:'combobox',
+                            options:{
+                                panelHeight:'auto',
+                                editable:false,
+                                valueField:'value',
+                                textField:'text',
+                                data:[
+                                    {'value':'true','text':'true'},
+                                    {'value':'false','text':'false'}
+                                    ]
+                            }
+                        }">@Html.LabelFor(m => m.QueryCfgEnt.Show)</th>
+                        <th data-options="field:'CanSearch',width:50,
+                        editor:{
+                            type:'combobox',
+                            options:{
+                                panelHeight:'auto',
+                                editable:false,
+                                valueField:'value',
+                                textField:'text',
+                                data:[
+                                    {'value':'true','text':'true'},
+                                    {'value':'false','text':'false'}
+                                    ]
+                            }
+                        }">@Html.LabelFor(m => m.QueryCfgEnt.CanSearch)</th>
+                        <th data-options="field:'FieldType',width:100,editor:{
+                            type:'combobox',
+                            options:{
+                                panelHeight:'auto',
+                                editable:false,
+                                valueField:'value',
+                                textField:'text',
+                                data:[
+                                    {'value':'System.String','text':'System.String'},
+                                    {'value':'System.Int32','text':'System.Int32'},
+                                    {'value':'System.Decimal','text':'System.Decimal'},
+                                    {'value':'System.DateTime','text':'System.DateTime'},
+                                    {'value':'System.Double','text':'System.Double'}
+                                    ]
+                            }
+                        }">@Html.LabelFor(m => m.QueryCfgEnt.FieldType)</th>
+                        <th data-options="field:'SearchType',width:80,editor:{
+                            type:'combobox',
+                            options:{
+                                panelHeight:'auto',
+                                editable:false,
+                                valueField:'value',
+                                textField:'text',
+                                onChange:OnChangeSearchType,
+                                data:[
+                                    {'value':'text','text':'文本'},
+                                    {'value':'numberbox','text':'数字'},
+                                    {'value':'datetimebox','text':'时间'},
+                                    {'value':'combobox','text':'下拉列表'},
+                                    {'value':'combobox_1','text':'下拉列表动态'}
+                                    ]
+                            }
+                        }">@Html.LabelFor(m => m.QueryCfgEnt.SearchType)</th>
+                        <th data-options="field:'SearchScript',width:200,editor:{type:'textarea'}">@Html.LabelFor(m => m.QueryCfgEnt.SearchScript)</th>
+                        <th data-options="field:'Format',width:200,editor:{type:'textarea'}">@Html.LabelFor(m => m.QueryCfgEnt.Format)</th>
+                        <th data-options="field:'Sortable',width:50,
+                        editor:{
+                            type:'combobox',
+                            options:{
+                                panelHeight:'auto',
+                                editable:false,
+                                valueField:'value',
+                                textField:'text',
+                                data:[
+                                    {'value':'true','text':'true'},
+                                    {'value':'false','text':'false'}
+                                    ]
+                            }
+                        }">@Html.LabelFor(m => m.QueryCfgEnt.Sortable)</th>
+                        <th data-options="field:'IsVariable',width:50,
+                        editor:{
+                            type:'combobox',
+                            options:{
+                                panelHeight:'auto',
+                                editable:false,
+                                valueField:'value',
+                                textField:'text',
+                                data:[
+                                    {'value':'true','text':'true'},
+                                    {'value':'false','text':'false'}
+                                    ]
+                            }
+                        }">@Html.LabelFor(m => m.QueryCfgEnt.IsVariable)</th>
+                        <th data-options="field:'Width',width:50,editor:{type:'numberbox'}">@Html.LabelFor(m => m.QueryCfgEnt.Width)</th>
+                    </tr>
+                </thead>
+            </table>
+            @Html.TextAreaFor(m => m.QUERY_CFG_JSON, new { style = "width:100%;height:100%;min-height:250px;" })
+
+        </td>
+    </tr>
+
+</table>
+</div>
+<div title="@Html.DisplayNameFor(m => m.REPORT_SCRIPT)">
+    <table border="0" style="width: 100%; height: 100%">
+        <tr>
+            <td style="height: 20px">
+                <a class="easyui-linkbutton" plain="true" data-options="iconCls:'icon-down'" onclick="DownRDLC()">下载</a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.TextAreaFor(m => m.REPORT_SCRIPT, new { style = "width:100%;height:100%;min-height:230px;" })
+            </td>
+        </tr>
+    </table>
+</div>
+<div title="@Html.DisplayNameFor(m => m.CHARTS_CFG)">
+    <div class="input-group input-group-sm" style="width: 100%">
+        <span class="input-group-addon" data-size="5">
+            @Html.LabelFor(m => m.CHARTS_TYPE)
+        </span>
+        @Html.DropDownListFor(m => m.CHARTS_TYPE, new[]{
+                   new SelectListItem{ Value="", Text="无"},
+                   new SelectListItem{ Value="SingleSeries", Text="单线"},
+                   new SelectListItem{ Value="MultiSeries", Text="多线"}
+               }, new { @class = "form-control" })
+    </div>
+    <span for="CHARTS_CFG" class="easyui-linkbutton" data-options="iconCls:'icon-help',size:'small',plain:true">查看帮助信息</span>
+    @Html.TextAreaFor(m => m.CHARTS_CFG, new { style = "width:100%;height:100%;min-height:250px;" })
+</div>
+<div title="@Html.DisplayNameFor(m => m.JS_STR)">
+    @Html.TextAreaFor(m => m.JS_STR, new { style = "width:100%;height:100%;min-height:250px;" })
+</div>
+<div title="@Html.DisplayNameFor(m => m.ROWS_BTN)">
+    <table id="dg_ROWS_BTN" data-options="rownumbers:true,singleSelect:true,pagination:true,height:'auto'"></table>
+    @Html.TextAreaFor(m => m.ROWS_BTN, new { style = "width:100%;height:100%;min-height:250px;" })
+</div>
+<div title="@Html.DisplayNameFor(m => m.HEARD_BTN)">
+    <table id="dg_HEARD_BTN" data-options="rownumbers:true,singleSelect:true,pagination:true,height:'200',onClickRow: onClickRowHeardBtn">
+        <thead>
+            <tr>
+                <th data-options="field:'DialogMode',width:100,editor: {
+                                type: 'combobox',
+                                options: {
+                                    valueField: 'ID',
+                                    textField: 'NAME',
+                                    data: products,
+                                    required: true,
+                                    panelHeight: 'auto'
+                                }
+                            }">对话框模式</th>
+                <th data-options="field:'Name',width:100,editor:{type:'text'}">按钮名</th>
+                <th data-options="field:'IconCls',width:100,editor:{type:'text'}">样式</th>
+                <th data-options="field:'Url',width:100,editor:{type:'text'}">地址</th>
+                <th data-options="field:'DialogWidth',width:100,editor:{type:'numberbox'}">对话框宽</th>
+                <th data-options="field:'DialogHeigth',width:100,editor:{type:'numberbox'}">对话框高</th>
+            </tr>
+        </thead>
+    </table>
+    @Html.TextAreaFor(m => m.HEARD_BTN, new { style = "width:100%;" })
+
+</div>
+<div title="@Html.DisplayNameFor(m => m.FILTR_STR)">
+    @Html.TextAreaFor(m => m.FILTR_STR, new { style = "width:100%;height:100%;min-height:250px;" })
+</div>
+<div title="@Html.DisplayNameFor(m => m.REMARK)">
+    @Html.TextAreaFor(m => m.REMARK, new { style = "width:100%;height:100%;min-height:250px;" })
+</div>
+</div>
+    <input style="display: none;" type="submit" value="保存" />
+
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
